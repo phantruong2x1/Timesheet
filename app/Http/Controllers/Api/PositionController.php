@@ -15,7 +15,7 @@ class PositionController extends Controller
      */
     public function index()
     {
-        return Position::orderBy('created_at','desc');
+        return Position::all();
     }
 
     /**
