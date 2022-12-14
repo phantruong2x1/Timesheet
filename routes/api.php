@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PositionController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +39,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // // Xóa sản phẩm theo id
 // Route::delete('positions/{id}', 'Api\ProductController@destroy')->name('positions.destroy');
 
+
 Route::apiResource('positions', PositionController::class);
 
+Route::apiResource('users', UserController::class);
+
+Route::apiResource('staffs', StaffController::class);

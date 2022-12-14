@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class User extends Authenticatable
 {
@@ -19,9 +20,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'user_name',
-        'name',
+        'staff_id',
         'email',
         'password',
+        'role_id'
     ];
 
     /**
@@ -30,8 +32,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        //'password',
         'remember_token',
+        'email_verified_at'
     ];
 
     /**
@@ -42,4 +45,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //relationship 
+    public function staff(){
+        return $this->hasOne(Staffs::class);
+    }
 }

@@ -19,7 +19,20 @@ class Staffs extends Model
     protected $fillable = [
             'position_id',
             'department_id',
-        ];
+            'first_name',
+            'last_name',
+            'full_name',
+            'birthday',
+            'gender',
+            'email',
+            'status',
+            'type',
+            'user_id',
+    ];
+    protected $hidden = [
+        'tax_code',
+        'email_company'
+    ];
         
     //nối bảng
     public function position(){
@@ -71,6 +84,9 @@ class Staffs extends Model
         DB::delete("DELETE FROM $this->table WHERE id=?",[$id]);
     }
 
-    
-
+    //relationship
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
