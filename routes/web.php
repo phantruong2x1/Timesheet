@@ -8,6 +8,9 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\StaffsController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\PositionController;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Config;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +22,15 @@ use App\Http\Controllers\Admin\PositionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//Change language
+Route::get('setLocale/{locale}', function ($locale) {
+    if (in_array($locale, Config::get('app.locales'))) {
+      Session::put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('app.setLocale');
+
 
 Route::middleware('auth')->group(function(){
 
@@ -93,6 +105,8 @@ Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('
 Route::view('permission-denied', 'errors.permission-denied')->name('denied');
 Route::view('account-disabled', 'errors.account-disabled')->name('disabled');
 Route::view('account-not-found', 'errors.account-not-found')->name('notfound');
+
+
 
 
 

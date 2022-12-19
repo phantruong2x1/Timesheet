@@ -3,7 +3,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{{route('admin-dashboard')}}">
           <i class="icon-grid menu-icon"></i>
-          <span class="menu-title">Dashboard</span>
+          <span class="menu-title">{{__('sunshine.Dashboard')}}</span>
         </a>
       </li>
       <li class="nav-item">
@@ -76,7 +76,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{{route('positions.index')}}">
           <i class="icon-layout menu-icon"></i>
-          <span class="menu-title">Position</span>
+          <span class="menu-title">{{__('sunshine.Position')}}</span>
         </a>
       </li>
 
@@ -84,7 +84,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{{route('departments.index')}}">
           <i class="icon-grid-2 menu-icon"></i>
-          <span class="menu-title">Department</span>
+          <span class="menu-title">{{__('sunshine.Department')}}</span>
         </a>
       </li>
 
@@ -92,7 +92,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{{route('staff.index')}}">
           <i class="icon-paper menu-icon"></i>
-          <span class="menu-title">Staff</span>
+          <span class="menu-title">{{__('sunshine.Staff')}}</span>
         </a>
       </li>
 

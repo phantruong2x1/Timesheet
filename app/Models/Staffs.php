@@ -28,19 +28,28 @@ class Staffs extends Model
             'status',
             'type',
             'user_id',
+            'id'
     ];
     protected $hidden = [
         'tax_code',
         'email_company'
     ];
         
-    //nối bảng
+    //relationship
     public function position(){
         return $this->belongsTo(Position::class);
     }
 
     public function department(){
         return $this->belongsTo(Department::class);
+    }
+
+    public function user(){
+        return $this->hasOne(User::class,'staff_id');
+    }
+
+    public function timesheet(){
+        return $this->hasMany(Timesheet::class);
     }
 
     // Lấy tất cả nhân viên 
@@ -84,9 +93,5 @@ class Staffs extends Model
         DB::delete("DELETE FROM $this->table WHERE id=?",[$id]);
     }
 
-    //relationship
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    
 }

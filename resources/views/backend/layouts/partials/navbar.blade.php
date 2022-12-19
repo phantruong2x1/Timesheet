@@ -7,8 +7,8 @@
       <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
         <span class="icon-menu"></span>
       </button>
-      <ul class="navbar-nav mr-lg-2">
-        <li class="nav-item nav-search d-none d-lg-block">
+      <ul class="navbar-nav navbar-nav-left">
+        <li class="nav-item template-demo d-flex justify-content-between flex-wrap">
           <div class="input-group">
             <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
               <span class="input-group-text" id="search">
@@ -20,13 +20,26 @@
         </li>
       </ul>
       <ul class="navbar-nav navbar-nav-right">
+
+        {{-- Change language  --}}
+        <li class="nav-item dropdown">
+          <button class="btn nav-link " type="button" data-toggle="dropdown" id="profileDropdown1" >
+            <i class="ti-world"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown1">
+            <a href="{{route('app.setLocale', ['locale' => 'vi']) }}" class="dropdown-item" >Tiếng việt</a>
+            <a href="{{route('app.setLocale', ['locale' => 'en']) }}" class="dropdown-item">English</a>
+            <a href="{{route('app.setLocale', ['locale' => 'jp']) }}" class="dropdown-item">日本</a>
+          </div>
+        </li>
+
         <li class="nav-item dropdown">
           <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
             <i class="icon-bell mx-0"></i>
             <span class="count"></span>
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+            <p class="mb-0 font-weight-normal float-left dropdown-header">{{__('sunshine.Notifications')}}</p>
             <a class="dropdown-item preview-item">
               <div class="preview-thumbnail">
                 <div class="preview-icon bg-success">
@@ -34,7 +47,7 @@
                 </div>
               </div>
               <div class="preview-item-content">
-                <h6 class="preview-subject font-weight-normal">Application Error</h6>
+                <h6 class="preview-subject font-weight-normal">{{__('sunshine.Application Error')}}</h6>
                 <p class="font-weight-light small-text mb-0 text-muted">
                   Just now
                 </p>
@@ -47,7 +60,7 @@
                 </div>
               </div>
               <div class="preview-item-content">
-                <h6 class="preview-subject font-weight-normal">Settings</h6>
+                <h6 class="preview-subject font-weight-normal">{{__('sunshine.Settings')}}</h6>
                 <p class="font-weight-light small-text mb-0 text-muted">
                   Private message
                 </p>
@@ -60,7 +73,7 @@
                 </div>
               </div>
               <div class="preview-item-content">
-                <h6 class="preview-subject font-weight-normal">New user registration</h6>
+                <h6 class="preview-subject font-weight-normal">{{__('sunshine.New user registration')}}</h6>
                 <p class="font-weight-light small-text mb-0 text-muted">
                   2 days ago
                 </p>
@@ -75,11 +88,11 @@
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
             <a class="dropdown-item" >
               <i class="ti-settings text-primary"></i>
-              Settings
+              {{__('sunshine.Settings')}}
             </a>
             <a href="{{ route('logout') }}" class="dropdown-item">
               <i class="ti-power-off text-primary"></i>
-              Logout
+              {{__('sunshine.Logout')}}
             </a>
           </div>
         </li>

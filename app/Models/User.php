@@ -48,6 +48,6 @@ class User extends Authenticatable
 
     //relationship 
     public function staff(){
-        return $this->hasOne(Staffs::class);
+        return $this->belongsTo(Staffs::class);
     }
 }
