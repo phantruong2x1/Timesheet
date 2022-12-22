@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\StaffsController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\PositionController;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function(){
 
             //Dashboard admin
             Route::get('/dashboard',[Admin\AdminController::class, 'index'])->name('admin-dashboard');
+
+            //History
+            Route::get('/history',[Admin\HistoryController::class, 'index'])->name('history.index');
             
             //Staff
             Route::prefix('/staff')->name('staff.')->group(function(){

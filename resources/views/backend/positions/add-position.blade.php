@@ -1,11 +1,9 @@
 @extends('backend.layouts.master')
-
 @section('title')
     {{$title}}
 @endsection
 
 @section('content')
-
 <div class="card-body">
     <h4 class="card-title">Add Position</h4>
 
@@ -15,8 +13,7 @@
     @endif
 
     <form class="forms-sample" action="" method="post">
-    @csrf
-        
+    @csrf     
         <div class="form-group row">
             <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Position Name</label>
             <div class="col-sm-9">
@@ -32,15 +29,11 @@
             name="position_desc" value="{{old('position_desc')}}">
             </div>
         </div>
-
-      
+     
         <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">Submit</button>
         <a href="{{route('positions.index')}}" class="btn btn-secondary">Cancel</a>
     </form>
-</div>
-
-
-    
+</div>   
 @endsection
 
 
