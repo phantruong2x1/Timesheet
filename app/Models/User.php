@@ -18,6 +18,15 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    //relationship 
+    public function staff(){
+        return $this->belongsTo(Staffs::class);
+    }
+    public function user_role(){
+        return $this->belongsTo(UserRole::class,'role_id');
+    }
+    
     protected $fillable = [
         'user_name',
         'staff_id',
@@ -46,8 +55,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    //relationship 
-    public function staff(){
-        return $this->belongsTo(Staffs::class);
-    }
+    
+
 }

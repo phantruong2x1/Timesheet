@@ -12,6 +12,7 @@ class Department extends Model
 
     protected $table = 'departments';
 
+    //relationship
     public function staff(){
         return $this->hasMany(Staffs::class);
     }

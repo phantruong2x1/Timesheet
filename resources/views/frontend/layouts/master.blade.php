@@ -35,7 +35,7 @@
             <!-- partial -->
 
             <!-- partial:partials/_sidebar.html -->
-            @include('frontend.layouts.partials.sidebar')
+            {{-- @include('frontend.layouts.partials.sidebar') --}}
             <!-- partial -->
 
             

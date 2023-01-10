@@ -5,6 +5,11 @@
 @endsection
 
 @section('content')
+<div class="main-panel">
+<div class="content-wrapper">
+<div class="row">
+<div class="col-md-12 grid-margin stretch-card">
+<div class="card">
 
 <div class="card-body">
     <h4 class="card-title">Staff Table</h4>
@@ -52,7 +57,7 @@
     </form>
 
     <div class="table-responsive">
-      <table class="table">
+      <table class="table table-striped table-borderless">
         <thead>
           <tr>
             <th>#</th>
@@ -109,6 +114,10 @@
       </table>
     </div>
 </div>
-
+</div>
+</div>
+</div>
+</div>
+</div>
 @endsection
 

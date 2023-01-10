@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class HistoryInout extends Model
 {
     use HasFactory;
+    protected $table = 'history_inouts';
 }

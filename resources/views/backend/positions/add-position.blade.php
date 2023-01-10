@@ -4,6 +4,11 @@
 @endsection
 
 @section('content')
+<div class="main-panel">
+<div class="content-wrapper">
+<div class="row">
+<div class="col-md-12 grid-margin stretch-card">
+<div class="card">
 <div class="card-body">
     <h4 class="card-title">Add Position</h4>
 
@@ -33,6 +38,11 @@
         <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">Submit</button>
         <a href="{{route('positions.index')}}" class="btn btn-secondary">Cancel</a>
     </form>
+</div>  
+</div>   
+</div>    
+</div>   
+</div>   
 </div>   
 @endsection
 

@@ -12,6 +12,7 @@ class Position extends Model
     
     protected $table = 'positions';
 
+    //relationship
     public function staff(){
         return $this->hasMany(Staffs::class);
     }

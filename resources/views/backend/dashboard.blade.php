@@ -10,6 +10,31 @@
             <div class="card">
                 <div class="card-body">
                     <p class="card-title mb-0">Time Sheet</p>
+                    <br>
+                    {{-- Lọc  --}}
+                    <form action="" method="get">
+                        <div class="row">
+                            {{-- Lọc theo Staff Name --}}
+                            <div class="col-3">
+                                <select class="form-control" name="staff_id">
+                                <option value="0">All Name</option>
+                                @if(!empty($staffsList))
+                                    @foreach($staffsList as $item)
+                    
+                                    <option value="{{$item->id}}" 
+                                        {{request()->staff_id==$item->id ? 'selected':false}}>
+                                        {{$item->full_name}}</option>
+                    
+                                    @endforeach
+                                @endif
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <button type="submit" class="btn btn-outline-primary">Tìm kiếm</button>
+                              </div>
+                        </div>
+                    </form>
+                    {{-- Table Timesheet --}}
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">
                             <thead>
@@ -35,46 +60,64 @@
                                         $color  = 'badge-success';
                                         
                                         //check late arrival
-                                        if(date('H:i:s',$item->first_checkin/1000) > '08:30:00'){
-                                            $status = 'Late checkin';
-                                            $color  = 'badge-warning';
-                                        }
+                                            if(date('H:i:s',$item->first_checkin/1000) > '08:30:00'){
+                                                $status = 'Late checkin';
+                                                $color  = 'badge-warning';
+                                            }
                                         //check null
                                         if(!empty($item->last_checkout)){
                                             //check late checkin && early checkout
                                             if( date('H:i:s',$item->first_checkin/1000) > '08:30:00' && 
-                                                date('H:i:s',$item->first_checkin/1000) <= '17:30:00' ){
+                                                date('H:i:s',$item->last_checkout/1000) <= '17:30:00' ){
                                                 $status = 'Late checkin/Early checkout';
                                                 $color  = 'badge-warning';
                                             }
                                             //check early checkout
-                                            else if(date('H:i:s',$item->first_checkin/1000) < '17:30:00'){
+                                            else if(date('H:i:s',$item->last_checkout/1000) < '17:30:00'){
                                                 $status = 'Early checkout';
                                                 $color  = 'badge-warning';
                                             }
-                                            else{
+                                            else if(date('H:i:s',$item->first_checkin/1000) <= '08:30:00'){
                                                 $status = 'On Time';
                                                 $color  = 'badge-success';
                                             }
+                                            
                                         }
                                     }
                                 @endphp
                                 <tr>
                                     {{-- Hiển thị dữ liệu --}}
                                     <td>{{$key+1}}</td>
-                                    <td>{{$item->staff_id}}</td>
+                                    @if(empty($item->staff->full_name))
+                                        <td>{{$item->staff_id}}</td>
+                                    @else
+                                        <td>{{$item->staff->full_name}}</td>
+                                    @endif
+
                                     <td>{{date('d-m-Y',$item->date/1000)}}</td>
                                     <td>{{date('H:i:s',$item->first_checkin/1000)}}</td>
                                     
-                                    {{-- check null --}}
+                                    {{-- last_checkout data --}}
                                     @if(!empty($item->last_checkout))
                                         <td>{{date('H:i:s',$item->last_checkout/1000)}}</td>
                                     @else
-                                        <td>No data!</td>
+                                        <td style="color: gainsboro">No data!</td>
                                     @endif
 
-                                    <td>{{number_format($item->working_hour/3600000, 1)}} h</td>
-                                    <td>{{number_format($item->overtime/3600000, 1)}} h</td>
+                                    {{-- Working_hour data --}}
+                                    @if($item->working_hour > 0)
+                                        <td>{{number_format($item->working_hour/3600000, 1)}} h</td>
+                                    @else
+                                        <td style="color: gainsboro">0 h</td>
+                                    @endif
+
+                                    {{-- overtime data --}}
+                                    @if($item->overtime > 0)
+                                        <td>{{number_format($item->overtime/3600000, 1)}} h</td>
+                                    @else
+                                        <td style="color: gainsboro">0 h</td>
+                                    @endif
+                                    
                                     <td><label class="badge {{$color}}">{{$status}}</label></td>
                                     
                                     {{-- check Leave Status --}}

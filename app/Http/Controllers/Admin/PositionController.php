@@ -48,7 +48,7 @@ class PositionController extends Controller
         return redirect()->route('positions.index');
     }
 
-    //Return giao diện thêm
+    //Return giao diện edit
     public function getEdit(Request $request, $id =0)
     {
         $this->data['title']= 'Edit position';

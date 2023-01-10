@@ -17,7 +17,7 @@ class StaffsController extends Controller
     public function __construct()
     {
         $this->staffs = new Staffs();
-        $this->departments = new Department(); 
+        // $this->departments = new Department(); 
     }
 
     //index
@@ -60,16 +60,13 @@ class StaffsController extends Controller
         $request->validate([
             'id' => 'required|unique:staff',
             'full_name' => 'required',
-            'birthday' => 'required',
-            'phone_number' => 'required',
             'email' => 'required|unique:staff',
-            'begin_time' => 'required',
-            'end_time' => 'required',
-            'official_time' => 'required',
-            'type' => 'required',
         ],[
             'id.required'=>'Mã nhân viên không được bỏ trống!',
-            'id.unique'=>'Mã nhân viên đã tồn tại!'
+            'id.unique'=>'Mã nhân viên đã tồn tại!',
+            'full_name.required' => 'Tên nhân viên không được bỏ trống!',
+            'email.required'=>'Email không được bỏ trống!',
+            'email.unique'=>'Email đã tồn tại!',
         ]);
 
         //Lấy dữ liệu

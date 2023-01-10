@@ -12,7 +12,7 @@
 <div class="card">
 
 <div class="card-body">
-    <h4 class="card-title">Position Table</h4>
+    <h4 class="card-title">User Table</h4>
 
     <!-- Đây là div hiển thị Kết quả (thành công, thất bại) sau khi thực hiện các chức năng Thêm, Sửa, Xóa.
     - Div này chỉ hiển thị khi trong Session có các key `alert-*` từ Controller trả về. 
@@ -28,7 +28,7 @@
 
     <p class="card-description">
 
-      <a href="{{route('positions.add')}}" class="btn btn-info">Add Position</a>
+      <a href="{{route('users.add')}}" class="btn btn-info">Add User</a>
       
     </p>
 
@@ -37,49 +37,58 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Position Name</th>
-            <th>Position Description</th>
+            <th>Staff</th>
+            <th>Role</th>
+            <th>User Name</th>            
+            {{-- <th>Password</th> --}}
+            <th>Status</th>
             <th>Option</th>
           </tr>
         </thead>
 
         <tbody>
           {{-- Hiển thị danh sách nhân viên --}}
-          @if(!empty($positionsList))
+          @if(!empty($usersList))
 
-            @foreach ($positionsList as $key=>$item)
+            @foreach ($usersList as $key=>$item)
 
             <tr>
              
-              {{-- Hiển thị dữ liệu --}}
-              <td>{{$key+1}}</td>
-              <td>{{$item->position_name}}</td>
-              <td>{{$item->position_desc}}</td>
-
-              {{-- Nút option --}}
-              <td>
-                <a href="{{route('positions.edit',['id' => $item->id])}}" class="btn btn-warning btn-sm">Edit</a>
-                <a onclick="return confirm('Are you sure you want to delete?')" 
-                href="{{route('positions.delete',['id' => $item->id])}}" class="btn btn-danger btn-sm">Delete</a>
-              </td>
+                {{-- Hiển thị dữ liệu --}}
+                <td>{{$key+1}}</td>
+                <td>{{$item->staff->full_name}}</td>
+                <td>{{$item->user_role->role_name}}</td>
+                <td>{{$item->user_name}}</td>
+                {{-- <td>{{$item->password}}</td> --}}
+                <td>{!!$item->status == 1 ?  
+                    '<label class="badge badge-success">Enable</label>':
+                    '<label class="badge badge-danger">Disable</label>'!!}
+                  </td>
+                {{-- Nút option --}}
+                <td>
+                    <a href="{{route('users.edit',['id' => $item->id])}}" class="btn btn-warning btn-sm">Edit</a>
+                    <a onclick="return confirm('Are you sure you want to delete?')" 
+                    href="{{route('users.delete',['id' => $item->id])}}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
               
             </tr>
             @endforeach
             @else
             <tr>
-                <td colspan="4">There is no data!</td>
+                <td colspan="6">There is no data!</td>
             </tr>
           @endif
           
           </tbody>
       </table>
     </div>
-    {{ $positionsList->links() }}
+    {{ $usersList->links() }}
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
+
 
 @endsection

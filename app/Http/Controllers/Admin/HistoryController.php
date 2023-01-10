@@ -14,10 +14,8 @@ class HistoryController extends Controller
         date_default_timezone_set('Asia/Ho_Chi_Minh');
     }
     public function index()
-    {   
-        
+    {    
         $this->data['title'] = 'History';
-        
         $this->data['historyList'] = HistoryInout::orderBy('time', 'desc')->simplePaginate(15);
 
         return view('backend.historis.list-history', $this->data);

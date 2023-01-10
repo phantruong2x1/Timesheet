@@ -45,7 +45,7 @@ class Staffs extends Model
     }
 
     public function user(){
-        return $this->hasOne(User::class,'staff_id');
+        return $this->hasOne(User::class);
     }
 
     public function timesheet(){

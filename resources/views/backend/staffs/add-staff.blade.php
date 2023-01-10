@@ -5,7 +5,11 @@
 @endsection
 
 @section('content')
-
+<div class="main-panel">
+<div class="content-wrapper">
+<div class="row">
+<div class="col-md-12 grid-margin stretch-card">
+<div class="card">
 <div class="card-body">
     {{-- Thông báo lỗi tổng quát--}}
     @if ($errors->any())
@@ -40,6 +44,12 @@
             <label class="col-sm-3 col-form-label">Full Name</label>
             <div class="col-sm-9">
               <input type="text" class="form-control" name="full_name" value="{{old('full_name')}}"/>
+
+              {{-- Thông báo lỗi --}}
+              @error('full_name')
+              <span style="color: red">{{$message}}</span>
+              @enderror
+
             </div>
           </div>
         </div>
@@ -246,5 +256,10 @@
       </div>
     </form>
   </div>
+</div>
+</div>
+</div>
+</div>
+</div>
 @endsection
 

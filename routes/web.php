@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\StaffsController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\PositionController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
 
@@ -34,9 +35,7 @@ Route::get('setLocale/{locale}', function ($locale) {
 
 
 Route::middleware('auth')->group(function(){
-
     Route::middleware('checkstatus')->group(function(){
-
         Route::middleware('admin')->prefix('admin')->group(function(){
 
             //Dashboard admin
@@ -88,6 +87,21 @@ Route::middleware('auth')->group(function(){
                 Route::post('/update',[PositionController::class,'postEdit'])->name('post-edit');
                 
                 Route::get('/delete/{id}',[PositionController::class,'delete'])->name('delete');
+            });
+
+            //User
+            Route::prefix('user')->name('users.')->group(function(){
+                Route::get('/',[UserController::class,'index'])->name('index');
+
+                Route::get('/add',[UserController::class,'getAdd'])->name('add');
+
+                Route::post('/add',[UserController::class,'postAdd'])->name('post-add');
+
+                Route::get('/edit/{id}',[UserController::class,'getEdit'])->name('edit');
+
+                Route::post('/update',[UserController::class,'postEdit'])->name('post-edit');
+                
+                Route::get('/delete/{id}',[UserController::class,'delete'])->name('delete');
             });
 
         });

@@ -65,9 +65,9 @@ class LoginController extends Controller
             return redirect()->route('client-dashboard');
         }
         //Nếu tài khoản có role_name là host
-        else if($role =='host'){
-            return redirect()->route('client-dashboard');
-        }
+        // else if($role =='host'){
+        //     return redirect()->route('client-dashboard');
+        // }
         
     }
     public function logout()

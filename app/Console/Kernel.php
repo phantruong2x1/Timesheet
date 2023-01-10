@@ -7,6 +7,9 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        'App\Console\Commands\GetCurl',
+    ];
     /**
      * Define the application's command schedule.
      *
@@ -16,6 +19,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        // $schedule->command('GetCurl:get')->everyMinute();
+        $schedule->command('GetCurl:get')->hourly()
+                                         ->timezone('Asia/Ho_Chi_Minh')
+                                         ->between('8:00','21:00');
     }
 
     /**
