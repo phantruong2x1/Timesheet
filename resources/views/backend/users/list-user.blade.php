@@ -56,8 +56,8 @@
              
                 {{-- Hiển thị dữ liệu --}}
                 <td>{{$key+1}}</td>
-                <td>{{$item->staff->full_name}}</td>
-                <td>{{$item->user_role->role_name}}</td>
+                <td>@if(!empty($item->staff->full_name)){{$item->staff->full_name}}@endif</td>
+                <td>@if(!empty($item->user_role->role_name)){{$item->user_role->role_name}}@endif</td>
                 <td>{{$item->user_name}}</td>
                 {{-- <td>{{$item->password}}</td> --}}
                 <td>{!!$item->status == 1 ?  

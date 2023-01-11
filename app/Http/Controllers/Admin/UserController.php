@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         $this->data['title'] = 'List of users';
         $this->data['usersList'] = User::orderBy('created_at','desc')->simplePaginate(14);
-        $this->data['staffsList'] = Staffs::all();       
+            
         return view('backend.users.list-user', $this->data);
     }
 

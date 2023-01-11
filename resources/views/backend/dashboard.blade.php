@@ -4,7 +4,13 @@
 @section('content')
 <div class="main-panel">
 <div class="content-wrapper">
-    <h3 class="font-weight-bold">{{__('sunshine.welcome')}} {{$userDetail->staff->full_name}}</h3>
+    <h3 class="font-weight-bold">{{__('sunshine.welcome')}} 
+        @if(!empty($userDetail->staff->full_name))
+            {{$userDetail->staff->full_name}}
+        @else
+            {{$userDetail->user_name}}
+        @endif
+    </h3>
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">

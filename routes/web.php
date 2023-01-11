@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function(){
             Route::get('/dashboard',[Admin\AdminController::class, 'index'])->name('admin-dashboard');
 
             //History
-            Route::get('/history',[Admin\HistoryController::class, 'index'])->name('history.index');
+            Route::get('/history',[Admin\HistoryController::class, 'index'])->name('historis.index');
             
             //Staff
             Route::prefix('/staff')->name('staff.')->group(function(){
@@ -103,6 +103,9 @@ Route::middleware('auth')->group(function(){
                 
                 Route::get('/delete/{id}',[UserController::class,'delete'])->name('delete');
             });
+
+            //Get data timesheet
+            Route::get('/get-time',[Admin\TimesheetController::class, 'getDataTimesheet'])->name('timesheets.get-time');
 
         });
 

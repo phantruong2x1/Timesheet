@@ -11,7 +11,7 @@
 
       {{-- History --}}
       <li class="nav-item">
-        <a class="nav-link" href="{{route('history.index')}}">
+        <a class="nav-link" href="{{route('historis.index')}}">
           <i class="icon-columns menu-icon"></i>
           <span class="menu-title">History</span>
         </a>
@@ -84,6 +84,14 @@
         <a class="nav-link" href="{{route('staff.index')}}">
           <i class="icon-paper menu-icon"></i>
           <span class="menu-title">{{__('sunshine.Staff')}}</span>
+        </a>
+      </li>
+
+      {{-- Get Time --}}
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('timesheets.get-time')}}">
+          <i class=" menu-icon"></i>
+          <span class="menu-title">-----</span>
         </a>
       </li>
 
