@@ -25,4 +25,7 @@ class Timesheet extends Model
     public function staff(){
         return $this->belongsTo(Staffs::class);
     }
+    public function requestDetail(){
+        return $this->belongsTo(RequestDetail::class);
+    }
 }

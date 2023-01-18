@@ -16,6 +16,15 @@
             <div class="card">
                 <div class="card-body">
                     <p class="card-title mb-0">Time Sheet</p>
+
+                    <div class="flash-message">
+                        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                          @if(Session::has('alert-' . $msg))
+                            <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+                          @endif
+                        @endforeach
+                    </div>
+
                     <br>
                     {{-- Lọc  --}}
                     <form action="" method="get">
@@ -29,15 +38,19 @@
                     
                                     <option value="{{$item->id}}" 
                                         {{request()->staff_id==$item->id ? 'selected':false}}>
-                                        {{$item->full_name}}</option>
+                                        {{$item->full_name}}
+                                    </option>
                     
                                     @endforeach
                                 @endif
                                 </select>
                             </div>
                             <div class="col-2">
-                                <button type="submit" class="btn btn-outline-primary">Tìm kiếm</button>
-                              </div>
+                                <button type="submit" id="btn-submit" class="btn btn-outline-primary">Tìm kiếm</button>
+                            </div>
+                            <div class=" col-6 d-flex justify-content-end">
+                                <a href="{{route('timesheets.create')}}" class="btn btn-info">Add User</a>
+                            </div>
                         </div>
                     </form>
                     {{-- Table Timesheet --}}
@@ -54,6 +67,7 @@
                                     <th>Overtiming</th>
                                     <th>Status</th>
                                     <th>Leave Status</th>
+                                    <th>Option</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,6 +76,7 @@
                                 @php
                                     //check null
                                     if(!empty($item->first_checkin) || !empty($item->last_checkout)){
+                                        $item->leave_status = "Pending";
                                         $status = "Pending";
                                         $color  = 'badge-success';
                                         
@@ -138,6 +153,11 @@
                                         @endif
                                     @endif
                                     </td> 
+                                    {{-- Nút option --}}
+                                    <td>
+                                        <a href="{{route('timesheets.edit',['id' => $item->id])}}" class="btn btn-warning btn-sm">Edit</a>
+                                        <a onclick="return confirm('Are you sure you want to delete?')" href="{{route('timesheets.destroy',['id' => $item->id])}}" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
                                 </tr>
                                 @endforeach
                                 @else
@@ -156,7 +176,6 @@
 </div>
     
 </div>
-
 @endsection
 
 

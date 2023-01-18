@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         $this->data['title'] = 'List of users';
-        $this->data['usersList'] = User::orderBy('created_at','desc')->simplePaginate(14);
+        $this->data['usersList'] = User::orderBy('created_at','desc')->paginate(14);
             
         return view('backend.users.list-user', $this->data);
     }
@@ -31,9 +31,13 @@ class UserController extends Controller
         $this->data['title'] = 'Add user';
         $this->data['rolesList'] = UserRole::all();
 
-        // Get Staff in Staff table, Not in User table
-        $checkid = User::pluck('staff_id')->toArray();
-        $this->data['staffsList'] = Staffs::whereNotIn('id',$checkid)->get();
+        // Lấy Staff chưa có tài khoản
+        $checkid = User::where('role_id',1)->pluck('staff_id')->toArray();  
+
+            $this->data['staffsList'] = Staffs::whereNotIn('id',$checkid)->get();
+
+        // dd( $this->data['staffsList'] );
+        // dd($checkid);
         
         return view('backend.users.add-user',$this->data);
     }
@@ -108,10 +112,11 @@ class UserController extends Controller
 
         //Validate dữ liệu
         $request->validate([
-            'user_name' => 'required',
+            'user_name' => 'required|unique:users,user_name,'.$id,
             'password' => 'required',
         ],[
             'user_name.required'=>'User Name không được bỏ trống!',
+            'user_name.unique'=>'User Name không được trùng nhau!',
             'password.required'=>'Password không được bỏ trống!',
         ]);
 

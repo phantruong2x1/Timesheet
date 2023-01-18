@@ -10,14 +10,14 @@
 <div class="col-md-12 grid-margin stretch-card">
 <div class="card">
 <div class="card-body">
-    <h4 class="card-title">Add User</h4>
+    <h4 class="card-title">Add Timesheet</h4>
 
     {{-- Thông báo lỗi tổng quát--}}
     @if ($errors->any())
     <div class="alert alert-danger">Dữ liệu nhập không hợp lệ!</div>
     @endif
 
-    <form class="forms-sample" action="{{route('users.post-add')}}" method="post">
+    <form class="forms-sample" action="{{route('timesheets.store')}}" method="post">
     @csrf     
         {{-- staff_id --}}
         <div class="form-group row">
@@ -33,63 +33,64 @@
             </div>
         </div>
 
-        {{-- role_id --}}
+        {{-- date --}}
         <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Role Name</label>
+            <label for="exampleInputUsername1" class="col-sm-3 col-form-label">Date</label>
             <div class="col-sm-9">
-            <select class="form-control" name="role_id" value="{{old('role_id')}}">
+            <input type="date" class="form-control"  id="exampleInputUsername1" 
+            name="date"  value="{{old('date')}}">
 
-                @foreach($rolesList as $item)
-                <option value="{{$item->id}}">{{$item->role_name}}</option>
-                @endforeach
-
-            </select>
-            </div>
-        </div>
-
-        {{-- user_name --}}
-        <div class="form-group row">
-            <label for="exampleInputUsername2" class="col-sm-3 col-form-label">User Name</label>
-            <div class="col-sm-9">
-            <input type="text" class="form-control"  id="exampleInputUsername2" 
-            name="user_name"  value="{{old('user_name')}}">
-
-            {{-- Thông báo lỗi --}}
-            @error('user_name')
+            {{-- Thông báo lỗi --}} 
+            @error('date')
             <span style="color: red">{{$message}}</span>
             @enderror
 
             </div>
         </div>
 
-        {{-- password --}}
+        {{-- first checkin --}}
         <div class="form-group row">
-            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Password</label>
+            <label for="exampleInputUsername2" class="col-sm-3 col-form-label">First Checkin</label>
             <div class="col-sm-9">
-            <input type="password" class="form-control" id="exampleInputEmail2" 
-            name="password" value="{{old('password')}}">
+            <input type="time" class="form-control"  id="exampleInputUsername2" 
+            name="first_checkin"  value="{{old('first_checkin')}}">
 
             {{-- Thông báo lỗi --}}
-            @error('password')
+            @error('first_checkin')
+            <span style="color: red">{{$message}}</span>
+            @enderror
+
+            </div>
+        </div>
+
+        {{-- last checkout --}}
+        <div class="form-group row">
+            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Last Checkout</label>
+            <div class="col-sm-9">
+            <input type="time" class="form-control" id="exampleInputEmail2" 
+            name="last_checkout" value="{{old('last_checkout')}}">
+
+            {{-- Thông báo lỗi --}}
+            @error('last_checkout')
             <span style="color: red">{{$message}}</span>
             @enderror
 
             </div>
         </div>
         
-        {{-- status --}}
+        {{-- leave_status --}}
         <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Status</label>
+            <label class="col-sm-3 col-form-label">Leave Status</label>
             <div class="col-sm-9">
-              <select class="form-control" name="status" >
-                <option value="1">Enable</option>
-                <option value="0">Disable</option>
+              <select class="form-control" name="leave_status" >
+                <option value="">None</option>
+                <option value="1">OK</option>
               </select>
             </div>
         </div>
 
         <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">Submit</button>
-        <a href="{{route('users.index')}}" class="btn btn-secondary">Cancel</a>
+        <a href="{{route('admin-dashboard')}}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>   
 </div>   

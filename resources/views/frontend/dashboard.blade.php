@@ -86,7 +86,10 @@
               <div class="card card-light-blue">
                 <div class="card-body">
                   <p class="mb-4">Option</p>
-                    {{-- <button class="btn btn-warning btn-sm">Forget</button> --}}
+                    {{-- <a href="{{route('option-forget')}}" class="btn btn-warning mb-2">Forget</a> --}}
+                    <a href="{{route('option-please-be-late')}}" class="btn btn-light mb-2">Please Be Late</a>
+                    <a href="{{route('option-please-come-back-soon')}}" class="btn btn-light mb-2">Please Come Back Soon</a>
+                    <a href="{{route('option-take-a-break')}}" class="btn btn-danger mb-2">Take a Break</a>
                 </div>
               </div>
             </div>
@@ -96,7 +99,7 @@
                   <p class="mb-4">Work Time</p>
                   <p class="fs-30 mb-2">
                   @if(!empty($userTimesheet->working_hour))
-                    <p class="fs-30 mb-2">{{date('H:i:s',$userTimesheet->working_hour/1000)}} (h)</p>
+                    <p class="fs-30 mb-2">{{number_format($userTimesheet->working_hour/3600000,1)}} (h)</p>
                   @else
                     <p class="fs-30 mb-2">0(h)</p>
                   @endif</p>
@@ -107,18 +110,26 @@
           </div>
         </div>
       </div> 
-      {{-- User List Timesheet  --}}
+      {{-- User List History Timesheet  --}}
       <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <p class="card-title mb-0">History Time Sheet</p>
+                    {{-- Thông báo --}}
+                    <div class="flash-message">
+                      @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                        @if(Session::has('alert-' . $msg))
+                          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+                        @endif
+                      @endforeach
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Full Name</th>
                                     <th>Date</th>
                                     <th>First Check-In</th>
                                     <th>Last Check-Out</th>
@@ -159,14 +170,12 @@
                                                 $status = 'On Time';
                                                 $color  = 'badge-success';
                                             }
-                                            
                                         }
                                     }
                                 @endphp
                                 <tr>
                                     {{-- Hiển thị dữ liệu --}}
                                     <td>{{$key+1}}</td>
-                                    <td>{{$item->staff_id}}</td>
                                     <td>{{date('d-m-Y',$item->date/1000)}}</td>
                                     <td>{{date('H:i:s',$item->first_checkin/1000)}}</td>
                                     
@@ -174,7 +183,11 @@
                                     @if(!empty($item->last_checkout))
                                         <td>{{date('H:i:s',$item->last_checkout/1000)}}</td>
                                     @else
-                                        <td style="color: gainsboro">No data!</td>
+                                        @if(date('d-m-Y',$item->date/1000) == date('d-m-Y'))
+                                          <td style="color: gainsboro">No data!</td>
+                                        @else
+                                          <td><a class="" href="{{route('option-forget',['id' => $item->id])}}">Insert</a></td>
+                                        @endif
                                     @endif
 
                                     {{-- Working_hour data --}}
@@ -215,6 +228,7 @@
                             </tbody>
                         </table>
                     </div>
+                    {{$userListTimesheet->links()}}
                 </div>
             </div>
         </div>

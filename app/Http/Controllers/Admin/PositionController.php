@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Position;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class PositionController extends Controller
@@ -17,7 +16,7 @@ class PositionController extends Controller
     {
         $this->data['title']= 'List of position';
 
-        $this->data['positionsList'] = Position::simplePaginate(10);
+        $this->data['positionsList'] = Position::paginate(10);
         // $users = User::where('votes', '>', 100)->paginate(15);
         // $users = DB::table('users')->simplePaginate(15);
         // $users = User::paginate(15);

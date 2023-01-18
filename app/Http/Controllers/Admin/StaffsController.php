@@ -37,7 +37,7 @@ class StaffsController extends Controller
             $filter[] = ['status','=',$request->status];
         }
 
-        $this->data['staffsList']=Staffs::where($filter)->get();
+        $this->data['staffsList']=Staffs::where($filter)->paginate(15);
 
         return view('backend.staffs.list-staff',$this->data);
     }
@@ -133,18 +133,15 @@ class StaffsController extends Controller
 
         //Validate dữ liệu
         $request->validate([
-            'id' => 'required',
+            'id' => 'required|unique:staff,id,'.$id,
             'full_name' => 'required',
-            'birthday' => 'required',
-            'phone_number' => 'required',
-            'email' => 'required',
-            'begin_time' => 'required',
-            'end_time' => 'required',
-            'official_time' => 'required',
-            'type' => 'required',
+            'email' => 'required|unique:staff,email,'.$id,
         ],[
             'id.required'=>'Mã nhân viên không được bỏ trống!',
+            'id.unique'=>'Mã nhân viên đã tồn tại!',
+            'full_name.required' => 'Tên nhân viên không được bỏ trống!',
             'email.required'=>'Email không được bỏ trống!',
+            'email.unique'=>'Email đã tồn tại!',    
         ]);
 
         //Lấy dữ liệu

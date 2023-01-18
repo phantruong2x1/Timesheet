@@ -4,18 +4,304 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Timesheet;
+use App\Models\HistoryInout;
+use App\Models\Staffs;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+
 
 class TimesheetController extends Controller
 {
     public $data = [];
+    public function __construct()
+    {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        # code...
+        return view('backend.dashboard');
     }
 
     public function getDataTimesheet()
-    {
+    {  
         $this->data['title'] = 'Get data timesheet';
         return view('backend.others.get-data-timesheet',$this->data);
     }
+
+    public function postDataTimesheet(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'start_date' => 'required',
+        ]);
+        if($validator->passes()){
+
+        DB::table('history_inouts')->delete();
+        DB::table('timesheets')->delete();
+  
+        $curl = curl_init();
+        //điều kiện lấy dữ liệu
+        $dateNow        = time()*1000;
+        $clientId       = '431201014e0544ebb8122bdaa68fd534';
+        $accessToken    = '3429d1f497d1d793083304f054bb0472';
+        $lockId         = '4910283';
+        $pageNo         = '1';
+        $pageSize       = '100000';
+        $startDate      = $request->start_date;  
+        $endDate        = '';
+        //(time()-3600)*1000
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL             => 'https://api.sciener.com/v3/lockRecord/list?clientId='.$clientId.
+        '&accessToken='.$accessToken.'&lockId='.$lockId.'&pageNo='.$pageNo.'&pageSize='.$pageSize.
+        '&date='.$dateNow.'&startDate='.$startDate.'&endDate='.$endDate.'',
+        CURLOPT_RETURNTRANSFER  => true,
+        CURLOPT_ENCODING        => '',
+        CURLOPT_MAXREDIRS       => 10,
+        CURLOPT_TIMEOUT         => 0,
+        CURLOPT_FOLLOWLOCATION  => true,
+        CURLOPT_HTTP_VERSION    => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST   => 'GET',
+        ));
+        $response = curl_exec($curl);
+
+        //return json
+        $list = json_decode($response);
+        //var_dump($list);
+        curl_close($curl);
+        
+        //add timesheet
+        for ($i = count($list->list) - 1; $i >= 0; $i--) {
+           
+                //Insert data in table history_inouts
+                $historyInouts = new HistoryInout();
+                $historyInouts->record_id   = $list->list[$i]->recordId;
+                $historyInouts->time        = $list->list[$i]->lockDate;
+                $historyInouts->staff_id    = $list->list[$i]->username;
+                $historyInouts->record_type = $list->list[$i]->recordType;
+                $historyInouts->save();
+                
+                //Ktra recordType = 8
+                if($list->list[$i]->recordType == 8){
+
+                    //Lấy bản ghi mới nhất theo staff_id
+                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->orderBy('date', 'DESC')->first();
+
+                    //Nếu Staff_id = null thì tạo mới
+                    if(empty($timesheetDetail)){
+                        $timeSheets = new Timesheet();
+                        $timeSheets->record_id      = $list->list[$i]->recordId;
+                        $timeSheets->date           = $list->list[$i]->lockDate;
+                        $timeSheets->first_checkin  = $list->list[$i]->lockDate;
+                        $timeSheets->staff_id       = $list->list[$i]->username;
+                        if(date("H:i:s",$list->list[$i]->lockDate/1000) > '08:30:00')
+                            $timeSheets->status   = 'Late checkin';                   
+                        $timeSheets->save();
+                    }
+                    //Tạo mới bản ghi theo ngày
+                    else if((date('d-m-Y',($timesheetDetail->date)/1000) != date('d-m-Y',($list->list[$i]->lockDate)/1000))){
+                        $timeSheets = new Timesheet();
+                        $timeSheets->record_id      = $list->list[$i]->recordId;
+                        $timeSheets->date           = $list->list[$i]->lockDate;
+                        $timeSheets->first_checkin  = $list->list[$i]->lockDate;
+                        $timeSheets->staff_id       = $list->list[$i]->username;
+                        if(date('H:i:s',$list->list[$i]->lockDate/1000) > '08:30:00')
+                            $timeSheets->status   = 'Late checkin';
+                        $timeSheets->save();
+                    }
+                    //Update data for 2nd checkin
+                    else{
+                        $timesheetDetail->last_checkout  = $list->list[$i]->lockDate;
+
+                        if(date("H:i:s",$list->list[$i]->lockDate/1000) >= '12:00:00')
+                            $timesheetDetail->working_hour   = ($timesheetDetail->last_checkout -$timesheetDetail->first_checkin)-(60*60*1000);
+                        else
+                            $timesheetDetail->working_hour   = ($timesheetDetail->last_checkout -$timesheetDetail->first_checkin);
+
+                        if($timesheetDetail->working_hour > (8*60*60*1000)){
+                            $timesheetDetail->overtime       = $timesheetDetail->working_hour - (8*60*60*1000);
+                        }
+                        else{
+                            $timesheetDetail->overtime = 0;
+                        }
+                        //check late checkin && early checkout
+                        if( date('H:i:s',$timesheetDetail->first_checkin/1000) > '08:30:00' && 
+                        date('H:i:s',$timesheetDetail->last_checkout/1000) <= '17:30:00' ){
+                            $timesheetDetail->status = 'Late checkin/Early checkout';
+                        }
+                        //check early checkout
+                        else if(date('H:i:s',$timesheetDetail->last_checkout/1000) < '17:30:00'){
+                            $timesheetDetail->status = 'Early checkout';
+                        }
+                        else if(date('H:i:s',$timesheetDetail->first_checkin/1000) <= '08:30:00'){
+                            $timesheetDetail->status = 'On Time';
+                        } 
+                        $timesheetDetail->save();
+                    }
+                }          
+            }         
+            return response()->json(['success' => 'Added new records!']);
+        }
+        return response()->json(['errors' => $validator->errors()]);
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $this->data['title'] = 'Add timesheet';
+        $this->data['staffsList'] = Staffs::all();
+        return view('backend.timesheets.add-timesheet',$this->data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'staff_id' => 'required',
+            'date'=>'required',
+            'first_checkin' => 'required',
+            'last_checkout' => 'required',
+        ]);
+        $timesheet = new Timesheet;
+        $timesheet->staff_id = $request->staff_id;
+        $timesheet->date = strtotime($request->date)*1000;
+        $timesheet->first_checkin = strtotime($request->first_checkin)*1000;
+        $timesheet->last_checkout = strtotime($request->last_checkout)*1000;
+        $timesheet->working_hour = $this->getWorkingHour($timesheet->first_checkin, $timesheet->last_checkout);
+        $timesheet->overtime = $this->getOverTime($timesheet->working_hour);
+        $timesheet->status = $this->getStatus($timesheet->first_checkin, $timesheet->last_checkout);
+        $timesheet->leave_status = $request->leave_status;
+       
+        $timesheet->save();
+        
+         // Hiển thị câu thông báo 1 lần (Flash session)
+        Session::flash('alert-info', 'Thêm thành công ^^~!!!');
+
+        return redirect()->route('admin-dashboard');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $this->data['title'] = 'Edit timesheet';
+        $this->data['staffsList'] = Staffs::all();
+        $this->data['timesheetDetail'] = Timesheet::find($id);
+        // dd(date('d/m/Y',$this->data['timesheetDetail']->date/1000));
+        return view('backend.timesheets.edit-timesheet',$this->data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'staff_id' => 'required',
+            'date'=>'required',
+            'first_checkin' => 'required',
+            'last_checkout' => 'required',
+        ]);
+
+        $timesheet = Timesheet::find($id);
+        $timesheet->staff_id = $request->staff_id;
+        $timesheet->date = strtotime($request->date)*1000;
+        $timesheet->first_checkin = strtotime($request->first_checkin)*1000;
+        $timesheet->last_checkout = strtotime($request->last_checkout)*1000;
+        $timesheet->working_hour = $this->getWorkingHour($timesheet->first_checkin, $timesheet->last_checkout);
+        $timesheet->overtime = $this->getOverTime($timesheet->working_hour);
+        $timesheet->status = $this->getStatus($timesheet->first_checkin, $timesheet->last_checkout);
+        $timesheet->leave_status = $request->leave_status;
+       
+        $timesheet->save();
+        
+         // Hiển thị câu thông báo 1 lần (Flash session)
+        Session::flash('alert-info', 'Sửa thành công!');
+
+        return redirect()->route('admin-dashboard');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $timesheetDetail= Timesheet::find($id);
+        $timesheetDetail->delete();
+        Session::flash('alert-info', 'Xóa thành công!');
+        return redirect()->route('admin-dashboard');
+    }
+
+    //Lấy thời gian làm việc
+    public function getWorkingHour($first_checkin,$last_checkout)
+    {
+        if(date('H:i:s',$last_checkout/1000) >= '12:00:00')
+            return ($last_checkout -$first_checkin)-(60*60*1000);
+        else
+            return ($last_checkout -$first_checkin); 
+    }
+    //Lấy thời gian tăng ca
+    public function getOverTime($working_hour)
+    {
+        if($working_hour > (8*60*60*1000)){
+            return $working_hour - (8*60*60*1000);
+        }
+        else{
+            return 0;
+        }
+    }
+    //Lấy trạng thái làm việc 
+    public function getStatus($first_checkin, $last_checkout)
+    {
+        if(date('H:i:s',$first_checkin) > '08:30:00')
+            return 'Late checkin';
+
+        if( date('H:i:s',$first_checkin/1000) > '08:30:00' && 
+        date('H:i:s',$last_checkout/1000) <= '17:30:00' ){
+            return 'Late checkin/Early checkout';
+        }
+        //check early checkout
+        else if(date('H:i:s',$last_checkout/1000) < '17:30:00'){
+            return 'Early checkout';
+        }
+        else if(date('H:i:s',$first_checkin/1000) <= '08:30:00'){
+            return 'On Time';
+        } 
+}
 }

@@ -26,7 +26,7 @@ class ClientController extends Controller
 
         //Lấy toàn bộ dữ liệu timesheet của Auth::user
         $this->data['userListTimesheet'] =  Timesheet::where('staff_id',Auth::user()->staff_id)
-                                        ->orderBy('date','desc')->take(10)->get();
+                                        ->orderBy('date','desc')->paginate(10);
         $this->data['dt'] = date('d-m-Y');
         return view('frontend.dashboard', $this->data);
     }

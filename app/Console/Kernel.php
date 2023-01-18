@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('GetCurl:get')->everyMinute();
         $schedule->command('GetCurl:get')->hourly()
                                          ->timezone('Asia/Ho_Chi_Minh')
-                                         ->between('8:00','21:00');
+                                         ->between('08:00','21:00');
         
     }
 

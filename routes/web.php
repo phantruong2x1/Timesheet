@@ -5,11 +5,16 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin;
+use App\Console\Commands;
 use App\Http\Controllers\Admin\StaffsController;
+use App\Http\Controllers\Admin\TimesheetController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\PositionController;
+use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\Admin\UserController;
+use App\Models\Timesheet;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
 
@@ -104,8 +109,40 @@ Route::middleware('auth')->group(function(){
                 Route::get('/delete/{id}',[UserController::class,'delete'])->name('delete');
             });
 
-            //Get data timesheet
+            //Get and post data timesheet
             Route::get('/get-time',[Admin\TimesheetController::class, 'getDataTimesheet'])->name('timesheets.get-time');
+            // Route::post('/get-timesheet',[Commands\GetCurl::class, 'handle'])->name('timesheets.post-time');
+            Route::post('/get-time',[Admin\TimesheetController::class, 'postDataTimesheet'])->name('timesheets.post-time');
+
+            //Statistical
+            Route::prefix('statistical')->name('statisticals.')->group(function(){
+                Route::get('/',[StatisticalController::class,'index'])->name('index');
+
+                Route::get('/add',[StatisticalController::class,'getAdd'])->name('add');
+
+                Route::post('/add',[StatisticalController::class,'postAdd'])->name('post-add');
+
+                Route::get('/edit/{id}',[StatisticalController::class,'getEdit'])->name('edit');
+
+                Route::post('/update',[StatisticalController::class,'postEdit'])->name('post-edit');
+                
+                Route::get('/delete/{id}',[StatisticalController::class,'delete'])->name('delete');
+            });
+
+            //Timesheet
+            Route::prefix('timesheet')->name('timesheets.')->group(function(){
+                Route::get('/',[TimesheetController::class,'index'])->name('index');
+
+                Route::get('/create',[TimesheetController::class,'create'])->name('create');
+
+                Route::post('/store',[TimesheetController::class,'store'])->name('store');
+
+                Route::get('/edit/{id}',[TimesheetController::class,'edit'])->name('edit');
+
+                Route::post('/update/{id}',[TimesheetController::class,'update'])->name('update');
+                
+                Route::get('/destroy/{id}',[TimesheetController::class,'destroy'])->name('destroy');
+            });
 
         });
 
@@ -113,6 +150,16 @@ Route::middleware('auth')->group(function(){
 
             //Dashboard client
             Route::get('/dashboard',[Client\ClientController::class, 'index'])->name('client-dashboard');
+
+            //option
+            Route::get('/forget/{id}', [Client\RequestDetailController::class, 'forget'])->name('option-forget');
+            Route::post('/postForget/{id}', [Client\RequestDetailController::class, 'postForget'])->name('option-post-forget');
+
+            Route::get('/please-be-late', [Client\RequestDetailController::class, 'beLate'])->name('option-please-be-late');
+
+            Route::get('/plese-come-back-soon', [Client\RequestDetailController::class, 'comeBackSoon'])->name('option-please-come-back-soon');
+
+            Route::get('/take-a-break', [Client\RequestDetailController::class, 'takeABreak'])->name('option-take-a-break');
             
         });
     });

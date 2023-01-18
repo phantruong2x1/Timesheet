@@ -9,6 +9,14 @@
         </a>
       </li>
 
+      {{-- Statistical --}}
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('statisticals.index')}}">
+          <i class="icon-bar-graph menu-icon"></i>
+          <span class="menu-title">Statistical</span>
+        </a>
+      </li>
+
       {{-- History --}}
       <li class="nav-item">
         <a class="nav-link" href="{{route('historis.index')}}">

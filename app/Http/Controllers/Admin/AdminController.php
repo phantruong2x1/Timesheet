@@ -28,8 +28,7 @@ class AdminController extends Controller
         if(!empty($request->staff_id)){
             $filter[] = ['staff_id','=',$request->staff_id];
         }
-        $this->data['timesheetsList']=Timesheet::where($filter)->orderBy('date','desc')->simplePaginate(14);
-
+        $this->data['timesheetsList'] = Timesheet::where($filter)->orderBy('date','desc')->paginate(14);
         return view('backend.dashboard', $this->data);
     }   
 }

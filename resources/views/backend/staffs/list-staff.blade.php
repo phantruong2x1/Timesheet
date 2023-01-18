@@ -78,7 +78,6 @@
           @if(!empty($staffsList))
 
             @foreach ($staffsList as $key=>$item)
-
             <tr>
 
               {{-- Hiển thị dữ liệu --}}
