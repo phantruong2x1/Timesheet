@@ -1,6 +1,16 @@
 @extends('backend.layouts.master')
 @section('title', 'Dashboard')
 
+@php
+$currentMonth = strtotime(date('Y-m-15'));
+if(empty(request()->date_filter))
+    $dateFilter = date('Y-m-d');
+else {
+    $dateFilter = request()->date_filter;
+}
+$key = 1;
+@endphp
+
 @section('content')
 <div class="main-panel">
 <div class="content-wrapper">
@@ -29,6 +39,10 @@
                     {{-- Lọc  --}}
                     <form action="" method="get">
                         <div class="row">
+                            {{-- Lọc theo ngày --}}
+                            <div class="col-2">
+                                <input type="date" name="date_filter" class="form-control" value="{{$dateFilter}}">
+                            </div>
                             {{-- Lọc theo Staff Name --}}
                             <div class="col-3">
                                 <select class="form-control" name="staff_id">
@@ -36,8 +50,8 @@
                                 @if(!empty($staffsList))
                                     @foreach($staffsList as $item)
                     
-                                    <option value="{{$item->id}}" 
-                                        {{request()->staff_id==$item->id ? 'selected':false}}>
+                                    <option value="{{$item['id']}}" 
+                                        {{request()->staff_id==$item['id'] ? 'selected':false}}>
                                         {{$item->full_name}}
                                     </option>
                     
@@ -48,7 +62,7 @@
                             <div class="col-2">
                                 <button type="submit" id="btn-submit" class="btn btn-outline-primary">Tìm kiếm</button>
                             </div>
-                            <div class=" col-6 d-flex justify-content-end">
+                            <div class=" col-5 d-flex justify-content-end">
                                 <a href="{{route('timesheets.create')}}" class="btn btn-info">Add User</a>
                             </div>
                         </div>
@@ -72,33 +86,33 @@
                             </thead>
                             <tbody>
                                 @if(!empty($timesheetsList))
-                                @foreach ($timesheetsList as $key=>$item)
+                                @foreach ($timesheetsList as $item)
                                 @php
                                     //check null
-                                    if(!empty($item->first_checkin) || !empty($item->last_checkout)){
-                                        $item->leave_status = "Pending";
+                                    if(!empty($item['first_checkin']) || !empty($item['last_checkout'])){
+                                        $item['leave_status'] = "Pending";
                                         $status = "Pending";
                                         $color  = 'badge-success';
                                         
                                         //check late arrival
-                                            if(date('H:i:s',$item->first_checkin/1000) > '08:30:00'){
+                                            if(date('H:i:s',$item['first_checkin']/1000) > '08:30:00'){
                                                 $status = 'Late checkin';
                                                 $color  = 'badge-warning';
                                             }
                                         //check null
-                                        if(!empty($item->last_checkout)){
+                                        if(!empty($item['last_checkout'])){
                                             //check late checkin && early checkout
-                                            if( date('H:i:s',$item->first_checkin/1000) > '08:30:00' && 
-                                                date('H:i:s',$item->last_checkout/1000) <= '17:30:00' ){
+                                            if( date('H:i:s',$item['first_checkin']/1000) > '08:30:00' && 
+                                                date('H:i:s',$item['last_checkout']/1000) <= '17:30:00' ){
                                                 $status = 'Late checkin/Early checkout';
                                                 $color  = 'badge-warning';
                                             }
                                             //check early checkout
-                                            else if(date('H:i:s',$item->last_checkout/1000) < '17:30:00'){
+                                            else if(date('H:i:s',$item['last_checkout']/1000) < '17:30:00'){
                                                 $status = 'Early checkout';
                                                 $color  = 'badge-warning';
                                             }
-                                            else if(date('H:i:s',$item->first_checkin/1000) <= '08:30:00'){
+                                            else if(date('H:i:s',$item['first_checkin']/1000) <= '08:30:00'){
                                                 $status = 'On Time';
                                                 $color  = 'badge-success';
                                             }
@@ -108,33 +122,33 @@
                                 @endphp
                                 <tr>
                                     {{-- Hiển thị dữ liệu --}}
-                                    <td>{{$key+1}}</td>
-                                    @if(empty($item->staff->full_name))
-                                        <td>{{$item->staff_id}}</td>
+                                    <td>{{$key++}}</td>
+                                    @if(empty($item['full_name']))
+                                        <td>{{$item['staff_id']}}</td>
                                     @else
-                                        <td>{{$item->staff->full_name}}</td>
+                                        <td>{{$item['full_name']}}</td>
                                     @endif
 
-                                    <td>{{date('d-m-Y',$item->date/1000)}}</td>
-                                    <td>{{date('H:i:s',$item->first_checkin/1000)}}</td>
+                                    <td>{{date('d-m-Y',$item['date']/1000)}}</td>
+                                    <td>{{date('H:i:s',$item['first_checkin']/1000)}}</td>
                                     
                                     {{-- last_checkout data --}}
-                                    @if(!empty($item->last_checkout))
-                                        <td>{{date('H:i:s',$item->last_checkout/1000)}}</td>
+                                    @if(!empty($item['last_checkout']))
+                                        <td>{{date('H:i:s',$item['last_checkout']/1000)}}</td>
                                     @else
                                         <td style="color: gainsboro">No data!</td>
                                     @endif
 
                                     {{-- Working_hour data --}}
-                                    @if($item->working_hour > 0)
-                                        <td>{{number_format($item->working_hour/3600000, 1)}} h</td>
+                                    @if($item['working_hour'] > 0)
+                                        <td>{{number_format($item['working_hour']/3600000, 1)}} h</td>
                                     @else
                                         <td style="color: gainsboro">0 h</td>
                                     @endif
 
                                     {{-- overtime data --}}
-                                    @if($item->overtime > 0)
-                                        <td>{{number_format($item->overtime/3600000, 1)}} h</td>
+                                    @if($item['overtime'] > 0)
+                                        <td>{{number_format($item['overtime']/3600000, 1)}} h</td>
                                     @else
                                         <td style="color: gainsboro">0 h</td>
                                     @endif
@@ -146,7 +160,7 @@
                                     @if($status == 'On Time' || $status == 'Pending')
                                         <label class="badge badge-success">OK</label>
                                     @else 
-                                        @if($item->leave_status=='1')
+                                        @if($item['leave_status']=='1')
                                             <label class="badge badge-success">Yes</label>
                                         @else
                                             <label class="badge badge-warning">No</label>
@@ -155,14 +169,14 @@
                                     </td> 
                                     {{-- Nút option --}}
                                     <td>
-                                        <a href="{{route('timesheets.edit',['id' => $item->id])}}" class="btn btn-warning btn-sm">Edit</a>
-                                        <a onclick="return confirm('Are you sure you want to delete?')" href="{{route('timesheets.destroy',['id' => $item->id])}}" class="btn btn-danger btn-sm">Delete</a>
+                                        <a href="{{route('timesheets.edit',['id' => $item['id']])}}" class="btn btn-warning btn-sm">Edit</a>
+                                        <a onclick="return confirm('Are you sure you want to delete?')" href="{{route('timesheets.destroy',['id' => $item['id']])}}" class="btn btn-danger btn-sm">Delete</a>
                                     </td>
                                 </tr>
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="9">There is no data!</td>
+                                    <td colspan="10">There is no data!</td>
                                 </tr>
                               @endif
                             </tbody>
@@ -171,7 +185,7 @@
                 </div>
             </div>
         </div>
-        {{$timesheetsList->links()}}
+      
     </div>
 </div>
     

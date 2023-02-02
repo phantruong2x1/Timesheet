@@ -33,12 +33,7 @@ class UserController extends Controller
 
         // Lấy Staff chưa có tài khoản
         $checkid = User::where('role_id',1)->pluck('staff_id')->toArray();  
-
             $this->data['staffsList'] = Staffs::whereNotIn('id',$checkid)->get();
-
-        // dd( $this->data['staffsList'] );
-        // dd($checkid);
-        
         return view('backend.users.add-user',$this->data);
     }
 

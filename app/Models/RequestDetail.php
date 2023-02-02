@@ -17,6 +17,9 @@ class RequestDetail extends Model
     //relationship
     public function timesheet()
     {
-        return $this->hasMany(Timesheet::class);
+        return $this->belongsTo(Timesheet::class,'timesheet_id');
+    }
+    public function staff(){
+        return $this->belongsTo(Staffs::class,'staff_id');
     }
 }

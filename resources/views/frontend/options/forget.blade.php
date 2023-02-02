@@ -22,7 +22,8 @@
             
             <div class="col-sm-9">
                 <p>Enter your data!</p>
-                <p>Date: {{date('d-m-Y',$timesheetDetail->date/1000)}}</p>
+                <p>Date: <b>{{date('d-m-Y',$timesheetDetail->date/1000)}}</b></p>
+                <p>First Checkin: <input type="time" name="first_checkin" readonly value="{{date('H:i:s',$timesheetDetail->first_checkin/1000)}}" ></p>
             </div>
         </div>
 
@@ -30,7 +31,7 @@
         <div class="form-group row">
             <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Last Checkout</label>
             <div class="col-sm-9">
-            <input type="time" class="form-control" id="exampleInputEmail2" 
+            <input type="time" class="form-control" id="exampleInputEmail2"
             name="last_checkout" value="{{old('last_checkout')}}">
 
             {{-- Thông báo lỗi --}}

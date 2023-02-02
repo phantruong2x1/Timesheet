@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\TimesheetController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\PositionController;
+use App\Http\Controllers\Admin\RequestDetailController;
 use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\Admin\UserController;
 use App\Models\Timesheet;
@@ -144,6 +145,16 @@ Route::middleware('auth')->group(function(){
                 Route::get('/destroy/{id}',[TimesheetController::class,'destroy'])->name('destroy');
             });
 
+            //Request detail
+            Route::prefix('request')->name('requests.')->group(function(){
+                Route::get('/',[RequestDetailController::class,'index'])->name('index');
+
+                Route::get('/update-accept/{id}',[RequestDetailController::class,'updateAccept'])->name('accept');
+                
+                Route::get('/update-denied/{id}',[RequestDetailController::class,'updateDenied'])->name('denied');
+
+            });
+
         });
 
         Route::middleware('client')->prefix('client')->group(function(){
@@ -156,10 +167,18 @@ Route::middleware('auth')->group(function(){
             Route::post('/postForget/{id}', [Client\RequestDetailController::class, 'postForget'])->name('option-post-forget');
 
             Route::get('/please-be-late', [Client\RequestDetailController::class, 'beLate'])->name('option-please-be-late');
+            Route::post('/please-be-late', [Client\RequestDetailController::class, 'postBeLate'])->name('option-post-please-be-late');
 
             Route::get('/plese-come-back-soon', [Client\RequestDetailController::class, 'comeBackSoon'])->name('option-please-come-back-soon');
+            Route::post('/please-come-back-soon', [Client\RequestDetailController::class, 'postComeBackSoon'])->name('option-post-please-come-back-soon');
 
             Route::get('/take-a-break', [Client\RequestDetailController::class, 'takeABreak'])->name('option-take-a-break');
+            Route::post('/take-a-break', [Client\RequestDetailController::class, 'postTakeABreak'])->name('option-post-take-a-break');
+            
+            Route::get('/make-order/{id}/{date}', [Client\RequestDetailController::class, 'makeOrder'])->name('option-make-order');
+
+            //request 
+            Route::get('/destroy/{id}',[Client\RequestDetailController::class,'destroy'])->name('client.requests.destroy');
             
         });
     });
@@ -167,7 +186,7 @@ Route::middleware('auth')->group(function(){
 
 Auth::routes();
 
-//Route::get('/test',[HomeController::class, 'index']);
+Route::get('/',[HomeController::class, 'index']);
 
 Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 Route::view('permission-denied', 'errors.permission-denied')->name('denied');

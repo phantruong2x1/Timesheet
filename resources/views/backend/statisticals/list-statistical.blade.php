@@ -4,6 +4,10 @@
   {{$title}}
 @endsection
 
+@php
+$currentMonth = strtotime(date('Y-m-15'));
+@endphp
+
 @section('content')
 <div class="main-panel">
 <div class="content-wrapper">
@@ -16,21 +20,21 @@
     {{-- Lọc  --}}
     <form action="" method="get">
       <div class="row">
-          {{-- Lọc theo Staff Name --}}
+          {{-- Lọc theo tháng --}}
           <div class="col-3">
-              <select class="form-control" name="date">            
-                <option>{{date('m-Y')}} </option>
-                <option>{{date('m-Y',strtotime("last month"))}} </option>
-                <option>{{date('m-Y',strtotime("-2 month"))}} </option>
-                <option>{{date('m-Y',strtotime("-3 month"))}} </option>
-                <option>{{date('m-Y',strtotime("-4 month"))}} </option>
+              <select class="form-control" name="date">     
+                @for($i=0;$i<5;$i++)
+                  <option
+                    {{request()->date==date('m-Y',strtotime('-'.$i.' month', $currentMonth)) ? 'selected':false}} >
+                    {{date('m-Y',strtotime('-'.$i.' month', $currentMonth))}} </option>
+                @endfor
               </select>
           </div>
           <div class="col-2">
               <button type="submit" id="btn-submit" class="btn btn-outline-primary">Tìm kiếm</button>
           </div>
       </div>
-  </form>
+    </form>
 
     <div class="table-responsive">
       <table class="table table-striped table-borderless">

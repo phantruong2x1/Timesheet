@@ -26,6 +26,6 @@ class Timesheet extends Model
         return $this->belongsTo(Staffs::class);
     }
     public function requestDetail(){
-        return $this->belongsTo(RequestDetail::class);
+        return $this->hasMany(RequestDetail::class);
     }
 }

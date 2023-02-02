@@ -9,6 +9,14 @@
         </a>
       </li>
 
+      {{-- Request --}}
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('requests.index')}}">
+          <i class="icon-contract menu-icon"></i>
+          <span class="menu-title">Request</span>
+        </a>
+      </li>
+
       {{-- Statistical --}}
       <li class="nav-item">
         <a class="nav-link" href="{{route('statisticals.index')}}">
@@ -24,7 +32,7 @@
           <span class="menu-title">History</span>
         </a>
       </li>
-
+      
       {{-- <li class="nav-item">
         <a class="nav-link"  href="#charts" >
           <i class="icon-bar-graph menu-icon"></i>

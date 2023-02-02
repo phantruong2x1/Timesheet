@@ -8,14 +8,14 @@
 <div class="col-md-12 grid-margin stretch-card">
 <div class="card">
 <div class="card-body">
-    <h4 class="card-title">Forget</h4>
+    <h4 class="card-title">Come Back Soon</h4>
 
     {{-- Thông báo lỗi tổng quát--}}
     @if ($errors->any())
     <div class="alert alert-danger">Dữ liệu nhập không hợp lệ!</div>
     @endif
 
-    <form class="forms-sample" action="" method="post">
+    <form class="forms-sample" action="{{route('option-post-please-come-back-soon')}}" method="post">
     @csrf  
         {{-- info --}}
         <div class="form-group row">
@@ -28,7 +28,11 @@
         <div class="form-group row">
             <label for="exampleInputl" class="col-sm-3 col-form-label">Time you want to come back</label>
             <div class="col-sm-9">
-                <input type="time" name="to">        
+                <input type="datetime-local" name="to">   
+                {{-- Thông báo lỗi --}}
+                @error('to')
+                <span style="color: red">{{$message}}</span>
+                @enderror     
             </div>
         </div>
 

@@ -37,14 +37,16 @@ class TimesheetController extends Controller
 
     public function postDataTimesheet(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $request->validate([
             'start_date' => 'required',
         ]);
-        if($validator->passes()){
 
-        DB::table('history_inouts')->delete();
-        DB::table('timesheets')->delete();
-  
+        $millisecond = strtotime('1-'.$request->start_date.'');
+        $monthFilter = date('m',$millisecond);
+        $yearFilter = date('Y',$millisecond);
+        $dayOfMonth = cal_days_in_month(CAL_GREGORIAN, $monthFilter, $yearFilter);
+        $startDate = mktime(0, 0, 0, $monthFilter, 1, $yearFilter)*1000;
+        $endDate = mktime(23, 59, 59, $monthFilter, $dayOfMonth, $yearFilter)*1000;
         $curl = curl_init();
         //điều kiện lấy dữ liệu
         $dateNow        = time()*1000;
@@ -52,9 +54,9 @@ class TimesheetController extends Controller
         $accessToken    = '3429d1f497d1d793083304f054bb0472';
         $lockId         = '4910283';
         $pageNo         = '1';
-        $pageSize       = '100000';
-        $startDate      = $request->start_date;  
-        $endDate        = '';
+        $pageSize       = '10000';
+        $startDate      = $startDate;  
+        $endDate        = $endDate;
         //(time()-3600)*1000
 
         curl_setopt_array($curl, array(
@@ -75,7 +77,6 @@ class TimesheetController extends Controller
         $list = json_decode($response);
         //var_dump($list);
         curl_close($curl);
-        
         //add timesheet
         for ($i = count($list->list) - 1; $i >= 0; $i--) {
            
@@ -92,7 +93,7 @@ class TimesheetController extends Controller
 
                     //Lấy bản ghi mới nhất theo staff_id
                     $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->orderBy('date', 'DESC')->first();
-
+  
                     //Nếu Staff_id = null thì tạo mới
                     if(empty($timesheetDetail)){
                         $timeSheets = new Timesheet();
@@ -118,37 +119,16 @@ class TimesheetController extends Controller
                     //Update data for 2nd checkin
                     else{
                         $timesheetDetail->last_checkout  = $list->list[$i]->lockDate;
-
-                        if(date("H:i:s",$list->list[$i]->lockDate/1000) >= '12:00:00')
-                            $timesheetDetail->working_hour   = ($timesheetDetail->last_checkout -$timesheetDetail->first_checkin)-(60*60*1000);
-                        else
-                            $timesheetDetail->working_hour   = ($timesheetDetail->last_checkout -$timesheetDetail->first_checkin);
-
-                        if($timesheetDetail->working_hour > (8*60*60*1000)){
-                            $timesheetDetail->overtime       = $timesheetDetail->working_hour - (8*60*60*1000);
-                        }
-                        else{
-                            $timesheetDetail->overtime = 0;
-                        }
-                        //check late checkin && early checkout
-                        if( date('H:i:s',$timesheetDetail->first_checkin/1000) > '08:30:00' && 
-                        date('H:i:s',$timesheetDetail->last_checkout/1000) <= '17:30:00' ){
-                            $timesheetDetail->status = 'Late checkin/Early checkout';
-                        }
-                        //check early checkout
-                        else if(date('H:i:s',$timesheetDetail->last_checkout/1000) < '17:30:00'){
-                            $timesheetDetail->status = 'Early checkout';
-                        }
-                        else if(date('H:i:s',$timesheetDetail->first_checkin/1000) <= '08:30:00'){
-                            $timesheetDetail->status = 'On Time';
-                        } 
+                        $timesheetDetail->working_hour   = $this->getWorkingHour($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+                        $timesheetDetail->overtime = $this->getOverTime($timesheetDetail->working_hour);
+                        $timesheetDetail->status = $this->getStatus($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
                         $timesheetDetail->save();
                     }
                 }          
             }         
-            return response()->json(['success' => 'Added new records!']);
-        }
-        return response()->json(['errors' => $validator->errors()]);
+        // Hiển thị câu thông báo 1 lần (Flash session)
+        Session::flash('alert-info', 'Insert data successfully!');
+        return redirect()->route('timesheets.get-time');
     }
     /**
      * Show the form for creating a new resource.

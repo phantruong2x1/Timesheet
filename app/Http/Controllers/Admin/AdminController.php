@@ -9,8 +9,6 @@ use App\Models\Staffs;
 use App\Models\HistoryInout;
 use Illuminate\Support\Facades\DB;
 
-
-
 class AdminController extends Controller
 {
 
@@ -22,13 +20,35 @@ class AdminController extends Controller
     {
         $this->data['userDetail'] = Auth::user();
         $this->data['staffsList'] = Staffs::all();   
-
         $filter = [];
         // lọc dữ liệu 
         if(!empty($request->staff_id)){
             $filter[] = ['staff_id','=',$request->staff_id];
         }
-        $this->data['timesheetsList'] = Timesheet::where($filter)->orderBy('date','desc')->paginate(14);
-        return view('backend.dashboard', $this->data);
+        if(!empty($request->date_filter)){
+            $dateFilter = $request->date_filter;
+        }
+        else{
+            $dateFilter = date('Y-m-d');
+        }
+        $timesheetList = Timesheet::where($filter)->orderBy('date','desc')->get();   
+        foreach($timesheetList as $key=>$item){
+            if(date('Y-m-d',$item->date/1000) == $dateFilter){
+                $this->data['timesheetsList'][$key] = [
+                    'id' => $item->id,
+                    'full_name' => Staffs::where('id', $item->staff_id)->pluck('full_name')->first(),
+                    'staff_id' => $item->staff_id,
+                    'date' => $item->date,
+                    'first_checkin' => $item->first_checkin,
+                    'last_checkout' => $item->last_checkout,
+                    'working_hour' => $item->working_hour,
+                    'overtime' => $item->overtime,
+                    'status' => $item->status,
+                    'leave_status' => $item->leave_status,
+                ];
+            }
+        }
+        // dd($this->data['timesheetsList']);
+        return view('backend.dashboard', $this->data);  
     }   
 }

@@ -8,7 +8,7 @@
 <div class="col-md-12 grid-margin stretch-card">
 <div class="card">
 <div class="card-body">
-    <h4 class="card-title">Forget</h4>
+    <h4 class="card-title">Take A Break</h4>
 
     {{-- Thông báo lỗi tổng quát--}}
     @if ($errors->any())
@@ -29,7 +29,11 @@
         <div class="form-group row">
             <label for="exampleInputl" class="col-sm-3 col-form-label">Time take a break</label>
             <div class="col-sm-9">
-                <input type="date" name="time">        
+                <input type="date" name="from">    
+                {{-- Thông báo lỗi --}}
+                @error('from')
+                <span style="color: red">{{$message}}</span>
+                @enderror     
             </div>
         </div>
 

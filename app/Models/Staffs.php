@@ -39,17 +39,17 @@ class Staffs extends Model
     public function position(){
         return $this->belongsTo(Position::class);
     }
-
     public function department(){
         return $this->belongsTo(Department::class);
     }
-
     public function user(){
         return $this->hasOne(User::class);
     }
-
     public function timesheet(){
         return $this->hasMany(Timesheet::class);
+    }
+    public function requestDetail(){
+        return $this->hasMany(RequestDetail::class);
     }
 
     // Lấy tất cả nhân viên 

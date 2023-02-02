@@ -16,22 +16,36 @@
     @if ($errors->any())
     <div class="alert alert-danger">Dữ liệu nhập không hợp lệ!</div>
     @endif
+    
+    <!-- Đây là div hiển thị Kết quả (thành công, thất bại) sau khi thực hiện các chức năng Thêm, Sửa, Xóa.
+    - Div này chỉ hiển thị khi trong Session có các key `alert-*` từ Controller trả về. 
+    - Sử dụng các class của Bootstrap "danger", "warning", "success", "info" để hiển thị màu cho đúng với trạng thái kết quả.
+    -->
+    <div class="flash-message">
+        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+          @if(Session::has('alert-' . $msg))
+            <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+          @endif
+        @endforeach
+      </div>
 
-    <form class="forms-sample" action="" method="post">
+    <form class="forms-sample" action="{{route('timesheets.post-time')}}" method="post">
     @csrf     
         
         {{-- user_name --}}
         <div class="form-group row">
-            <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Start date (milliseconds)</label>
+            <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Nhập tháng muốn lấy dữ liệu: </label>
             <div class="col-sm-9">
             <input type="text" class="form-control"  id="exampleInputUsername2" 
-            name="start_date"  >
-            <p class="error_msg" style="color: red" id="start_date"></p>
-
+            name="start_date"  placeholder="m-Y">
+           {{-- Thông báo lỗi --}}
+           @error('start_date')
+           <span style="color: red">{{$message}}</span>
+           @enderror
             </div>
         </div>
 
-        <button id="btn-submit" type="button" class="btn btn-primary mr-2" style="margin-right: 10px">Submit</button>
+        <button id="btn-submit" type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">Submit</button>
         <a href="{{route('admin-dashboard')}}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>   
@@ -40,33 +54,6 @@
 </div>   
 </div>   
 </div> 
-<script type="text/javascript">
-    $(document).ready(function(){
-    $("#btn-submit").click(function(e){
-        e.preventDefault();
-        var _token = $("input[name='_token']").val();
-        var start_date = $("input[name='start_date']").val();
-
-        $.ajax({
-            url: '{{route('timesheets.post-time')}}',
-            type: 'POST',
-            data:{_token:_token,start_date:start_date},
-            success: function(data) {
-                if($.isEmptyObject(data.errors)){
-                    $(".error_msg").html('');
-                    alert(data.success);
-                }
-                else{
-                    let resp = data.errors;
-                    for(index in resp){
-                        $("#"+index).html(resp[index])
-                    }
-                }
-            }
-        });
-    });
-});
-</script>
 @endsection
 
 
