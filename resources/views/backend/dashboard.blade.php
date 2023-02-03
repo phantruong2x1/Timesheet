@@ -80,7 +80,7 @@ $key = 1;
                                     <th>Working hour</th>
                                     <th>Overtiming</th>
                                     <th>Status</th>
-                                    <th>Leave Status</th>
+                                    {{-- <th>Leave Status</th> --}}
                                     <th>Option</th>
                                 </tr>
                             </thead>
@@ -156,7 +156,7 @@ $key = 1;
                                     <td><label class="badge {{$color}}">{{$status}}</label></td>
                                     
                                     {{-- check Leave Status --}}
-                                    <td>
+                                    {{-- <td>
                                     @if($status == 'On Time' || $status == 'Pending')
                                         <label class="badge badge-success">OK</label>
                                     @else 
@@ -166,7 +166,7 @@ $key = 1;
                                             <label class="badge badge-warning">No</label>
                                         @endif
                                     @endif
-                                    </td> 
+                                    </td>  --}}
                                     {{-- Nút option --}}
                                     <td>
                                         <a href="{{route('timesheets.edit',['id' => $item['id']])}}" class="btn btn-warning btn-sm">Edit</a>

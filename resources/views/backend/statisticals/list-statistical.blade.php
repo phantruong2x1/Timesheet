@@ -23,7 +23,7 @@ $currentMonth = strtotime(date('Y-m-15'));
           {{-- Lọc theo tháng --}}
           <div class="col-3">
               <select class="form-control" name="date">     
-                @for($i=0;$i<5;$i++)
+                @for($i=0;$i<9;$i++)
                   <option
                     {{request()->date==date('m-Y',strtotime('-'.$i.' month', $currentMonth)) ? 'selected':false}} >
                     {{date('m-Y',strtotime('-'.$i.' month', $currentMonth))}} </option>
@@ -79,18 +79,11 @@ $currentMonth = strtotime(date('Y-m-15'));
 
               <td>{{$item['total_last_checkin']}}</td>
               <td>{{$item['total_early_checkout']}}</td>
-
-              {{-- Nút option --}}
-              {{-- <td>
-                <a href="{{route('staff.edit',['id' => $item->id])}}" class="btn btn-warning btn-sm">Edit</a>
-                <a onclick="return confirm('Are you sure you want to delete?')" href="{{route('staff.delete',['id' => $item->id])}}" class="btn btn-danger btn-sm">Delete</a>
-              </td> --}}
-              
             </tr>
             @endforeach
             @else
             <tr>
-                <td colspan="7">There is no data!</td>
+                <td colspan="8">There is no data!</td>
             </tr>
           @endif
           

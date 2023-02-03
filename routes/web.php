@@ -178,7 +178,8 @@ Route::middleware('auth')->group(function(){
             Route::get('/make-order/{id}/{date}', [Client\RequestDetailController::class, 'makeOrder'])->name('option-make-order');
 
             //request 
-            Route::get('/destroy/{id}',[Client\RequestDetailController::class,'destroy'])->name('client.requests.destroy');
+            Route::get('/request-index', [Client\RequestDetailController::class, 'index'])->name('client.requests.index');
+            Route::get('/request-destroy/{id}',[Client\RequestDetailController::class,'destroy'])->name('client.requests.destroy');
             
         });
     });

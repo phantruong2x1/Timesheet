@@ -19,12 +19,6 @@ class ClientController extends Controller
 
     public function index(Request $request)
     {
-        $this->data['userDetail'] = Auth::user();
-        //Lấy 1 dữ liệu timesheet mới nhất của Auth::user
-        $this->data['userTimesheet'] =  Timesheet::where('staff_id',Auth::user()->staff_id)
-                                        ->orderBy('date', 'DESC')
-                                        ->first();
-
         //Lấy toàn bộ dữ liệu timesheet của Auth::user
         if(empty($request->date_filter)){
             $monthFilter = date('m');
@@ -39,14 +33,32 @@ class ClientController extends Controller
         $listTimesheet = Timesheet::where('staff_id',Auth::user()->staff_id)->orderBy('date','desc')->get();
 
         for($i=1; $i<=$dayOfMonth; $i++){
+            $dateFilter = date('d-m-Y',mktime(0, 0, 0, $monthFilter, $i, $yearFilter));
+            $millisecondWeekday = strtotime($dateFilter);
+            $weekday = getdate($millisecondWeekday);
+            if($this->getWeekday($weekday['weekday'])== 'Thứ 7'){
+                $this->data['colorWeekday'] = '#CCFFCC';
+            }
+            else if($this->getWeekday($weekday['weekday']) == 'CN')
+                $this->data['colorWeekday'] = '#FFCCFF';
+            else if($dateFilter == date('d-m-Y'))
+                $this->data['colorWeekday'] = '#FFFF66';
+            else
+                $this->data['colorWeekday'] = '';
+
             $this->data['userListTimesheet'][$i] = [
-                'date' => date('d-m-Y',mktime(0, 0, 0, $monthFilter, $i, $yearFilter)), 
+                'date' => $dateFilter, 
+                'weekday' => $this->getWeekday($weekday['weekday']),
+                'colorWeekday' => $this->data['colorWeekday']
             ]; 
             foreach($listTimesheet as $timesheetDetail){
-                if(date('d-m-Y',mktime(0, 0, 0, $monthFilter, $i, $yearFilter)) == date('d-m-Y',$timesheetDetail->date/1000)){
+                if($dateFilter == date('d-m-Y',$timesheetDetail->date/1000)){
+                   
                     $this->data['userListTimesheet'][$i] = [
                         'id' => $timesheetDetail->id,
-                        'date' => date('d-m-Y',mktime(0, 0, 0, $monthFilter, $i, $yearFilter)), 
+                        'date' => $dateFilter, 
+                        'weekday' => $this->getWeekday($weekday['weekday']),
+                        'colorWeekday' => $this->data['colorWeekday'],
                         'first_checkin' => $timesheetDetail->first_checkin,
                         'last_checkout' => $timesheetDetail->last_checkout,
                         'working_hour' => $timesheetDetail->working_hour,
@@ -58,13 +70,36 @@ class ClientController extends Controller
                 }
             }
         }
-                                        
-        //Lấy toàn bộ dữ liệu request detail của Auth::user
-        $this->data['userListRequest'] = RequestDetail::where('staff_id',Auth::user()->staff_id)
-                                        ->orderBy('updated_at','desc')->paginate(10);
-                                        
-        $this->data['dt'] = date('d-m-Y');
+        // dd($time['weekday'] );                     
+        // dd($this->getWeekday($time['weekday']));  
         return view('frontend.dashboard', $this->data);
+    }
+    //Lấy thứ trong tuần
+    public function getWeekday($weekday)
+    {
+        switch ($weekday) {
+            case "Monday":
+                return 'Thứ 2';
+                break;
+            case 'Tuesday':
+                return 'Thứ 3';
+                break;
+            case 'Wednesday':
+                return 'Thứ 4';
+                break;
+            case "Thursday":
+                return 'Thứ 5';
+                break;
+            case 'Friday':
+                return 'Thứ 6';
+                break;
+            case 'Saturday':
+                return 'Thứ 7';
+                break;
+            case 'Sunday':
+                return 'CN';
+                break;
+        }  
     }
 }
 

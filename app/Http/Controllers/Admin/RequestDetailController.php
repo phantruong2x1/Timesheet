@@ -29,7 +29,30 @@ class RequestDetailController extends Controller
         if(!empty($request->staff_id)){
             $filter[] = ['staff_id','=',$request->staff_id];
         }
-        $this->data['listRequestHistory'] = RequestDetail::where($filter)->orderBy('updated_at','desc')->paginate(15);
+        if(empty($request->date_filter)){
+            $dateFilter = date('m-Y');
+        }
+        else{
+            $millisecond = strtotime('1-'.$request->date_filter.'');
+            $dateFilter = date('m-Y',$millisecond);
+        }
+        // $this->data['listRequestHistory'] = RequestDetail::where($filter)->orderBy('updated_at','desc')->paginate(15);
+        $userRequest = RequestDetail::where($filter)->orderBy('updated_at','desc')->get();
+        foreach($userRequest as $key=>$item){
+            if($dateFilter == date('m-Y',strtotime($item->timesheet_date))){
+                $this->data['listRequestHistory'][$key] = [
+                    'id' => $item->id,
+                    'full_name' => Staffs::where('id', $item->staff_id)->pluck('full_name')->first(),
+                    'request_type' => $item->request_type,
+                    'timesheet_date' => $item->timesheet_date,
+                    'time' => $item->time,
+                    'reason' => $item->reason,
+                    'time_respond' => $item->time_respond,
+                    'status' => $item->status,
+                    'created_at' => $item->created_at,
+                ];
+            }
+        }
         return view('backend.requests.list-request',$this->data);
     }
 

@@ -4,9 +4,9 @@
       <a class="navbar-brand brand-logo-mini" href="{{route('client-dashboard')}}"><img src="{{asset('assets/images/logo-mini.svg')}}" alt="logo"/></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-      {{-- <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
         <span class="icon-menu"></span>
-      </button> --}}
+      </button>
       <ul class="navbar-nav mr-lg-2">
         <li class="nav-item nav-search d-none d-lg-block">
           {{-- <div class="input-group">
