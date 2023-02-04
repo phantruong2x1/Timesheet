@@ -41,11 +41,11 @@ class ClientController extends Controller
             }
             else if($this->getWeekday($weekday['weekday']) == 'CN')
                 $this->data['colorWeekday'] = '#FFCCFF';
-            else if($dateFilter == date('d-m-Y'))
-                $this->data['colorWeekday'] = '#FFFF66';
             else
-                $this->data['colorWeekday'] = '';
-
+            $this->data['colorWeekday'] = '';
+            if($dateFilter == date('d-m-Y'))
+                $this->data['colorWeekday'] = '#FFFF66';
+                
             $this->data['userListTimesheet'][$i] = [
                 'date' => $dateFilter, 
                 'weekday' => $this->getWeekday($weekday['weekday']),

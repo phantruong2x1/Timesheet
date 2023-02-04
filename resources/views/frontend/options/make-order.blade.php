@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title','Forget')
+@section('title','Request') 
 
 @section('content')
 <div class="main-panel">
