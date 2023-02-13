@@ -39,9 +39,6 @@ class TimesheetController extends Controller
         $request->validate([
             'start_date' => 'required',
         ]);
-        //xóa toàn bộ dữ liệu 
-        Timesheet::query()->delete();
-        HistoryInout::query()->delete();
 
         $millisecond = strtotime('1-'.$request->start_date.'');
         $monthFilter = date('m',$millisecond);
