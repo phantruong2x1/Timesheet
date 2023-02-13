@@ -33,8 +33,8 @@ class StaffsController extends Controller
         if(!empty($request->position_id)){
             $filter[] = ['position_id','=',$request->position_id];
         }
-        if(!empty($request->status)){
-            $filter[] = ['status','=',$request->status];
+        if(!empty($request->shift)){
+            $filter[] = ['shift','=',$request->shift];
         }
 
         $this->data['staffsList']=Staffs::where($filter)->paginate(15);
@@ -86,7 +86,7 @@ class StaffsController extends Controller
             $request -> type,
             $request -> department_id,
             $request -> position_id,
-            $request -> status,
+            $request -> shift,
             date('Y-m-d H:i:s')      
         ];
 
@@ -161,7 +161,7 @@ class StaffsController extends Controller
             $request -> type,
             $request -> department_id,
             $request -> position_id,
-            $request -> status,
+            $request -> shift,
             date('Y-m-d H:i:s')      
         ];
 

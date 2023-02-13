@@ -25,7 +25,7 @@ class Staffs extends Model
             'birthday',
             'gender',
             'email',
-            'status',
+            'shift',
             'type',
             'user_id',
             'id'
@@ -67,7 +67,7 @@ class Staffs extends Model
     {
         DB::insert('INSERT INTO staff (id, full_name, birthday, gender, tax_code,
          phone_number, email, address,email_company, begin_time, end_time, official_time,
-         type, department_id, position_id, status, created_at) value (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', $data);
+         type, department_id, position_id, shift, created_at) value (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', $data);
     }
 
     //Lấy thông tin 1 nhân viên
@@ -84,7 +84,7 @@ class Staffs extends Model
         return DB::update('UPDATE '.$this->table.'
         SET id=?, full_name=?, birthday=?, gender=?, tax_code=?,
         phone_number=?, email=?, address=?,email_company=?, begin_time=?, end_time=?, official_time=?,
-        type=?, department_id=?, position_id=?, status=?, updated_at =? WHERE id=?', $data);
+        type=?, department_id=?, position_id=?, shift=?, updated_at =? WHERE id=?', $data);
     }
 
     //xóa thông tin nhân viên

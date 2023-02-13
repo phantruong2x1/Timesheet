@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master')
+@extends('backend.layouts.master')
 
 @section('title', 'Dashboard')
 
@@ -14,12 +14,12 @@ $currentMonth = strtotime(date('Y-m-15'));
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body row">
-                    <p class="col-md-2 card-title mb-0">Time Sheet</p>
+                    <p class="col-md-2 card-title mb-0">TimeSheet Detail</p>
                     {{-- Lọc  --}}
-                    <form action="{{route('client-dashboard')}}" id="form_filter" method="get" class="col-md-8">
+                    <form action="{{route('timesheets.show')}}" id="form_filter" method="get" class="col-md-8">
                         <div class="row">
                             {{-- Lọc theo tháng --}}
-                            <div class="col-3">
+                            <div class="col-2">
                                 <select class="form-control date_filter" name="date_filter">    
                                     @for($i = 0; $i < 9; $i++)
                                     <option
@@ -29,9 +29,24 @@ $currentMonth = strtotime(date('Y-m-15'));
                                     @endfor
                                 </select>
                             </div>
-                                <i class="p-2" style="background-color: #FFFF66; height: 10px;margin-left: 30%;border: 1px solid black"></i> <p class="pl-2"> Today</p>
-                                <i class="p-2" style="background-color: #CCFFCC; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> Thứ 7</p>
-                                <i class="p-2" style="background-color: #FFCCFF; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> CN</p>
+                            {{-- Lọc theo staff --}}
+                            <div class="col-3">
+                                <select class="form-control staff_filter" name="staff_id">
+                                @if(!empty($staffsList))
+                                    <option value="">Staff Name</option>
+                                    @foreach($staffsList as $item)
+                                    <option value="{{$item['id']}}" 
+                                        {{request()->staff_id==$item['id'] ? 'selected':false}}>
+                                        {{$item->full_name}}
+                                    </option>
+                    
+                                    @endforeach
+                                @endif
+                                </select>
+                            </div>
+                            <i class="p-2" style="background-color: #FFFF66; height: 10px;margin-left: 30%;border: 1px solid black"></i> <p class="pl-2"> Today</p>
+                            <i class="p-2" style="background-color: #CCFFCC; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> Thứ 7</p>
+                            <i class="p-2" style="background-color: #FFCCFF; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> CN</p>
                         </div>
                     </form>
                     
@@ -110,38 +125,20 @@ $currentMonth = strtotime(date('Y-m-15'));
                                         @endif
                                     @endif
                                     </td>  --}}
-                                    {{-- @if(!empty($item['id']))
-                                        <td><a class="btn badge badge-warning" href="{{route('option-make-order',['id' => $item['id'], 'date' => $item['date']])}}">. . .</a></td>
-                                    @else
-                                        <td><a class="btn badge badge-warning" href="{{route('option-make-order',['id' => -1, 'date' => $item['date']])}}">. . .</a></td>
-                                    
-                                    @endif --}}
                                     <td>
                                     @if(!empty($item['id']))
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-warning dropdown-toggle dropdown-toggle-split" id="dropdownMenuSplitButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="sr-only">Toggle Dropdown</span>
+                                              <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton1">
-                                                <h6 class="dropdown-header">Option</h6>
-                                                <a class="dropdown-item" href="{{route('option-forget',['id' => $item['id']])}}">Update Checkout</a>
-                                                <a class="dropdown-item" href="{{route('option-please-be-late')}}">Please Be Late</a>
-                                                <a class="dropdown-item" href="{{route('option-please-come-back-soon')}}">Please Come Back Soon</a>
-                                                <a class="dropdown-item" href="{{route('option-take-a-break')}}">Take a Break</a>                                           
+                                              <h6 class="dropdown-header">Option</h6>
+                                              <a class="dropdown-item" href="{{route('timesheets.edit',['id' => $item['id']])}}">Edit</a>
+                                              <a onclick="return confirm('Are you sure you want to delete?')" class="dropdown-item" href="{{route('timesheets.destroy',['id' => $item['id']])}}">Delete</a>
                                             </div>
-                                          </div>   
-                                    @else 
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-warning dropdown-toggle dropdown-toggle-split" id="dropdownMenuSplitButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton1">
-                                                <h6 class="dropdown-header">Option</h6>
-                                                <a class="dropdown-item" href="{{route('option-please-be-late')}}">Please Be Late</a>
-                                                <a class="dropdown-item" href="{{route('option-please-come-back-soon')}}">Please Come Back Soon</a>
-                                                <a class="dropdown-item" href="{{route('option-take-a-break')}}">Take a Break</a>                                           
-                                            </div>
-                                        </div>  
+                                          </div>    
+                                   
+                                        {{-- <td><a class="btn badge badge-warning" href="{{route('option-make-order',['id' => $item['id'], 'date' => $item['date']])}}">. . .</a></td> --}}
                                     @endif 
                                     </td>
                                 </tr>
@@ -164,6 +161,9 @@ $currentMonth = strtotime(date('Y-m-15'));
 <script>
     $(function() {
         $('.date_filter').change(function() {
+            $('#form_filter').submit();
+        })
+        $('.staff_filter').change(function() {
             $('#form_filter').submit();
         })
     })

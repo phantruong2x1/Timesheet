@@ -238,16 +238,15 @@
         {{-- Nhập trạng thái  --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Status</label>
+            <label class="col-sm-3 col-form-label">Shift</label>
             <div class="col-sm-9">
-              <select class="form-control" name="status" >
-                <option value="enable">Enable</option>
-                <option value="disable">Disable</option>
+              <select class="form-control" name="shift" >
+                <option value="Ca 1">Ca 1: 8:30 - 17:30</option>
+                <option value="Ca 2">Ca 2: 8:00 - 17:00</option>
               </select>
             </div>
           </div>
         </div>
-
       </div>
       
       <div class="row">

@@ -18,11 +18,11 @@ $currentMonth = strtotime(date('Y-m-15'));
 <div class="card-body">
     <h4 class="card-title">Staff Table</h4>
     {{-- Lọc  --}}
-    <form action="" method="get">
+    <form action="{{route('statisticals.index')}}" id="form_filter" method="get">
       <div class="row">
           {{-- Lọc theo tháng --}}
-          <div class="col-3">
-              <select class="form-control" name="date">     
+          <div class="col-2">
+              <select class="form-control date_filter" name="date">     
                 @for($i=0;$i<9;$i++)
                   <option
                     {{request()->date==date('m-Y',strtotime('-'.$i.' month', $currentMonth)) ? 'selected':false}} >
@@ -30,9 +30,19 @@ $currentMonth = strtotime(date('Y-m-15'));
                 @endfor
               </select>
           </div>
-          <div class="col-2">
-              <button type="submit" id="btn-submit" class="btn btn-outline-primary">Tìm kiếm</button>
+
+          {{-- Ngày bắt đầu lọc --}}
+          <p style="line-height: 45px">Start date:</p>
+          <div class="col-2 ">
+            <input type="date" class="form-control start_date_filter" name="start_date_filter" value="{{request()->start_date_filter}}">
           </div>
+
+          {{-- Ngày kết thúc lọc --}}
+          <p style="line-height: 45px">End date:</p>
+          <div class="col-2">
+            <input type="date" class="form-control end_date_filter" name="end_date_filter" value="{{request()->end_date_filter}}">
+          </div>
+       
       </div>
     </form>
 
@@ -47,6 +57,7 @@ $currentMonth = strtotime(date('Y-m-15'));
             <th>Total Working Hours</th>
             <th>Total Overtime Hours</th>
             <th>Late Checkin</th>
+            <th>Total Time Late Checkin</th>
             <th>Early Checkout</th>
             
           </tr>
@@ -78,6 +89,16 @@ $currentMonth = strtotime(date('Y-m-15'));
               @endif
 
               <td>{{$item['total_last_checkin']}}</td>
+              @if($item['count_minute_last_checkin'] > 0)
+              <td>
+                {{-- {{number_format($item['count_minute_last_checkin']/3600000)}} h 
+                {{number_format($item['count_minute_last_checkin']/60000)}} --}}
+                {{gmdate('H:i:s',$item['count_minute_last_checkin']/1000)}}
+              </td>
+              @else
+                  <td style="color: gainsboro">0 h</td>
+              @endif
+              
               <td>{{$item['total_early_checkout']}}</td>
             </tr>
             @endforeach
@@ -96,5 +117,17 @@ $currentMonth = strtotime(date('Y-m-15'));
 </div>
 </div>
 </div>
+
+<script>
+  $(function() {
+      $('.date_filter').change(function() {
+          $('#form_filter').submit();
+      })
+      $('.end_date_filter').change(function() {
+          $('#form_filter').submit();
+      })
+  })
+</script> 
+
 @endsection
 

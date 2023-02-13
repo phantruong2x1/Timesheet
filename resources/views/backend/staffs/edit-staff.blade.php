@@ -264,27 +264,27 @@
           </div>
         </div>
 
-        {{-- Nhập trạng thái  --}}
+        {{-- Nhập ca làm việc  --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Status</label>
+            <label class="col-sm-3 col-form-label">Shift</label>
             <div class="col-sm-9">
-              <select class="form-control" name="status" >
+              <select class="form-control" name="shift" >
                 <option 
 
-                  @if($staffDetail->status=='enable')
+                  @if($staffDetail->shift=='Ca 1')
                   selected
                   @endif
                 
-                value="enable">Enable</option>
+                value="Ca 1">Ca 1: 8:30 - 17:30</option>
 
                 <option
 
-                  @if($staffDetail->status=='disable')
+                  @if($staffDetail->shift=='Ca 2')
                   selected
                   @endif
                   
-                value="disable">Disable</option>
+                value="Ca 2">Ca 2: 8:00 - 17:00</option>
               </select>
             </div>
           </div>

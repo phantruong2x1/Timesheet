@@ -132,11 +132,11 @@ $key =1;
                 <div class="card-body row">
                     <p class="col-md-2 card-title mb-0">Request List</p>
                     {{-- Lọc  --}}
-                    <form action="{{route('client.requests.index')}}" method="get" class="col-md-8">
+                    <form action="{{route('client.requests.index')}}" id="form_filter" method="get" class="col-md-8">
                       <div class="row">
                           {{-- Lọc theo tháng --}}
                           <div class="col-3">
-                              <select class="form-control" name="date_filter">    
+                              <select class="form-control month_filter" name="date_filter">    
                                 @for($i=0;$i<9;$i++)
                                   <option
                                     {{request()->date_filter==date('m-Y',strtotime('-'.$i.' month', $currentMonth)) ? 'selected':false}} >
@@ -144,8 +144,15 @@ $key =1;
                                 @endfor
                               </select>
                           </div>
-                          <div class="col-2">
-                              <button type="submit" id="btn-submit" class="btn btn-outline-primary">Tìm kiếm</button>
+                          {{-- Lọc theo request type --}}
+                          <div class="col-3">
+                            <select name="request_type" class="form-control request_filter">
+                                <option value="0">All Request</option>
+                                <option value="Please Be Late" {{request()->request_type=='Please Be Late' ? 'selected':false}}>Please Be Late</option>
+                                <option value="Please Come Back Soon" {{request()->request_type=='Please Come Back Soon' ? 'selected':false}}>Please Come Back Soon</option>
+                                <option value="Take A Break" {{request()->request_type=='Take A Break' ? 'selected':false}}>Take A Break</option>
+                                <option value="Update Checkout" {{request()->request_type=='Update Checkout' ? 'selected':false}}>Update Checkout</option>
+                            </select>
                           </div>
                       </div>
                     </form>
@@ -237,5 +244,17 @@ $key =1;
       </div>
     </div>
 </div>
+
+<script>
+  $(function() {
+    $('.month_filter').change(function() {
+      $('#form_filter').submit();
+    })
+    $('.request_filter').change(function() {
+      $('#form_filter').submit();
+    })
+  })
+</script> 
+
 @endsection
 

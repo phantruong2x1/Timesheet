@@ -107,11 +107,11 @@ $key =1;
 <div class="card-body">
     <h4 class="card-title">History Request Detail Table</h4>
     {{-- Lọc  --}}
-    <form action="{{route('requests.index')}}" method="get">
+    <form action="{{route('requests.index')}}" id="form_filter" method="get">
         <div class="row">
             {{-- Lọc theo tháng --}}
             <div class="col-2">
-                <select class="form-control" name="date_filter">    
+                <select class="form-control date_filter" name="date_filter">    
                     @for($i=0;$i<9;$i++)
                     <option
                         {{request()->date_filter==date('m-Y',strtotime('-'.$i.' month', $currentMonth)) ? 'selected':false}} >
@@ -121,7 +121,7 @@ $key =1;
             </div>
             {{-- Lọc theo Staff Name --}}
             <div class="col-3">
-                <select class="form-control" name="staff_id">
+                <select class="form-control staff_filter" name="staff_id">
                 <option value="0">All Name</option>
                 @if(!empty($staffsList))
                     @foreach($staffsList as $item)
@@ -135,8 +135,15 @@ $key =1;
                 @endif
                 </select>
             </div>
-            <div class="col-2">
-                <button type="submit" id="btn-submit" class="btn btn-outline-primary">Tìm kiếm</button>
+            {{-- Lọc theo request type --}}
+            <div class="col-3">
+                <select name="request_type" class="form-control request_filter">
+                    <option value="0">All Request</option>
+                    <option value="Please Be Late" {{request()->request_type=='Please Be Late' ? 'selected':false}}>Please Be Late</option>
+                    <option value="Please Come Back Soon" {{request()->request_type=='Please Come Back Soon' ? 'selected':false}}>Please Come Back Soon</option>
+                    <option value="Take A Break" {{request()->request_type=='Take A Break' ? 'selected':false}}>Take A Break</option>
+                    <option value="Update Checkout" {{request()->request_type=='Update Checkout' ? 'selected':false}}>Update Checkout</option>
+                </select>
             </div>
         </div>
     </form>
@@ -227,5 +234,19 @@ $key =1;
 </div>
 </div>
 </div>
+
+<script>
+    $(function() {
+        $('.date_filter').change(function() {
+            $('#form_filter').submit();
+        })
+        $('.request_filter').change(function() {
+            $('#form_filter').submit();
+        })
+        $('.staff_filter').change(function() {
+            $('#form_filter').submit();
+        })
+    })
+</script> 
 
 @endsection

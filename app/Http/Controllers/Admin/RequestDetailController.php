@@ -29,6 +29,9 @@ class RequestDetailController extends Controller
         if(!empty($request->staff_id)){
             $filter[] = ['staff_id','=',$request->staff_id];
         }
+        if(!empty($request->request_type)){
+            $filter[] = ['request_type','=',$request->request_type];
+        }
         if(empty($request->date_filter)){
             $dateFilter = date('m-Y');
         }

@@ -36,7 +36,7 @@ class ClientController extends Controller
             $dateFilter = date('d-m-Y',mktime(0, 0, 0, $monthFilter, $i, $yearFilter));
             $millisecondWeekday = strtotime($dateFilter);
             $weekday = getdate($millisecondWeekday);
-            if($this->getWeekday($weekday['weekday'])== 'Thứ 7'){
+            if($this->getWeekday($weekday['weekday'])== 'T7'){
                 $this->data['colorWeekday'] = '#CCFFCC';
             }
             else if($this->getWeekday($weekday['weekday']) == 'CN')
@@ -79,22 +79,22 @@ class ClientController extends Controller
     {
         switch ($weekday) {
             case "Monday":
-                return 'Thứ 2';
+                return 'T2';
                 break;
             case 'Tuesday':
-                return 'Thứ 3';
+                return 'T3';
                 break;
             case 'Wednesday':
-                return 'Thứ 4';
+                return 'T4';
                 break;
             case "Thursday":
-                return 'Thứ 5';
+                return 'T5';
                 break;
             case 'Friday':
-                return 'Thứ 6';
+                return 'T6';
                 break;
             case 'Saturday':
-                return 'Thứ 7';
+                return 'T7';
                 break;
             case 'Sunday':
                 return 'CN';

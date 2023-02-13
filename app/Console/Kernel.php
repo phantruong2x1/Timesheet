@@ -20,10 +20,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         // $schedule->command('GetCurl:get')->everyMinute();
-        $schedule->command('GetCurl:get')->hourly()
-                                         ->timezone('Asia/Ho_Chi_Minh')
-                                         ->between('08:00','21:00');
-        
+        // $schedule->command('GetCurl:get')->hourly()
+        //                                  ->timezone('Asia/Ho_Chi_Minh')
+        //                                  ->between('08:00','21:00');
+        $schedule->command('GetCurl:get')->everyFifteenMinutes()->timezone('Asia/Ho_Chi_Minh');
     }
 
     /**

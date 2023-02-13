@@ -37,15 +37,15 @@ $key = 1;
 
                     <br>
                     {{-- Lọc  --}}
-                    <form action="" method="get">
+                    <form action="{{route('admin-dashboard')}}" id="form_filter" method="get">
                         <div class="row">
                             {{-- Lọc theo ngày --}}
                             <div class="col-2">
-                                <input type="date" name="date_filter" class="form-control" value="{{$dateFilter}}">
+                                <input type="date" name="date_filter" class="form-control date_filter" value="{{$dateFilter}}">
                             </div>
                             {{-- Lọc theo Staff Name --}}
                             <div class="col-3">
-                                <select class="form-control" name="staff_id">
+                                <select class="form-control staff_filter" name="staff_id">
                                 <option value="0">All Name</option>
                                 @if(!empty($staffsList))
                                     @foreach($staffsList as $item)
@@ -59,10 +59,8 @@ $key = 1;
                                 @endif
                                 </select>
                             </div>
-                            <div class="col-2">
-                                <button type="submit" id="btn-submit" class="btn btn-outline-primary">Tìm kiếm</button>
-                            </div>
-                            <div class=" col-5 d-flex justify-content-end">
+                           {{-- button add user --}}
+                            <div class=" col-7 d-flex justify-content-end">
                                 <a href="{{route('timesheets.create')}}" class="btn btn-info">Add User</a>
                             </div>
                         </div>
@@ -87,39 +85,7 @@ $key = 1;
                             <tbody>
                                 @if(!empty($timesheetsList))
                                 @foreach ($timesheetsList as $item)
-                                @php
-                                    //check null
-                                    if(!empty($item['first_checkin']) || !empty($item['last_checkout'])){
-                                        $item['leave_status'] = "Pending";
-                                        $status = "Pending";
-                                        $color  = 'badge-success';
-                                        
-                                        //check late arrival
-                                            if(date('H:i:s',$item['first_checkin']/1000) > '08:30:00'){
-                                                $status = 'Late checkin';
-                                                $color  = 'badge-warning';
-                                            }
-                                        //check null
-                                        if(!empty($item['last_checkout'])){
-                                            //check late checkin && early checkout
-                                            if( date('H:i:s',$item['first_checkin']/1000) > '08:30:00' && 
-                                                date('H:i:s',$item['last_checkout']/1000) <= '17:30:00' ){
-                                                $status = 'Late checkin/Early checkout';
-                                                $color  = 'badge-warning';
-                                            }
-                                            //check early checkout
-                                            else if(date('H:i:s',$item['last_checkout']/1000) < '17:30:00'){
-                                                $status = 'Early checkout';
-                                                $color  = 'badge-warning';
-                                            }
-                                            else if(date('H:i:s',$item['first_checkin']/1000) <= '08:30:00'){
-                                                $status = 'On Time';
-                                                $color  = 'badge-success';
-                                            }
-                                            
-                                        }
-                                    }
-                                @endphp
+                                
                                 <tr>
                                     {{-- Hiển thị dữ liệu --}}
                                     <td>{{$key++}}</td>
@@ -152,9 +118,16 @@ $key = 1;
                                     @else
                                         <td style="color: gainsboro">0 h</td>
                                     @endif
-                                    
-                                    <td><label class="badge {{$color}}">{{$status}}</label></td>
-                                    
+                                    {{-- status  --}}
+                                    <td>
+                                    @if(empty($item['status']))
+                                        <label class="badge badge-success">Pending</label>
+                                    @elseif(($item['status']) == 'On Time')
+                                        <label class="badge badge-success">{{$item['status']}}</label>
+                                    @else
+                                        <label class="badge badge-warning">{{$item['status']}}</label>
+                                    @endif
+                                    </td>
                                     {{-- check Leave Status --}}
                                     {{-- <td>
                                     @if($status == 'On Time' || $status == 'Pending')
@@ -190,6 +163,18 @@ $key = 1;
 </div>
     
 </div>
+
+<script>
+    $(function() {
+        $('.staff_filter').change(function() {
+            $('#form_filter').submit();
+        })
+        $('.date_filter').change(function() {
+            $('#form_filter').submit();
+        })
+    })
+</script> 
+
 @endsection
 
 

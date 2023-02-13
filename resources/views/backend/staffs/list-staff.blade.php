@@ -21,12 +21,12 @@
     </p>
 
     {{-- Lọc  --}}
-    <form action="" method="get">
+    <form action="{{route('staff.index')}}" id="form_filter" method="get">
       <div class="row">
 
         {{-- Lọc theo Position --}}
-        <div class="col-3">
-          <select class="form-control" name="position_id">
+        <div class="col-2">
+          <select class="form-control position_filter" name="position_id">
             <option value="0">All position </option>
             @if(!empty($positionList))
               @foreach($positionList as $item)
@@ -41,18 +41,14 @@
         </div>
 
         {{-- Lọc theo Status --}}
-        <div class="col-3">
-          <select class="form-control" name="status">
-            <option value="0">All status</option>
-            <option value="enable" {{request()->status=='enable' ? 'selected':false}}>Enable</option>
-            <option value="disable" {{request()->status=='disable' ? 'selected':false}}>Disable</option>
+        <div class="col-2">
+          <select class="form-control shift_filter" name="shift">
+            <option value="0">All Shift</option>
+            <option value="Ca 1" {{request()->shift=='Ca 1' ? 'selected':false}}>Ca 1: 8:30-17:30</option>
+            <option value="Ca 2" {{request()->shift=='Ca 2' ? 'selected':false}}>Ca 2: 8:00-17:00</option>
           </select>
         </div>
 
-        {{-- Submit --}}
-        <div class="col-2">
-          <button type="submit" class="btn btn-outline-primary">Tìm kiếm</button>
-        </div>
       </div>
     </form>
 
@@ -69,7 +65,7 @@
             <th>Phone</th>
             <th>Email</th>
             <th>Type</th>
-            <th>Status</th>
+            <th>Shift</th>
             <th>Option</th>
           </tr>
         </thead>
@@ -90,9 +86,9 @@
               <td>{{$item->phone_number}}</td>
               <td>{{$item->email}}</td>
               <td>{{$item->type}}</td>
-              <td>{!!$item->status=='disable' ?  
-                '<label class="badge badge-danger">Disable</label>':
-                '<label class="badge badge-success">Enable</label>'!!}
+              <td>{!!$item->shift=='Ca 1' ?  
+                '<label class="badge badge-info">Ca 1: 8:30-17:30</label>':
+                '<label class="badge badge-success">Ca 2: 8:00-17:00</label>'!!}
               </td>
 
               {{-- Nút option --}}
@@ -118,5 +114,17 @@
 </div>
 </div>
 </div>
+
+<script>
+  $(function() {
+    $('.position_filter').change(function() {
+      $('#form_filter').submit();
+    })
+    $('.shift_filter').change(function() {
+      $('#form_filter').submit();
+    })
+  })
+</script> 
 @endsection
+
 

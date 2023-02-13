@@ -28,6 +28,10 @@ class RequestDetailController extends Controller
         // $this->data['userListRequest'] = RequestDetail::where('staff_id',Auth::user()->staff_id)
         //                                 ->orderBy('updated_at','desc')->paginate(10);
         //lọc dữ liệu 
+        $filter[] = ['staff_id','=', Auth::user()->staff_id];
+        if(!empty($request->request_type)){
+            $filter[] = ['request_type','=',$request->request_type];
+        }
         if(empty($request->date_filter)){
             $dateFilter = date('m-Y');
         }
@@ -35,7 +39,7 @@ class RequestDetailController extends Controller
             $millisecond = strtotime('1-'.$request->date_filter.'');
             $dateFilter = date('m-Y',$millisecond);
         }
-        $userRequest = RequestDetail::where('staff_id',Auth::user()->staff_id)
+        $userRequest = RequestDetail::where($filter)
                                     ->orderBy('updated_at','desc')->get();
         foreach($userRequest as $key=>$item){
             if($dateFilter == date('m-Y',strtotime($item->timesheet_date))){
@@ -70,13 +74,18 @@ class RequestDetailController extends Controller
         ]);
 
         $timesheet = new TimesheetController();
+        $staffDetail = Staffs::find(Auth::user()->staff_id);
         //Update timesheet
         $timesheetDetail = Timesheet::find($id);
         $timesheetDetail->first_checkin = strtotime($request->first_checkin)*1000;
         $timesheetDetail->last_checkout = strtotime($request->last_checkout)*1000;
         $timesheetDetail->working_hour = $timesheet->getWorkingHour($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
         $timesheetDetail->overtime = $timesheet->getOverTime($timesheetDetail->working_hour);
-        $timesheetDetail->status = $timesheet->getStatus($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+        if($staffDetail->shift == 'Ca 2')
+            $timesheetDetail->status = $timesheet->getStatusShift2($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+        else
+            $timesheetDetail->status = $timesheet->getStatusShift1($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+                        
 
         //Create request detail
         $requestDetail = new RequestDetail();

@@ -27,8 +27,9 @@
             <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
           @endif
         @endforeach
-      </div>
-
+    </div>
+    
+    <p style="color: red">Thông báo: Thêm dữ liệu có thể làm CSDL bị lỗi!</p>
     <form class="forms-sample" action="{{route('timesheets.post-time')}}" method="post">
     @csrf     
         

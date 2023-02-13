@@ -132,7 +132,7 @@ Route::middleware('auth')->group(function(){
 
             //Timesheet
             Route::prefix('timesheet')->name('timesheets.')->group(function(){
-                Route::get('/',[TimesheetController::class,'index'])->name('index');
+                Route::get('/show',[TimesheetController::class,'show'])->name('show');
 
                 Route::get('/create',[TimesheetController::class,'create'])->name('create');
 

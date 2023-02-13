@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Timesheet;
 use App\Models\HistoryInout;
 use App\Models\Staffs;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Auth;
 
 class TimesheetController extends Controller
 {
@@ -26,9 +26,8 @@ class TimesheetController extends Controller
      */
     public function index()
     {
-        return view('backend.dashboard');
+        //
     }
-
     public function getDataTimesheet()
     {  
         $this->data['title'] = 'Get data timesheet';
@@ -40,6 +39,9 @@ class TimesheetController extends Controller
         $request->validate([
             'start_date' => 'required',
         ]);
+        //xóa toàn bộ dữ liệu 
+        Timesheet::query()->delete();
+        HistoryInout::query()->delete();
 
         $millisecond = strtotime('1-'.$request->start_date.'');
         $monthFilter = date('m',$millisecond);
@@ -93,7 +95,7 @@ class TimesheetController extends Controller
 
                     //Lấy bản ghi mới nhất theo staff_id
                     $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->orderBy('date', 'DESC')->first();
-  
+                    $staffDetail = Staffs::find($list->list[$i]->username);
                     //Nếu Staff_id = null thì tạo mới
                     if(empty($timesheetDetail)){
                         $timeSheets = new Timesheet();
@@ -101,8 +103,16 @@ class TimesheetController extends Controller
                         $timeSheets->date           = $list->list[$i]->lockDate;
                         $timeSheets->first_checkin  = $list->list[$i]->lockDate;
                         $timeSheets->staff_id       = $list->list[$i]->username;
-                        if(date("H:i:s",$list->list[$i]->lockDate/1000) > '08:30:00')
-                            $timeSheets->status   = 'Late checkin';                   
+                        if(empty($staffDetail) || $staffDetail->shift == 'Ca 1')
+                        {
+                            if(date("H:i:s",$list->list[$i]->lockDate/1000) > '08:30:00')
+                                $timeSheets->status   = 'Late checkin';
+                        }
+                        else if($staffDetail->shift == 'Ca 2')
+                        {
+                            if(date("H:i:s",$list->list[$i]->lockDate/1000) > '08:00:00')
+                                $timeSheets->status   = 'Late checkin';
+                        }               
                         $timeSheets->save();
                     }
                     //Tạo mới bản ghi theo ngày
@@ -112,8 +122,16 @@ class TimesheetController extends Controller
                         $timeSheets->date           = $list->list[$i]->lockDate;
                         $timeSheets->first_checkin  = $list->list[$i]->lockDate;
                         $timeSheets->staff_id       = $list->list[$i]->username;
-                        if(date('H:i:s',$list->list[$i]->lockDate/1000) > '08:30:00')
-                            $timeSheets->status   = 'Late checkin';
+                        if(empty($staffDetail) || $staffDetail->shift == 'Ca 1')
+                        {
+                            if(date("H:i:s",$list->list[$i]->lockDate/1000) > '08:30:00')
+                                $timeSheets->status   = 'Late checkin';
+                        }
+                        else if($staffDetail->shift == 'Ca 2')
+                        {
+                            if(date("H:i:s",$list->list[$i]->lockDate/1000) > '08:00:00')
+                                $timeSheets->status   = 'Late checkin';
+                        } 
                         $timeSheets->save();
                     }
                     //Update data for 2nd checkin
@@ -121,7 +139,13 @@ class TimesheetController extends Controller
                         $timesheetDetail->last_checkout  = $list->list[$i]->lockDate;
                         $timesheetDetail->working_hour   = $this->getWorkingHour($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
                         $timesheetDetail->overtime = $this->getOverTime($timesheetDetail->working_hour);
-                        $timesheetDetail->status = $this->getStatus($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+                        if(empty($staffDetail->shift))
+                            $timesheetDetail->status = $this->getStatusShift1($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+                        else if($staffDetail->shift == 'Ca 2')
+                            $timesheetDetail->status = $this->getStatusShift2($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+                        else
+                            $timesheetDetail->status = $this->getStatusShift1($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+
                         $timesheetDetail->save();
                     }
                 }          
@@ -163,7 +187,11 @@ class TimesheetController extends Controller
         $timesheet->last_checkout = strtotime($request->last_checkout)*1000;
         $timesheet->working_hour = $this->getWorkingHour($timesheet->first_checkin, $timesheet->last_checkout);
         $timesheet->overtime = $this->getOverTime($timesheet->working_hour);
-        $timesheet->status = $this->getStatus($timesheet->first_checkin, $timesheet->last_checkout);
+        $staffDetail = Staffs::find($request->staff_id);
+        if(!empty($staffDetail) && $staffDetail->shift == 'Ca 2')
+            $timesheet->status = $this->getStatusShift2($timesheet->first_checkin, $timesheet->last_checkout);
+        else
+            $timesheet->status = $this->getStatusShift1($timesheet->first_checkin, $timesheet->last_checkout);
         $timesheet->leave_status = $request->leave_status;
        
         $timesheet->save();
@@ -180,9 +208,69 @@ class TimesheetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $clientCon = new ClientController();
+        $this->data['userDetail'] = Auth::user();
+        $this->data['staffsList'] = Staffs::all(); 
+        $filter = [];
+        //lọc dữ liệu
+        if(!empty($request->staff_id))
+            $filter[] = ['staff_id','=',$request->staff_id];
+        else
+            $filter[] = ['staff_id','=', Auth::user()->staff_id];
+
+        if(empty($request->date_filter)){
+            $monthFilter = date('m');
+            $yearFilter = date('Y');
+        }
+        else{
+            $millisecond = strtotime('1-'.$request->date_filter.'');
+            $monthFilter = date('m',$millisecond);
+            $yearFilter = date('Y',$millisecond);
+        }
+        $dayOfMonth = cal_days_in_month(CAL_GREGORIAN, $monthFilter, $yearFilter);
+        $listTimesheet = Timesheet::where($filter)->orderBy('date','desc')->get();
+
+        for($i=1; $i<=$dayOfMonth; $i++){
+            $dateFilter = date('d-m-Y',mktime(0, 0, 0, $monthFilter, $i, $yearFilter));
+            $millisecondWeekday = strtotime($dateFilter);
+            $weekday = getdate($millisecondWeekday);
+            if($clientCon->getWeekday($weekday['weekday'])== 'T7'){
+                $this->data['colorWeekday'] = '#CCFFCC';
+            }
+            else if($clientCon->getWeekday($weekday['weekday']) == 'CN')
+                $this->data['colorWeekday'] = '#FFCCFF';
+            else
+            $this->data['colorWeekday'] = '';
+            if($dateFilter == date('d-m-Y'))
+                $this->data['colorWeekday'] = '#FFFF66';
+                
+            $this->data['userListTimesheet'][$i] = [
+                'date' => $dateFilter, 
+                'weekday' => $clientCon->getWeekday($weekday['weekday']),
+                'colorWeekday' => $this->data['colorWeekday']
+            ]; 
+            foreach($listTimesheet as $timesheetDetail){
+                if($dateFilter == date('d-m-Y',$timesheetDetail->date/1000)){
+                   
+                    $this->data['userListTimesheet'][$i] = [
+                        'id' => $timesheetDetail->id,
+                        'date' => $dateFilter, 
+                        'weekday' => $clientCon->getWeekday($weekday['weekday']),
+                        'colorWeekday' => $this->data['colorWeekday'],
+                        'first_checkin' => $timesheetDetail->first_checkin,
+                        'last_checkout' => $timesheetDetail->last_checkout,
+                        'working_hour' => $timesheetDetail->working_hour,
+                        'overtime' => $timesheetDetail->overtime,
+                        'leave_status' => $timesheetDetail->leave_status,
+                        'status' => $timesheetDetail->status
+                    ];            
+                    break;
+                }
+            }
+        }
+        return view('backend.timesheets.show-timesheet',$this->data);
     }
 
     /**
@@ -223,7 +311,12 @@ class TimesheetController extends Controller
         $timesheet->last_checkout = strtotime($request->last_checkout)*1000;
         $timesheet->working_hour = $this->getWorkingHour($timesheet->first_checkin, $timesheet->last_checkout);
         $timesheet->overtime = $this->getOverTime($timesheet->working_hour);
-        $timesheet->status = $this->getStatus($timesheet->first_checkin, $timesheet->last_checkout);
+        $staffDetail = Staffs::find($request->staff_id);
+        if($staffDetail->shift == 'Ca 2')
+            $timesheet->status = $this->getStatusShift2($timesheet->first_checkin, $timesheet->last_checkout);
+        else
+            $timesheet->status = $this->getStatusShift1($timesheet->first_checkin, $timesheet->last_checkout);
+        $timesheet->leave_status = $request->leave_status;
         $timesheet->leave_status = $request->leave_status;
        
         $timesheet->save();
@@ -267,21 +360,40 @@ class TimesheetController extends Controller
         }
     }
     //Lấy trạng thái làm việc 
-    public function getStatus($first_checkin, $last_checkout)
+    public function getStatusShift1($first_checkin, $last_checkout)
     {
-        if(date('H:i:s',$first_checkin) > '08:30:00')
-            return 'Late checkin';
-
+        
+        if(date('H:i:s',$first_checkin/1000) > '08:30:00')
+            $status = 'Late checkin';
         if( date('H:i:s',$first_checkin/1000) > '08:30:00' && 
         date('H:i:s',$last_checkout/1000) <= '17:30:00' ){
-            return 'Late checkin/Early checkout';
+            $status = 'Late checkin/Early checkout';
         }
         //check early checkout
         else if(date('H:i:s',$last_checkout/1000) < '17:30:00'){
-            return 'Early checkout';
+            $status = 'Early checkout';
         }
         else if(date('H:i:s',$first_checkin/1000) <= '08:30:00'){
-            return 'On Time';
+            $status = 'On Time';
         } 
-}
+        return $status;
+    }
+    public function getStatusShift2($first_checkin, $last_checkout)
+    {
+        if(date('H:i:s',$first_checkin/1000) > '08:00:00')
+            $status = 'Late checkin';
+
+        if( date('H:i:s',$first_checkin/1000) > '08:00:00' && 
+        date('H:i:s',$last_checkout/1000) <= '17:00:00' ){
+            $status = 'Late checkin/Early checkout';
+        }
+        //check early checkout
+        else if(date('H:i:s',$last_checkout/1000) < '17:00:00'){
+            $status = 'Early checkout';
+        }
+        else if(date('H:i:s',$first_checkin/1000) <= '08:00:00'){
+            $status = 'On Time';
+        } 
+        return $status;
+    }
 }

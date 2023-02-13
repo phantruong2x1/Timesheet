@@ -3,10 +3,17 @@
 
       {{-- Dashboard --}}
       <li class="nav-item">
-        <a class="nav-link" href="{{route('admin-dashboard')}}">
+        <a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
           <i class="icon-grid menu-icon"></i>
           <span class="menu-title">{{__('sunshine.Dashboard')}}</span>
+          <i class="menu-arrow"></i>
         </a>
+        <div class="collapse" id="icons">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="{{route('admin-dashboard')}}">TimeSheet</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{route('timesheets.show')}}">TimeSheet Detail</a></li>
+          </ul>
+        </div>
       </li>
 
       {{-- Request --}}
