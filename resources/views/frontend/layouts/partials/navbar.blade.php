@@ -73,21 +73,22 @@
             <img src="{{asset('assets/images/faces/digitran-team1.jpg')}}" alt="profile"/>
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-            <a class="dropdown-item" >
-              <i class="ti-settings text-primary"></i>
-              Settings
+            <h6 class="dropdown-header">Settings</h6>
+            <a href="{{route('client.settings.getStaff')}}" class="dropdown-item" >
+              <i class="ti-user text-primary"></i>
+              Staff Information
             </a>
+            <a href="{{route('client.settings.change-password')}}" class="dropdown-item" >
+              <i class="ti-key text-primary"></i>
+              Change Password
+            </a>
+            <div class="dropdown-divider"></div>
             <a href="{{ route('logout') }}" class="dropdown-item">
               <i class="ti-power-off text-primary"></i>
               Logout
             </a>
           </div>
         </li>
-        {{-- <li class="nav-item nav-settings d-none d-lg-flex">
-          <a class="nav-link" href="#">
-            <i class="icon-ellipsis"></i>
-          </a>
-        </li> --}}
       </ul>
       {{-- <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
         <span class="icon-menu"></span>

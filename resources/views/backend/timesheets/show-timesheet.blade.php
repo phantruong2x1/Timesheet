@@ -16,7 +16,7 @@ $currentMonth = strtotime(date('Y-m-15'));
                 <div class="card-body row">
                     <p class="col-md-2 card-title mb-0">TimeSheet Detail</p>
                     {{-- Lọc  --}}
-                    <form action="{{route('timesheets.show')}}" id="form_filter" method="get" class="col-md-8">
+                    <form action="{{route('timesheets.show')}}" id="form_filter" method="get" class="col-md-10">
                         <div class="row">
                             {{-- Lọc theo tháng --}}
                             <div class="col-2">
@@ -44,7 +44,7 @@ $currentMonth = strtotime(date('Y-m-15'));
                                 @endif
                                 </select>
                             </div>
-                            <i class="p-2" style="background-color: #FFFF66; height: 10px;margin-left: 30%;border: 1px solid black"></i> <p class="pl-2"> Today</p>
+                            <i class="p-2" style="background-color: #FFFF66; height: 10px;margin-left: 20%;border: 1px solid black"></i> <p class="pl-2"> Today</p>
                             <i class="p-2" style="background-color: #CCFFCC; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> Thứ 7</p>
                             <i class="p-2" style="background-color: #FFCCFF; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> CN</p>
                         </div>

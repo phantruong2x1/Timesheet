@@ -19,8 +19,6 @@ class Staffs extends Model
     protected $fillable = [
             'position_id',
             'department_id',
-            'first_name',
-            'last_name',
             'full_name',
             'birthday',
             'gender',

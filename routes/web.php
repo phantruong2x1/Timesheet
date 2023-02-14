@@ -180,6 +180,13 @@ Route::middleware('auth')->group(function(){
             //request 
             Route::get('/request-index', [Client\RequestDetailController::class, 'index'])->name('client.requests.index');
             Route::get('/request-destroy/{id}',[Client\RequestDetailController::class,'destroy'])->name('client.requests.destroy');
+
+            //settings
+            Route::get('/setting-user', [Client\SettingController::class, 'getStaff'])->name('client.settings.getStaff');
+            Route::post('/setting-user-update', [Client\SettingController::class, 'updateStaff'])->name('client.settings.updateStaff');
+
+            Route::get('/setting-change-password', [Client\SettingController::class, 'changePassword'])->name('client.settings.change-password');
+            Route::post('/setting-update-passoword', [Client\SettingController::class, 'updatePassword'])->name('client.settings.update-password');
             
         });
     });

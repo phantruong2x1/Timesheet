@@ -13,6 +13,15 @@ $currentMonth = strtotime(date('Y-m-15'));
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
+                {{-- Thông báo --}}
+                <div class="flash-message">
+                    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                    @if(Session::has('alert-' . $msg))
+                        <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+                    @endif
+                    @endforeach
+                </div>
+                
                 <div class="card-body row">
                     <p class="col-md-2 card-title mb-0">Time Sheet</p>
                     {{-- Lọc  --}}

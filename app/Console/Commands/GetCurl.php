@@ -132,33 +132,7 @@ class GetCurl extends Command
                         $timeSheets->save();
                     }
                     //Update data for 2nd checkin
-                    else{
-                        // $timesheetDetail->last_checkout  = $list->list[$i]->lockDate;
-
-                        // if(date("H:i:s",$list->list[$i]->lockDate/1000) >= '12:00:00')
-                        //     $timesheetDetail->working_hour   = ($timesheetDetail->last_checkout -$timesheetDetail->first_checkin)-(60*60*1000);
-                        // else
-                        //     $timesheetDetail->working_hour   = ($timesheetDetail->last_checkout -$timesheetDetail->first_checkin);
-
-                        // if($timesheetDetail->working_hour > (8*60*60*1000)){
-                        //     $timesheetDetail->overtime       = $timesheetDetail->working_hour - (8*60*60*1000);
-                        // }
-                        // else{
-                        //     $timesheetDetail->overtime = 0;
-                        // }
-                        // //check late checkin && early checkout
-                        // if( date('H:i:s',$timesheetDetail->first_checkin/1000) > '08:30:00' && 
-                        // date('H:i:s',$timesheetDetail->last_checkout/1000) <= '17:30:00' ){
-                        // $timesheetDetail->status = 'Late checkin/Early checkout';
-                        // }
-                        // //check early checkout
-                        // else if(date('H:i:s',$timesheetDetail->last_checkout/1000) < '17:30:00'){
-                        //     $timesheetDetail->status = 'Early checkout';
-                        // }
-                        // else if(date('H:i:s',$timesheetDetail->first_checkin/1000) <= '08:30:00'){
-                        //     $timesheetDetail->status = 'On Time';
-                        // }
-                        
+                    else{ 
                         // $timesheetDetail->save();
                         $timesheetDetail->last_checkout  = $list->list[$i]->lockDate;
                         $timesheetDetail->working_hour   = $timesheet->getWorkingHour($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
