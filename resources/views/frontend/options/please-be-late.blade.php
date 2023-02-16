@@ -15,7 +15,7 @@
     <div class="alert alert-danger">Dữ liệu nhập không hợp lệ!</div>
     @endif
 
-    <form class="forms-sample" action="" method="post">
+    <form class="forms-sample" action="{{route('option-post-please-be-late')}}" method="post">
     @csrf  
         {{-- info --}}
         <div class="form-group row">
@@ -28,7 +28,7 @@
         <div class="form-group row">
             <label for="exampleInputl" class="col-sm-3 col-form-label">Time wants to come</label>
             <div class="col-sm-9">
-                <input type="datetime-local" name="from">
+                <input type="datetime-local" name="from" value="{{date('Y-m-d H:i:s',$date/1000)}}">
                 {{-- Thông báo lỗi --}}
                 @error('from')
                 <span style="color: red">{{$message}}</span>

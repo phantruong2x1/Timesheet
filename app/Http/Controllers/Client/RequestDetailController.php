@@ -106,8 +106,9 @@ class RequestDetailController extends Controller
     }
 
     //option please be late
-    public function beLate()
+    public function beLate($date)
     {
+        $this->data['date'] = strtotime($date)*1000;
         return view('frontend.options.please-be-late',$this->data);
     }
     public function postBeLate(Request $request)
@@ -132,8 +133,9 @@ class RequestDetailController extends Controller
     }
 
     //option please come back soon
-    public function comeBackSoon()
+    public function comeBackSoon($date)
     {
+        $this->data['date'] = strtotime($date)*1000;
         return view('frontend.options.please-come-back-soon',$this->data);
     }
     public function postComeBackSoon(Request $request)
@@ -157,8 +159,9 @@ class RequestDetailController extends Controller
         return redirect()->route('client.requests.index');
     }
     //option take a break
-    public function takeABreak()
+    public function takeABreak($date)
     {
+        $this->data['date'] = strtotime($date)*1000;
         return view('frontend.options.take-a-break',$this->data);
     }
     public function postTakeABreak(Request $request)

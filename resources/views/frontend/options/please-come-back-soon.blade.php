@@ -28,7 +28,7 @@
         <div class="form-group row">
             <label for="exampleInputl" class="col-sm-3 col-form-label">Time you want to come back</label>
             <div class="col-sm-9">
-                <input type="datetime-local" name="to">   
+                <input type="datetime-local" name="to" value="{{date('Y-m-d H:i:s',$date/1000)}}">   
                 {{-- Thông báo lỗi --}}
                 @error('to')
                 <span style="color: red">{{$message}}</span>

@@ -102,9 +102,9 @@ $key =1;
                 <div class="card-body">
                   <p class="mb-4">Option</p>
                     {{-- <a href="{{route('option-forget')}}" class="btn btn-warning mb-2">Forget</a> --}}
-                    <a href="{{route('option-please-be-late')}}" class="btn btn-light mb-2">Please Be Late</a>
-                    <a href="{{route('option-please-come-back-soon')}}" class="btn btn-light mb-2">Please Come Back Soon</a>
-                    <a href="{{route('option-take-a-break')}}" class="btn btn-danger mb-2">Take a Break</a>
+                    <a href="{{route('option-please-be-late',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light mb-2">Please Be Late</a>
+                    <a href="{{route('option-please-come-back-soon',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light mb-2">Please Come Back Soon</a>
+                    <a href="{{route('option-take-a-break',['date'=>date('Y-m-d')])}}" class="btn btn-danger mb-2">Take a Break</a>
                 </div>
               </div>
             </div>

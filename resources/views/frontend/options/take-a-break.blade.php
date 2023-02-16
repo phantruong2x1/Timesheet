@@ -15,7 +15,7 @@
     <div class="alert alert-danger">Dữ liệu nhập không hợp lệ!</div>
     @endif
 
-    <form class="forms-sample" action="" method="post">
+    <form class="forms-sample" action="{{route('option-post-take-a-break')}}" method="post">
     @csrf  
         {{-- info --}}
         <div class="form-group row">
@@ -29,7 +29,7 @@
         <div class="form-group row">
             <label for="exampleInputl" class="col-sm-3 col-form-label">Time take a break</label>
             <div class="col-sm-9">
-                <input type="date" name="from">    
+                <input type="date" name="from" value="{{date('Y-m-d',$date/1000)}}">    
                 {{-- Thông báo lỗi --}}
                 @error('from')
                 <span style="color: red">{{$message}}</span>

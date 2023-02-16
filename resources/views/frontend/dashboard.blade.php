@@ -134,9 +134,9 @@ $currentMonth = strtotime(date('Y-m-15'));
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton1">
                                                 <h6 class="dropdown-header">Option</h6>
                                                 <a class="dropdown-item" href="{{route('option-forget',['id' => $item['id']])}}">Update Checkout</a>
-                                                <a class="dropdown-item" href="{{route('option-please-be-late')}}">Please Be Late</a>
-                                                <a class="dropdown-item" href="{{route('option-please-come-back-soon')}}">Please Come Back Soon</a>
-                                                <a class="dropdown-item" href="{{route('option-take-a-break')}}">Take a Break</a>                                           
+                                                <a class="dropdown-item" href="{{route('option-please-be-late',['date' => $item['date']])}}">Please Be Late</a>
+                                                <a class="dropdown-item" href="{{route('option-please-come-back-soon',['date' => $item['date']])}}">Please Come Back Soon</a>
+                                                <a class="dropdown-item" href="{{route('option-take-a-break',['date' => $item['date']])}}">Take a Break</a>                                           
                                             </div>
                                           </div>   
                                     @else 
@@ -146,9 +146,9 @@ $currentMonth = strtotime(date('Y-m-15'));
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton1">
                                                 <h6 class="dropdown-header">Option</h6>
-                                                <a class="dropdown-item" href="{{route('option-please-be-late')}}">Please Be Late</a>
-                                                <a class="dropdown-item" href="{{route('option-please-come-back-soon')}}">Please Come Back Soon</a>
-                                                <a class="dropdown-item" href="{{route('option-take-a-break')}}">Take a Break</a>                                           
+                                                <a class="dropdown-item" href="{{route('option-please-be-late',['date' => $item['date']])}}">Please Be Late</a>
+                                                <a class="dropdown-item" href="{{route('option-please-come-back-soon',['date' => $item['date']])}}">Please Come Back Soon</a>
+                                                <a class="dropdown-item" href="{{route('option-take-a-break',['date' => $item['date']])}}">Take a Break</a>                                           
                                             </div>
                                         </div>  
                                     @endif 
