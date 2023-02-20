@@ -39,6 +39,8 @@ class TimesheetController extends Controller
         $request->validate([
             'start_date' => 'required',
         ]);
+        DB::table('timesheets')->truncate();
+        DB::table('history_inouts')->truncate();
 
         $millisecond = strtotime('1-'.$request->start_date.'');
         $monthFilter = date('m',$millisecond);
@@ -91,13 +93,13 @@ class TimesheetController extends Controller
                 if($list->list[$i]->recordType == 8){
 
                     //Lấy bản ghi mới nhất theo staff_id
-                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->orderBy('date', 'DESC')->first();
+                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->orderBy('first_checkin', 'DESC')->first();
                     $staffDetail = Staffs::find($list->list[$i]->username);
                     //Nếu Staff_id = null thì tạo mới
                     if(empty($timesheetDetail)){
                         $timeSheets = new Timesheet();
                         $timeSheets->record_id      = $list->list[$i]->recordId;
-                        $timeSheets->date           = $list->list[$i]->lockDate;
+                        $timeSheets->date           = date('d-m-Y',$list->list[$i]->lockDate/1000);
                         $timeSheets->first_checkin  = $list->list[$i]->lockDate;
                         $timeSheets->staff_id       = $list->list[$i]->username;
                         if(empty($staffDetail) || $staffDetail->shift == 'Ca 1')
@@ -113,10 +115,10 @@ class TimesheetController extends Controller
                         $timeSheets->save();
                     }
                     //Tạo mới bản ghi theo ngày
-                    else if((date('d-m-Y',($timesheetDetail->date)/1000) != date('d-m-Y',($list->list[$i]->lockDate)/1000))){
+                    else if($timesheetDetail->date != date('d-m-Y',($list->list[$i]->lockDate)/1000)){
                         $timeSheets = new Timesheet();
                         $timeSheets->record_id      = $list->list[$i]->recordId;
-                        $timeSheets->date           = $list->list[$i]->lockDate;
+                        $timeSheets->date           = date('d-m-Y',$list->list[$i]->lockDate/1000);
                         $timeSheets->first_checkin  = $list->list[$i]->lockDate;
                         $timeSheets->staff_id       = $list->list[$i]->username;
                         if(empty($staffDetail) || $staffDetail->shift == 'Ca 1')
@@ -179,7 +181,7 @@ class TimesheetController extends Controller
         ]);
         $timesheet = new Timesheet;
         $timesheet->staff_id = $request->staff_id;
-        $timesheet->date = strtotime($request->date)*1000;
+        $timesheet->date = date('d-m-Y',strtotime($request->date));
         $timesheet->first_checkin = strtotime($request->first_checkin)*1000;
         $timesheet->last_checkout = strtotime($request->last_checkout)*1000;
         $timesheet->working_hour = $this->getWorkingHour($timesheet->first_checkin, $timesheet->last_checkout);
@@ -233,29 +235,23 @@ class TimesheetController extends Controller
             $dateFilter = date('d-m-Y',mktime(0, 0, 0, $monthFilter, $i, $yearFilter));
             $millisecondWeekday = strtotime($dateFilter);
             $weekday = getdate($millisecondWeekday);
-            if($clientCon->getWeekday($weekday['weekday'])== 'T7'){
-                $this->data['colorWeekday'] = '#CCFFCC';
-            }
-            else if($clientCon->getWeekday($weekday['weekday']) == 'CN')
-                $this->data['colorWeekday'] = '#FFCCFF';
-            else
-            $this->data['colorWeekday'] = '';
+            $colorWeekday = $clientCon->getColorWeekday($weekday);
             if($dateFilter == date('d-m-Y'))
-                $this->data['colorWeekday'] = '#FFFF66';
+                $colorWeekday = '#FFFF66';
                 
             $this->data['userListTimesheet'][$i] = [
                 'date' => $dateFilter, 
                 'weekday' => $clientCon->getWeekday($weekday['weekday']),
-                'colorWeekday' => $this->data['colorWeekday']
+                'colorWeekday' => $colorWeekday
             ]; 
             foreach($listTimesheet as $timesheetDetail){
-                if($dateFilter == date('d-m-Y',$timesheetDetail->date/1000)){
+                if($dateFilter == $timesheetDetail->date){
                    
                     $this->data['userListTimesheet'][$i] = [
                         'id' => $timesheetDetail->id,
                         'date' => $dateFilter, 
                         'weekday' => $clientCon->getWeekday($weekday['weekday']),
-                        'colorWeekday' => $this->data['colorWeekday'],
+                        'colorWeekday' => $colorWeekday,
                         'first_checkin' => $timesheetDetail->first_checkin,
                         'last_checkout' => $timesheetDetail->last_checkout,
                         'working_hour' => $timesheetDetail->working_hour,
@@ -303,7 +299,7 @@ class TimesheetController extends Controller
 
         $timesheet = Timesheet::find($id);
         $timesheet->staff_id = $request->staff_id;
-        $timesheet->date = strtotime($request->date)*1000;
+        $timesheet->date = date('d-m-Y',strtotime($request->date));
         $timesheet->first_checkin = strtotime($request->first_checkin)*1000;
         $timesheet->last_checkout = strtotime($request->last_checkout)*1000;
         $timesheet->working_hour = $this->getWorkingHour($timesheet->first_checkin, $timesheet->last_checkout);

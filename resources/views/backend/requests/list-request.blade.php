@@ -87,8 +87,8 @@ $key =1;
                 {{-- Nút option --}}
                 <td> 
                     <a onclick="return confirm('Are you sure you want to denied request?')" 
-                    href="{{route('requests.denied',['id' => $item->id])}}" class="btn btn-danger btn-sm">Denied</a>
-                    <a href="{{route('requests.accept',['id' => $item->id])}}" class="btn btn-success btn-sm">Accept</a>
+                    href="{{route('requests.denied',['id' => $item->id])}}" class="btn btn-danger btn-sm"><i class="ti-close"></i></a>
+                    <a href="{{route('requests.accept',['id' => $item->id])}}" class="btn btn-success btn-sm"><i class="ti-check"></i></a>
                 </td>
                 </tr>
             @endforeach        

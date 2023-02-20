@@ -26,11 +26,10 @@
       @endforeach
     </div>
 
-    <p class="card-description">
-
-      <a href="{{route('users.add')}}" class="btn btn-info">Add User</a>
-      
-    </p>
+    {{-- nút thêm  --}}
+    <div class="col-12 d-flex justify-content-end" >
+      <a href="{{route('users.add')}}" class="btn btn-info btn-sm" style="line-height: 30px">Add <i class="ti-plus"></i></a>
+    </div>
 
     <div class="table-responsive">
       <table class="table table-striped table-borderless">
@@ -66,9 +65,9 @@
                   </td>
                 {{-- Nút option --}}
                 <td>
-                    <a href="{{route('users.edit',['id' => $item->id])}}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{{route('users.edit',['id' => $item->id])}}" class="btn btn-warning btn-sm"><i class="ti-pencil-alt"></i></a>
                     <a onclick="return confirm('Are you sure you want to delete?')" 
-                    href="{{route('users.delete',['id' => $item->id])}}" class="btn btn-danger btn-sm">Delete</a>
+                    href="{{route('users.delete',['id' => $item->id])}}" class="btn btn-danger btn-sm"><i class="ti-trash"></i></a>
                 </td>
               
             </tr>

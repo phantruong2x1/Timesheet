@@ -46,7 +46,7 @@ class StatisticalController extends Controller
             $countEarlyCheckout = 0;
 
             foreach($timeList as $time){
-                if($startDateFilter <= $time->date &&  $time->date <= $endDateFilter){
+                if($startDateFilter <= (strtotime($time->date)*1000) &&  (strtotime($time->date)*1000) <= $endDateFilter){
                     $countDays++;
                     $countWorkHour += $time->working_hour;
                     $countOverHour += $time->overtime;

@@ -76,7 +76,7 @@ class GetCurl extends Command
         for ($i = count($list->list) - 1; $i >= 0; $i--) {
 
             //Kiểm tra trùng recordId
-            $checkHistoryList = DB::table('history_inouts')->pluck('record_id')->toArray();
+            $checkHistoryList = DB::table('history_inouts')->orderBy('time','DESC')->take(10)->pluck('record_id')->toArray();
             if(!in_array($list->list[$i]->recordId, $checkHistoryList )){
 
                 //Insert data in table history_inouts
@@ -97,7 +97,7 @@ class GetCurl extends Command
                     if(empty($timesheetDetail)){
                         $timeSheets = new Timesheet();
                         $timeSheets->record_id      = $list->list[$i]->recordId;
-                        $timeSheets->date           = $list->list[$i]->lockDate;
+                        $timeSheets->date           = date('d-m-Y',$list->list[$i]->lockDate/1000);
                         $timeSheets->first_checkin  = $list->list[$i]->lockDate;
                         $timeSheets->staff_id       = $list->list[$i]->username;
                         if(empty($staffDetail) || $staffDetail->shift == 'Ca 1')
@@ -113,10 +113,10 @@ class GetCurl extends Command
                         $timeSheets->save();
                     }
                     //Tạo mới bản ghi theo ngày
-                    else if((date('d-m-Y',($timesheetDetail->date)/1000) != date('d-m-Y',($list->list[$i]->lockDate)/1000))){
+                    else if($timesheetDetail->date != date('d-m-Y',($list->list[$i]->lockDate)/1000)){
                         $timeSheets = new Timesheet();
                         $timeSheets->record_id      = $list->list[$i]->recordId;
-                        $timeSheets->date           = $list->list[$i]->lockDate;
+                        $timeSheets->date           = date('d-m-Y',$list->list[$i]->lockDate/1000);
                         $timeSheets->first_checkin  = $list->list[$i]->lockDate;
                         $timeSheets->staff_id       = $list->list[$i]->username;
                         if(empty($staffDetail) || $staffDetail->shift == 'Ca 1')

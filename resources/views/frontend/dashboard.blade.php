@@ -45,7 +45,7 @@ $currentMonth = strtotime(date('Y-m-15'));
                     </form>
                     
                     <div class="table-responsive pt-3">
-                        <table class="table " >
+                        <table class="table " id="table1" >
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -176,6 +176,23 @@ $currentMonth = strtotime(date('Y-m-15'));
             $('#form_filter').submit();
         })
     })
+
+// $(document).ready(function(){
+
+//     $(".date_filter").change(function(){
+//         var date_filter = $('.date_filter').val();
+//         $.ajax({
+//             url: "/client/dashboard/",
+//             method: "GET",
+//             data: {date_filter: date_filter},
+//             success: function(result){
+//                 $("#table1").html(result);
+//             },
+//         });
+//     });
+// });
+
+
 </script> 
 
 @endsection

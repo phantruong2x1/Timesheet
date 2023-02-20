@@ -14,12 +14,6 @@
 <div class="card-body">
     <h4 class="card-title">Staff Table</h4>
 
-    <p class="card-description">
-
-      <a href="{{route('staff.add')}}" class="btn btn-info">Add Staff</a>
-      
-    </p>
-
     {{-- Lọc  --}}
     <form action="{{route('staff.index')}}" id="form_filter" method="get">
       <div class="row">
@@ -48,7 +42,10 @@
             <option value="Ca 2" {{request()->shift=='Ca 2' ? 'selected':false}}>Ca 2: 8:00-17:00</option>
           </select>
         </div>
-
+        {{-- nút thêm --}}
+        <div class="col-8 d-flex justify-content-end">
+          <a href="{{route('staff.add')}}" class="btn btn-info btn-sm" style="line-height: 30px">Add <i class="ti-plus"></i></a>
+        </div>     
       </div>
     </form>
 
@@ -93,10 +90,11 @@
 
               {{-- Nút option --}}
               <td>
-                <a href="{{route('staff.edit',['id' => $item->id])}}" class="btn btn-warning btn-sm">Edit</a>
-                <a onclick="return confirm('Are you sure you want to delete?')" href="{{route('staff.delete',['id' => $item->id])}}" class="btn btn-danger btn-sm">Delete</a>
+                <a href="{{route('staff.edit',['id' => $item->id])}}" class="btn btn-warning btn-sm"><i class="ti-pencil-alt"></i></a>
+                <a onclick="return confirm('Are you sure you want to delete?')" href="{{route('staff.delete',['id' => $item->id])}}" class="btn btn-danger btn-sm">
+                  <i class="ti-trash"></i>
+                </a>        
               </td>
-              
             </tr>
             @endforeach
             @else

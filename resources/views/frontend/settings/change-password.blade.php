@@ -19,27 +19,27 @@
         <form class="forms-sample" action="{{route('client.settings.update-password')}}" method="POST">
         @csrf     
             {{-- staff name --}}
-            <div class="form-group row">
+            <div class="row">
                 <label class="col-sm-2 col-form-label">Full Name:</label>
-                <label class="col-form-label"><b>{{$userDetail->staff->full_name}}</b></label>
+                <label class="col-sm-10 col-form-label"><b>{{$userDetail->staff->full_name}}</b></label>
             </div>
     
             {{-- role_id --}}
-            <div class="form-group row">
+            <div class="row">
                 <label class="col-sm-2 col-form-label">Role Name:</label>
-                <label class="col-form-label"><b>{{$userDetail->user_role->role_name}}</b></label>
+                <label class="col-sm-10 col-form-label"><b>{{$userDetail->user_role->role_name}}</b></label>
             </div>
     
             {{-- user_name --}}
-            <div class="form-group row">
+            <div class="row">
                 <label class="col-sm-2 col-form-label">User Name:</label>
-                <label class="col-form-label"><b>{{$userDetail->user_name}}</b></label>
+                <label class="col-sm-10 col-form-label"><b>{{$userDetail->user_name}}</b></label>
             </div>
     
             {{-- password --}}
-            <div class="form-group row">
+            <div class="row">
                 <label for="exampleInputEmail2" class="col-sm-2 col-form-label">New Password:</label>
-                <div class="col-sm-9">
+                <div class="col-form-label col-sm-10">
                 <input type="password" class="form-control" id="exampleInputEmail2" 
                 name="password" value="{{old('password')}}">
     

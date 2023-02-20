@@ -61,7 +61,7 @@ $key = 1;
                             </div>
                            {{-- button add user --}}
                             <div class=" col-7 d-flex justify-content-end">
-                                <a href="{{route('timesheets.create')}}" class="btn btn-info">Add User</a>
+                                <a href="{{route('timesheets.create')}}" class="btn btn-info btn-sm" style="line-height: 30px">Add <i class="ti-plus"></i></a>
                             </div>
                         </div>
                     </form>
@@ -83,8 +83,8 @@ $key = 1;
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(!empty($timesheetsList))
-                                @foreach ($timesheetsList as $item)
+                                @if(!empty($timesheetList))
+                                @foreach ($timesheetList as $item)
                                 
                                 <tr>
                                     {{-- Hiển thị dữ liệu --}}
@@ -92,10 +92,10 @@ $key = 1;
                                     @if(empty($item['full_name']))
                                         <td>{{$item['staff_id']}}</td>
                                     @else
-                                        <td>{{$item['full_name']}}</td>
+                                        <td>{{$item->staff->full_name}}</td>
                                     @endif
 
-                                    <td>{{date('d-m-Y',$item['date']/1000)}}</td>
+                                    <td>{{$item['date']}}</td>
                                     <td>{{date('H:i:s',$item['first_checkin']/1000)}}</td>
                                     
                                     {{-- last_checkout data --}}
@@ -142,8 +142,10 @@ $key = 1;
                                     </td>  --}}
                                     {{-- Nút option --}}
                                     <td>
-                                        <a href="{{route('timesheets.edit',['id' => $item['id']])}}" class="btn btn-warning btn-sm">Edit</a>
-                                        <a onclick="return confirm('Are you sure you want to delete?')" href="{{route('timesheets.destroy',['id' => $item['id']])}}" class="btn btn-danger btn-sm">Delete</a>
+                                        <a href="{{route('timesheets.edit',['id' => $item['id']])}}" class="btn btn-warning btn-sm"><i class="ti-pencil-alt"></i></a>
+                                        <a onclick="return confirm('Are you sure you want to delete?')" href="{{route('timesheets.destroy',['id' => $item['id']])}}" class="btn btn-danger btn-sm">
+                                            <i class="ti-trash"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach

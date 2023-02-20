@@ -29,6 +29,7 @@ class ClientController extends Controller
             $monthFilter = date('m',$millisecond);
             $yearFilter = date('Y',$millisecond);
         }
+
         $dayOfMonth = cal_days_in_month(CAL_GREGORIAN, $monthFilter, $yearFilter);
         $listTimesheet = Timesheet::where('staff_id',Auth::user()->staff_id)->orderBy('date','desc')->get();
 
@@ -36,29 +37,25 @@ class ClientController extends Controller
             $dateFilter = date('d-m-Y',mktime(0, 0, 0, $monthFilter, $i, $yearFilter));
             $millisecondWeekday = strtotime($dateFilter);
             $weekday = getdate($millisecondWeekday);
-            if($this->getWeekday($weekday['weekday'])== 'T7'){
-                $this->data['colorWeekday'] = '#CCFFCC';
-            }
-            else if($this->getWeekday($weekday['weekday']) == 'CN')
-                $this->data['colorWeekday'] = '#FFCCFF';
-            else
-            $this->data['colorWeekday'] = '';
+            $weekdayV = $this->getWeekday($weekday['weekday']);
+            $colorWeekday = $this->getColorWeekday($weekday);
+
             if($dateFilter == date('d-m-Y'))
-                $this->data['colorWeekday'] = '#FFFF66';
+                $colorWeekday = '#FFFF66';
                 
             $this->data['userListTimesheet'][$i] = [
                 'date' => $dateFilter, 
-                'weekday' => $this->getWeekday($weekday['weekday']),
-                'colorWeekday' => $this->data['colorWeekday']
+                'weekday' => $weekdayV,
+                'colorWeekday' => $colorWeekday
             ]; 
             foreach($listTimesheet as $timesheetDetail){
-                if($dateFilter == date('d-m-Y',$timesheetDetail->date/1000)){
+                if($dateFilter == $timesheetDetail->date){
                    
                     $this->data['userListTimesheet'][$i] = [
                         'id' => $timesheetDetail->id,
                         'date' => $dateFilter, 
-                        'weekday' => $this->getWeekday($weekday['weekday']),
-                        'colorWeekday' => $this->data['colorWeekday'],
+                        'weekday' => $weekdayV,
+                        'colorWeekday' => $colorWeekday,
                         'first_checkin' => $timesheetDetail->first_checkin,
                         'last_checkout' => $timesheetDetail->last_checkout,
                         'working_hour' => $timesheetDetail->working_hour,
@@ -100,6 +97,17 @@ class ClientController extends Controller
                 return 'CN';
                 break;
         }  
+    }
+    public function getColorWeekday($weekday)
+    {
+        if($this->getWeekday($weekday['weekday'])== 'T7'){
+            $colorWeekday = '#CCFFCC';
+        }
+        else if($this->getWeekday($weekday['weekday']) == 'CN')
+            $colorWeekday = '#FFCCFF';
+        else
+        $colorWeekday = '';
+        return $colorWeekday;
     }
 }
 

@@ -26,29 +26,17 @@ class AdminController extends Controller
             $filter[] = ['staff_id','=',$request->staff_id];
         }
         if(!empty($request->date_filter)){
-            $dateFilter = $request->date_filter;
+            $dateFilter = date('d-m-Y', strtotime($request->date_filter));
+            $filter[] = ['date','=',$dateFilter];
         }
         else{
-            $dateFilter = date('Y-m-d');
+            $dateFilter = date('d-m-Y');
+            $filter[] = ['date','=',$dateFilter];
         }
-        $timesheetList = Timesheet::where($filter)->orderBy('date','desc')->get();   
-        foreach($timesheetList as $key=>$item){
-            if(date('Y-m-d',$item->date/1000) == $dateFilter){
-                $this->data['timesheetsList'][$key] = [
-                    'id' => $item->id,
-                    'full_name' => Staffs::where('id', $item->staff_id)->pluck('full_name')->first(),
-                    'staff_id' => $item->staff_id,
-                    'date' => $item->date,
-                    'first_checkin' => $item->first_checkin,
-                    'last_checkout' => $item->last_checkout,
-                    'working_hour' => $item->working_hour,
-                    'overtime' => $item->overtime,
-                    'status' => $item->status,
-                    'leave_status' => $item->leave_status,
-                ];
-            }
-        }
+        $this->data['timesheetList'] = Timesheet::where($filter)->orderBy('first_checkin','desc')->get();  
+
         // dd($this->data['timesheetsList']);
         return view('backend.dashboard', $this->data);  
     }   
 }
+

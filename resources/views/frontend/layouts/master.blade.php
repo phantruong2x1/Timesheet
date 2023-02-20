@@ -32,7 +32,7 @@
         <div class="container-fluid page-body-wrapper">
 
             <!-- partial:partials/_settings-panel.html -->
-            @include('frontend.layouts.partials.settings-panel')
+            {{-- @include('frontend.layouts.partials.settings-panel') --}}
             <!-- partial -->
 
             <!-- partial:partials/_sidebar.html -->
@@ -78,4 +78,13 @@
 </body>
 
 </html>
+{{-- <script>
+$(document).ready(function(){
+    $('a.nav-link').click(function(){
+        var url = this.href;
+        $('.container-fluid').load(url);
+        return false;
+    })
+})
+</script> --}}
 

@@ -97,6 +97,32 @@
 </div>   
 </div>   
 </div>   
+<!-- The Modal -->
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Delete</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <b>Are you sure you want to delete?</b>
+          Full Name: 'data-fullName'
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <a href="{{route('staff.delete',['id' => $item->id])}}" class="btn btn-danger">Delete</a>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 @endsection
 
 
