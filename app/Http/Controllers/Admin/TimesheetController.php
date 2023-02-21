@@ -39,8 +39,6 @@ class TimesheetController extends Controller
         $request->validate([
             'start_date' => 'required',
         ]);
-        DB::table('timesheets')->truncate();
-        DB::table('history_inouts')->truncate();
 
         $millisecond = strtotime('1-'.$request->start_date.'');
         $monthFilter = date('m',$millisecond);
