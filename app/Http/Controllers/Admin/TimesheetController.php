@@ -179,24 +179,16 @@ class TimesheetController extends Controller
             'first_checkin' => 'required',
             'last_checkout' => 'required',
         ]);
-        $timesheet = new Timesheet;
-        $timesheet->staff_id = $request->staff_id;
-        $timesheet->date = date('d-m-Y',strtotime($request->date));
-        $timesheet->first_checkin = strtotime($request->first_checkin)*1000;
-        $timesheet->last_checkout = strtotime($request->last_checkout)*1000;
-        $timesheet->working_hour = $this->getWorkingHour($timesheet->first_checkin, $timesheet->last_checkout);
-        $timesheet->overtime = $this->getOverTime($timesheet->working_hour);
-        $staffDetail = Staffs::find($request->staff_id);
-        if(!empty($staffDetail) && $staffDetail->shift == 'Ca 2')
-            $timesheet->status = $this->getStatusShift2($timesheet->first_checkin, $timesheet->last_checkout);
-        else
-            $timesheet->status = $this->getStatusShift1($timesheet->first_checkin, $timesheet->last_checkout);
-        $timesheet->leave_status = $request->leave_status;
-       
-        $timesheet->save();
         
-         // Hiển thị câu thông báo 1 lần (Flash session)
-        Session::flash('alert-info', 'Thêm thành công ^^~!!!');
+        $data = $request->all();
+        $timesheet = new Timesheet;
+        $status = $timesheet->createTimesheet($data);
+        if($status){
+            Session::flash('alert-info', 'Thêm thành công ^^~!!!');
+        }
+        else {
+            Session::flash('alert-danger', 'Đã có lỗi xảy ra!');
+        }
 
         return redirect()->route('admin-dashboard');
     }
@@ -297,25 +289,16 @@ class TimesheetController extends Controller
             'last_checkout' => 'required',
         ]);
 
-        $timesheet = Timesheet::find($id);
-        $timesheet->staff_id = $request->staff_id;
-        $timesheet->date = date('d-m-Y',strtotime($request->date));
-        $timesheet->first_checkin = strtotime($request->first_checkin)*1000;
-        $timesheet->last_checkout = strtotime($request->last_checkout)*1000;
-        $timesheet->working_hour = $this->getWorkingHour($timesheet->first_checkin, $timesheet->last_checkout);
-        $timesheet->overtime = $this->getOverTime($timesheet->working_hour);
-        $staffDetail = Staffs::find($request->staff_id);
-        if($staffDetail->shift == 'Ca 2')
-            $timesheet->status = $this->getStatusShift2($timesheet->first_checkin, $timesheet->last_checkout);
-        else
-            $timesheet->status = $this->getStatusShift1($timesheet->first_checkin, $timesheet->last_checkout);
-        $timesheet->leave_status = $request->leave_status;
-        $timesheet->leave_status = $request->leave_status;
-       
-        $timesheet->save();
-        
-         // Hiển thị câu thông báo 1 lần (Flash session)
-        Session::flash('alert-info', 'Sửa thành công!');
+        $data = $request->all();
+        $timesheet = new Timesheet;
+        $status = $timesheet->updateTimesheet($id,$data);
+
+        if($status){
+            Session::flash('alert-info', 'Cập nhập thành công ^^~!!!');
+        }
+        else {
+            Session::flash('alert-danger', 'Đã có lỗi xảy ra!');
+        }
 
         return redirect()->route('admin-dashboard');
     }
@@ -328,7 +311,7 @@ class TimesheetController extends Controller
      */
     public function destroy($id)
     {
-        $timesheetDetail= Timesheet::find($id);
+        $timesheetDetail= Timesheet::findOrFail($id);
         $timesheetDetail->delete();
         Session::flash('alert-info', 'Xóa thành công!');
         return redirect()->route('admin-dashboard');

@@ -34,16 +34,18 @@ class PositionController extends Controller
     //Thêm 1 position
     public function postAdd(Request $request)
     {
-        $positions = new Position;
-        $positions->position_name = $request->position_name;
-        $positions->position_desc = $request->position_desc;
+        $request->validate([
+            'position_name' => 'required'
+        ]);
+        $data = $request->all();
+        $status = Position::create($data);
 
-        //Lưu
-        $positions->save();
-
-        // Hiển thị câu thông báo 1 lần (Flash session)
-        Session::flash('alert-info', 'Thêm thành công ^^~!!!');
-
+        if($status){
+            Session::flash('alert-info', 'Thêm thành công ^^~!!!');
+        }
+        else {
+            Session::flash('alert-danger', 'Đã có lỗi xảy ra!');
+        }
         return redirect()->route('positions.index');
     }
 
@@ -59,14 +61,11 @@ class PositionController extends Controller
 
             //Kiểm tra người dùng có tồn tại không
             if(!empty($this->data)){
-                $request->session()->put('id',$id);
-                
-                
+                $request->session()->put('id',$id);   
             }else{
                 Session::flash('alert-danger', 'Người dùng không tồn tại!');
                 return redirect()->route('positions.index');
-            }
-            
+            }           
         }
         else{
             Session::flash('alert-danger', 'Người dùng không tồn tại!');
@@ -79,43 +78,38 @@ class PositionController extends Controller
     public function postEdit(Request $request)
     {
         $id = session('id');
-
+        $request->validate([
+            'position_name' => 'required'
+        ]);
         //Kiểm tra id có tồn tại
         if(empty($id))
             return redirect()->route('positions.index'); 
+        
+        $data=$request->all();
+        $positions = Position::findOrFail($id);
+        $status=$positions->fill($data)->save();
 
-        $positions = Position::find($id);
-        $positions->position_name = $request->position_name;
-        $positions->position_desc = $request->position_desc;
-
-        //Lưu
-        $positions->save();
-
-        Session::flash('alert-info', 'Sửa thành công!');
+        if($status){
+            Session::flash('alert-info', 'Cập nhập thành công ^^~!!!');
+        }
+        else {
+            Session::flash('alert-danger', 'Đã có lỗi xảy ra!');
+        }
         return redirect()->route('positions.index');
     }
 
     //Delete
     public function delete($id)
     {
-        if(!empty($id)){
+        $positionDetail= Position::findOrFail($id);
+        $status=$positionDetail->delete();
 
-            $positionDetail= Position::find($id);
-
-            //Kiểm tra người dùng có tồn tại không
-            if(!empty($positionDetail)){
-                $positionDetail->delete();
-                
-            }else{
-                Session::flash('alert-danger', 'Người dùng không tồn tại!');
-                return redirect()->route('positions.index');
-            }
-
-        }else{
-            Session::flash('alert-danger', 'Người dùng không tồn tại!');
-            return redirect()->route('positions.index');
+        if($status){
+            Session::flash('alert-info', 'Xóa thành công ^^~!!!');
         }
-        Session::flash('alert-info', 'Xóa thành công!');
+        else {
+            Session::flash('alert-danger', 'Đã có lỗi xảy ra!');
+        }
         return redirect()->route('positions.index');
     }
 }

@@ -38,19 +38,44 @@
     
             {{-- password --}}
             <div class="row">
-                <label for="exampleInputEmail2" class="col-sm-2 col-form-label">New Password:</label>
+                <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Current Password:</label>
                 <div class="col-form-label col-sm-10">
                 <input type="password" class="form-control" id="exampleInputEmail2" 
-                name="password" value="{{old('password')}}">
+                name="current_password" >
     
                     {{-- Thông báo lỗi --}}
-                    @error('password')
+                    @error('current_password')
                     <span style="color: red">{{$message}}</span>
                     @enderror
                     
                 </div>
             </div>
-            
+            <div class="row">
+                <label for="exampleInputEmail2" class="col-sm-2 col-form-label">New Password:</label>
+                <div class="col-form-label col-sm-10">
+                <input type="password" class="form-control" id="exampleInputEmail2" 
+                name="new_password" value="{{old('new_password')}}">
+    
+                    {{-- Thông báo lỗi --}}
+                    @error('new_password')
+                    <span style="color: red">{{$message}}</span>
+                    @enderror
+                    
+                </div>
+            </div>
+            <div class="row">
+                <label for="exampleInputEmail2" class="col-sm-2 col-form-label">New Confirm Password:</label>
+                <div class="col-form-label col-sm-10">
+                <input type="password" class="form-control" id="exampleInputEmail2" 
+                name="new_confirm_password" value="{{old('new_confirm_password')}}">
+    
+                    {{-- Thông báo lỗi --}}
+                    @error('new_confirm_password')
+                    <span style="color: red">{{$message}}</span>
+                    @enderror
+                    
+                </div>
+            </div>
     
             <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">Submit</button>
             <a href="{{route('client-dashboard')}}" class="btn btn-secondary">Cancel</a>

@@ -9,6 +9,7 @@ use App\Models\Position;
 use App\Models\Department;
 use App\Models\User;
 use App\Models\UserRole;
+use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
@@ -38,27 +39,17 @@ class SettingController extends Controller
             'email.required'=>'Email không được bỏ trống!',
             'email.unique'=>'Email đã tồn tại!',    
         ]);
+        $data = $request->all();
         //Update
         $staffs = Staffs::find(Auth::user()->staff_id);
-        $staffs->id             = $request->id;
-        $staffs->full_name      = $request->full_name;
-        $staffs->birthday       = $request->birthday;
-        $staffs->gender         = $request->gender;
-        $staffs->tax_code       = $request->tax_code;
-        $staffs->phone_number   = $request->phone_number;
-        $staffs->email          = $request->email;
-        $staffs->address        = $request->address;
-        $staffs->email_company  = $request->email_company;
-        $staffs->begin_time     = $request->begin_time;
-        $staffs->end_time       = $request->end_time;
-        $staffs->official_time  = $request->official_time;
-        $staffs->type           = $request->type;
-        $staffs->department_id  = $request->department_id;
-        $staffs->position_id    = $request->position_id;
-        $staffs->shift          = $request->shift;
-
-        $staffs->save();
-        Session::flash('alert-info', 'Cập nhập thành công!');
+        $status = $staffs->fill($data)->save();
+        if($status){
+            Session::flash('alert-info', 'Cập nhập thành công!');
+        }
+        else{
+            Session::flash('alert-danger', 'Đã có lỗi xảy ra!');
+        }
+        
         return redirect()->route('client-dashboard');
     }
     public function changePassword()
@@ -72,15 +63,14 @@ class SettingController extends Controller
     {
         //Validate dữ liệu
         $request->validate([
-            'password' => 'required',
+            'current_password' => ['required', new MatchOldPassword],
+            'new_password' => ['required'],
+            'new_confirm_password' => ['same:new_password'],
         ],[
             'password.required'=>'Password không được bỏ trống!',
         ]);
 
-        $users = User::find(Auth::user()->id);
-        $users->password = Hash::make($request->password);
-        //Lưu
-        $users->save();
+        User::find(Auth::user()->id)->update(['password'=> Hash::make($request->new_password)]);
         Session::flash('alert-info', 'Đổi mật khẩu thành công!');
         return redirect()->route('client-dashboard');
     }

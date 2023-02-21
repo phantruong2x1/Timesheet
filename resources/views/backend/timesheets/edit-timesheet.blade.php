@@ -44,7 +44,7 @@
             <label for="exampleInputUsername1" class="col-sm-3 col-form-label">Date</label>
             <div class="col-sm-9">
             <input type="date" class="form-control"  id="exampleInputUsername1" 
-            name="date"  value="{{old('date') ?? date('Y-m-d',$timesheetDetail->date/1000)}}">
+            name="date"  value="{{old('date') ?? date('Y-m-d',strtotime($timesheetDetail->date))}}">
 
             {{-- Thông báo lỗi --}} 
             @error('date')

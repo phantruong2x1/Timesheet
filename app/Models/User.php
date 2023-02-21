@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class User extends Authenticatable
@@ -55,6 +56,36 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    
+    public function createUser($data)
+    {
+        $user = new User;
+        $user->role_id = $data['role_id'];
+        if(empty($data['staff_id']))
+            $user->staff_id = null;
+        else 
+            $user->staff_id = $data['staff_id'];
+        $user->user_name = $data['user_name'];
+        $user->password = Hash::make($data['password']);
+        $user->status = $data['status'];
 
+        $user->save();
+        return $user;
+    }
+    
+    public function updateUser($id,$data)
+    {
+        $user = User::findOrFail($id);
+
+        $user->role_id = $data['role_id'];
+        if(empty($data['staff_id']))
+            $user->staff_id = null;
+        else 
+            $user->staff_id = $data['staff_id'];
+        $user->user_name = $data['user_name'];
+        $user->password = Hash::make($data['password']);
+        $user->status = $data['status'];
+
+        $user->save();
+        return $user;
+    }
 }

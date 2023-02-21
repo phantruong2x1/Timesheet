@@ -69,29 +69,8 @@ class StaffsController extends Controller
             'email.unique'=>'Email đã tồn tại!',
         ]);
 
-        //Lấy dữ liệu
-        $dataInsert = [
-            $request -> id,
-            $request -> full_name,
-            $request -> birthday,
-            $request -> gender,
-            $request -> tax_code,
-            $request -> phone_number,
-            $request -> email,
-            $request -> address,
-            $request -> email_company,
-            $request -> begin_time,
-            $request -> end_time,
-            $request -> official_time,
-            $request -> type,
-            $request -> department_id,
-            $request -> position_id,
-            $request -> shift,
-            date('Y-m-d H:i:s')      
-        ];
-
-        //Thêm dữ liệu vào database
-        $this->staffs->addStaff($dataInsert);
+        $data = $request->all();
+        $status = Staffs::create($data);
 
         return redirect()->route('staff.index');
     }
@@ -144,29 +123,9 @@ class StaffsController extends Controller
             'email.unique'=>'Email đã tồn tại!',    
         ]);
 
-        //Lấy dữ liệu
-        $dataUpdate = [
-            $request -> id,
-            $request -> full_name,
-            $request -> birthday,
-            $request -> gender,
-            $request -> tax_code,
-            $request -> phone_number,
-            $request -> email,
-            $request -> address,
-            $request -> email_company,
-            $request -> begin_time,
-            $request -> end_time,
-            $request -> official_time,
-            $request -> type,
-            $request -> department_id,
-            $request -> position_id,
-            $request -> shift,
-            date('Y-m-d H:i:s')      
-        ];
-
-        //Update dữ liêu vào database
-        $this->staffs->updateStaff($dataUpdate,$id);
+        $data = $request->all();
+        $staffs= Staffs::findOrFail($id);
+        $status = $staffs->fill($data)->save();
 
         return redirect()->route('staff.index');
         
@@ -175,21 +134,9 @@ class StaffsController extends Controller
     //Xóa nhân viên
     public function delete($id)
     {
-        if(!empty($id)){
+        $staffs= Staffs::findOrFail($id);
+        $status=$staffs->delete();
 
-            $staffDetail = $this->staffs->getDetail($id);
-
-            //Kiểm tra người dùng có tồn tại không
-            if(!empty($staffDetail[0])){
-                $this->staffs->deleteStaff($id);
-                
-            }else{
-                return redirect()->route('staff.index');
-            }
-
-        }else{
-            return redirect()->route('staff.index');
-        }
         return redirect()->route('staff.index');
     }
 

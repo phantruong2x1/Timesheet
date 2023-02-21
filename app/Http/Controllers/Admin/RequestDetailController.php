@@ -45,7 +45,7 @@ class RequestDetailController extends Controller
             if($dateFilter == date('m-Y',strtotime($item->timesheet_date))){
                 $this->data['listRequestHistory'][$key] = [
                     'id' => $item->id,
-                    'full_name' => Staffs::where('id', $item->staff_id)->pluck('full_name')->first(),
+                    'full_name' => $item->staff->full_name,
                     'request_type' => $item->request_type,
                     'timesheet_date' => $item->timesheet_date,
                     'time' => $item->time,
@@ -61,7 +61,7 @@ class RequestDetailController extends Controller
 
     public function updateAccept(Request $request, $id)
     {
-        $requestDetail = RequestDetail::find($id);
+        $requestDetail = RequestDetail::findOrFail($id);
         //Update request detail
         $requestDetail->time_respond = date('Y-m-d H:i:s');
         $requestDetail->status = '1';
@@ -82,7 +82,7 @@ class RequestDetailController extends Controller
 
         //Update timesheet
         if($requestDetail->request_type == 'Update Checkout'){
-            $timesheetDetail = Timesheet::find($requestDetail->timesheet_id);
+            $timesheetDetail = Timesheet::findOrFail($requestDetail->timesheet_id);
             $timesheetDetail->last_checkout = null;
             $timesheetDetail->working_hour = null;
             $timesheetDetail->overtime = null;
@@ -97,7 +97,7 @@ class RequestDetailController extends Controller
     }
     public function destroy($id)
     {
-        $requestDetail= RequestDetail::find($id);
+        $requestDetail= RequestDetail::findOrFail($id);
         $requestDetail->delete();
         Session::flash('alert-info', 'Xóa thành công!');
         return redirect()->route('admin-dashboard');

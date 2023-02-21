@@ -15,9 +15,7 @@ class DepartmentController extends Controller
     public function index()
     {
         $this->data['title']= 'List of department';
-
         $this->data['departmentsList'] = DB::table('departments')->orderBy('created_at','DESC')->get();
-
         return view('backend.departments.list-department',$this->data);
     }
 
@@ -34,7 +32,6 @@ class DepartmentController extends Controller
         $departments = new Department;
         $departments->department_name = $request->department_name;
         $departments->department_desc = $request->department_desc;
-
         //Lưu
         $departments->save();
 
@@ -52,13 +49,10 @@ class DepartmentController extends Controller
             $this->data['departmentDetail']= Department::find($id);
             //Kiểm tra người dùng có tồn tại không
             if(!empty($this->data)){
-                $request->session()->put('id',$id);
-                
-                
+                $request->session()->put('id',$id);                
             }else{
                 return redirect()->route('departments.index');
             }
-            
         }
         else{
             return redirect()->route('departments.index');
@@ -78,7 +72,6 @@ class DepartmentController extends Controller
         $departments = Department::find($id);
         $departments->department_name = $request->department_name;
         $departments->department_desc = $request->department_desc;
-
         //Lưu
         $departments->save();
 
@@ -99,7 +92,6 @@ class DepartmentController extends Controller
             }else{
                 return redirect()->route('departments.index');
             }
-
         }else{
             return redirect()->route('departments.index');
         }

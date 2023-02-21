@@ -39,7 +39,6 @@ Route::get('setLocale/{locale}', function ($locale) {
     return redirect()->back();
 })->name('app.setLocale');
 
-
 Route::middleware('auth')->group(function(){
     Route::middleware('checkstatus')->group(function(){
         Route::middleware('admin')->prefix('admin')->group(function(){

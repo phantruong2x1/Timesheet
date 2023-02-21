@@ -49,16 +49,9 @@ class UserController extends Controller
             'user_name.unique'=>'User Name không được trùng nhau!',
             'password.required'=>'Password không được bỏ trống!',
         ]);
-
-        $users = new User();
-        $users->role_id = $request->role_id;
-        $users->staff_id = $request->staff_id;
-        $users->user_name = $request->user_name;
-        $users->password = Hash::make($request->password);
-        $users->status = $request->status ;
-
-        //Lưu
-        $users->save();
+        $data = $request->all();
+        $user = new User;
+        $user->createUser($data);
 
         // Hiển thị câu thông báo 1 lần (Flash session)
         Session::flash('alert-info', 'Thêm thành công ^^~!!!');
@@ -114,16 +107,9 @@ class UserController extends Controller
             'user_name.unique'=>'User Name không được trùng nhau!',
             'password.required'=>'Password không được bỏ trống!',
         ]);
-
-        $users = User::find($id);
-        $users->role_id = $request->role_id;
-        $users->staff_id = $request->staff_id;
-        $users->user_name = $request->user_name;
-        $users->password = Hash::make($request->password);
-        $users->status = $request->status ;
-
-        //Lưu
-        $users->save();
+        $data = $request->all();
+        $user = new User;
+        $user->updateUser($id,$data);
 
         Session::flash('alert-info', 'Sửa thành công!');
         return redirect()->route('users.index');
@@ -132,23 +118,9 @@ class UserController extends Controller
     //Delete
     public function delete($id)
      {
-        if(!empty($id)){
+        $userDetail= User::find($id);
+        $userDetail->delete();
 
-            $userDetail= User::find($id);
-
-            //Kiểm tra người dùng có tồn tại không
-            if(!empty($userDetail)){
-                $userDetail->delete();
-                
-            }else{
-                Session::flash('alert-danger', 'Người dùng không tồn tại!');
-                return redirect()->route('users.index');
-            }
-
-        }else{
-            Session::flash('alert-danger', 'Người dùng không tồn tại!');
-            return redirect()->route('users.index');
-        }
         Session::flash('alert-info', 'Xóa thành công!');
         return redirect()->route('users.index');
     }

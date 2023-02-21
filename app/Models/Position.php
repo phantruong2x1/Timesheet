@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class Position extends Model
 {
@@ -21,4 +23,5 @@ class Position extends Model
         'position_name',
         'position_desc'
     ];
+
 }

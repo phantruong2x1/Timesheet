@@ -26,7 +26,9 @@ class Staffs extends Model
             'shift',
             'type',
             'user_id',
-            'id'
+            'id',
+            'phone_number',
+            'address'
     ];
     protected $hidden = [
         'tax_code',

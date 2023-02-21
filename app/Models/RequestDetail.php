@@ -22,4 +22,5 @@ class RequestDetail extends Model
     public function staff(){
         return $this->belongsTo(Staffs::class,'staff_id');
     }
+
 }
