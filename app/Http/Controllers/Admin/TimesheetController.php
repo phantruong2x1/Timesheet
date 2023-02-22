@@ -39,6 +39,9 @@ class TimesheetController extends Controller
         $request->validate([
             'start_date' => 'required',
         ]);
+        Timesheet::truncate();
+        HistoryInout::truncate();
+
 
         $millisecond = strtotime('1-'.$request->start_date.'');
         $monthFilter = date('m',$millisecond);
@@ -114,7 +117,7 @@ class TimesheetController extends Controller
                     }
                     //Tạo mới bản ghi theo ngày
                     else if($timesheetDetail->date != date('d-m-Y',($list->list[$i]->lockDate)/1000)){
-                        $timeSheets = new Timesheet();
+                        $timeSheets                 = new Timesheet();
                         $timeSheets->record_id      = $list->list[$i]->recordId;
                         $timeSheets->date           = date('d-m-Y',$list->list[$i]->lockDate/1000);
                         $timeSheets->first_checkin  = $list->list[$i]->lockDate;

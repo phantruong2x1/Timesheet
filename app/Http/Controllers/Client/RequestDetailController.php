@@ -92,7 +92,7 @@ class RequestDetailController extends Controller
         $requestDetail->staff_id = Auth::user()->staff_id;
         $requestDetail->request_type = 'Update Checkout';
         $requestDetail->timesheet_id = $timesheetDetail->id;
-        $requestDetail->timesheet_date = date('d-m-Y',$timesheetDetail->date/1000);
+        $requestDetail->timesheet_date = $timesheetDetail->date;
         $requestDetail->time = date('H:i:s',$timesheetDetail->last_checkout/1000);
         $requestDetail->reason = $request->reason;
         $requestDetail->save();

@@ -22,7 +22,7 @@
             
             <div class="col-sm-9">
                 <p>Enter your data!</p>
-                <p>Date: <b>{{date('d-m-Y',$timesheetDetail->date/1000)}}</b></p>
+                <p>Date: <b>{{$timesheetDetail->date}}</b></p>
                 <p>First Checkin: <input type="time" name="first_checkin" readonly value="{{date('H:i:s',$timesheetDetail->first_checkin/1000)}}" ></p>
             </div>
         </div>

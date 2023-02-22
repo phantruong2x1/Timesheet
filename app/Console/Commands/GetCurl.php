@@ -76,7 +76,7 @@ class GetCurl extends Command
         for ($i = count($list->list) - 1; $i >= 0; $i--) {
 
             //Kiểm tra trùng recordId
-            $checkHistoryList = DB::table('history_inouts')->orderBy('time','DESC')->take(10)->pluck('record_id')->toArray();
+            $checkHistoryList = DB::table('history_inouts')->orderBy('time','DESC')->take(100)->pluck('record_id')->toArray();
             if(!in_array($list->list[$i]->recordId, $checkHistoryList )){
 
                 //Insert data in table history_inouts
@@ -91,7 +91,7 @@ class GetCurl extends Command
                 if($list->list[$i]->recordType == 8){
 
                     //Lấy bản ghi mới nhất theo staff_id
-                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->orderBy('date', 'DESC')->first();
+                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->orderBy('first_checkin', 'DESC')->first();
                     $staffDetail = Staffs::find($list->list[$i]->username);
                     //Nếu Staff_id = null thì tạo mới
                     if(empty($timesheetDetail)){
@@ -114,7 +114,7 @@ class GetCurl extends Command
                     }
                     //Tạo mới bản ghi theo ngày
                     else if($timesheetDetail->date != date('d-m-Y',($list->list[$i]->lockDate)/1000)){
-                        $timeSheets = new Timesheet();
+                        $timeSheets                 = new Timesheet();
                         $timeSheets->record_id      = $list->list[$i]->recordId;
                         $timeSheets->date           = date('d-m-Y',$list->list[$i]->lockDate/1000);
                         $timeSheets->first_checkin  = $list->list[$i]->lockDate;
@@ -133,12 +133,11 @@ class GetCurl extends Command
                     }
                     //Update data for 2nd checkin
                     else{ 
-                        // $timesheetDetail->save();
                         $timesheetDetail->last_checkout  = $list->list[$i]->lockDate;
                         $timesheetDetail->working_hour   = $timesheet->getWorkingHour($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
                         $timesheetDetail->overtime = $timesheet->getOverTime($timesheetDetail->working_hour);
                         if(empty($staffDetail->shift))
-                            $timesheetDetail->status = $this->getStatusShift1($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+                            $timesheetDetail->status = $timesheet->getStatusShift1($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
                         else if($staffDetail->shift == 'Ca 2')
                             $timesheetDetail->status = $timesheet->getStatusShift2($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
                         else
