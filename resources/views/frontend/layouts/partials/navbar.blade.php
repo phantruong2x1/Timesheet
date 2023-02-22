@@ -9,65 +9,11 @@
       </button>
       <ul class="navbar-nav mr-lg-2">
         <li class="nav-item nav-search d-none d-lg-block">
-          {{-- <div class="input-group">
-            <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-              <span class="input-group-text" id="search">
-                <i class="icon-search"></i>
-              </span>
-            </div>
-            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
-          </div> --}}
+
         </li>
       </ul>
       <ul class="navbar-nav navbar-nav-right">
-        {{-- <li class="nav-item dropdown">
-          <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-            <i class="icon-bell mx-0"></i>
-            <span class="count"></span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-            <a class="dropdown-item preview-item">
-              <div class="preview-thumbnail">
-                <div class="preview-icon bg-success">
-                  <i class="ti-info-alt mx-0"></i>
-                </div>
-              </div>
-              <div class="preview-item-content">
-                <h6 class="preview-subject font-weight-normal">Application Error</h6>
-                <p class="font-weight-light small-text mb-0 text-muted">
-                  Just now
-                </p>
-              </div>
-            </a>
-            <a class="dropdown-item preview-item">
-              <div class="preview-thumbnail">
-                <div class="preview-icon bg-warning">
-                  <i class="ti-settings mx-0"></i>
-                </div>
-              </div>
-              <div class="preview-item-content">
-                <h6 class="preview-subject font-weight-normal">Settings</h6>
-                <p class="font-weight-light small-text mb-0 text-muted">
-                  Private message
-                </p>
-              </div>
-            </a>
-            <a class="dropdown-item preview-item">
-              <div class="preview-thumbnail">
-                <div class="preview-icon bg-info">
-                  <i class="ti-user mx-0"></i>
-                </div>
-              </div>
-              <div class="preview-item-content">
-                <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                <p class="font-weight-light small-text mb-0 text-muted">
-                  2 days ago
-                </p>
-              </div>
-            </a>
-          </div>
-        </li> --}}
+        
         <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
             <img src="{{asset('assets/images/faces/digitran-team1.jpg')}}" alt="profile"/>
@@ -80,8 +26,16 @@
             </a>
             <a href="{{route('client.settings.change-password')}}" class="dropdown-item" >
               <i class="ti-key text-primary"></i>
-              Change Password
+              Change Password 
             </a>
+            <button data-toggle="modal" data-target="#createFeekback" id="btnFeedback" class="dropdown-item">
+              <i class="ti-info-alt text-primary"></i>
+              Feedback
+            </button>
+            {{-- <a href="#"  id="btnFeedback" class="dropdown-item" >
+              <i class="ti-info-alt text-primary"></i>
+              Feedback
+            </a> --}}
             <div class="dropdown-divider"></div>
             <a href="{{ route('logout') }}" class="dropdown-item">
               <i class="ti-power-off text-primary"></i>
@@ -90,8 +44,74 @@
           </div>
         </li>
       </ul>
-      {{-- <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
         <span class="icon-menu"></span>
-      </button> --}}
+      </button>
     </div>
 </nav>
+
+<div class="modal" id="createFeekback">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Feedback</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post">
+          @csrf
+          <div class="form-group">
+            <label for="exampleInputTitle" ><b>Title</b></label>
+            <input type="text" class="form-control"  id="exampleInputTitle" 
+            name="title"  value="{{old('title')}}" placeholder="Bạn muốn góp ý về vấn đề gì?">
+            {{-- Thông báo lỗi --}}
+            @error('title')
+            <span style="color: red">{{$message}}</span>
+            @enderror
+          </div>
+  
+          <div class="form-group">
+            <label for="exampleInputContent" ><b>Content</b></label>
+            <textarea name="content" class="form-control" id="exampleInputContent"
+            placeholder="Nội dung góp ý là gì?" rows="5" value="{{old('content')}}"></textarea>
+            {{-- Thông báo lỗi --}}
+            @error('title')
+            <span style="color: red">{{$message}}</span>
+            @enderror
+          </div>
+          <p style="color: rgb(147, 149, 150)">Cảm ơn vì sự đóng góp!</p>
+        </div>
+        <div class="modal-footer">
+          <button id="addFeedback" class="btn btn-success">Save</button>
+        </form>
+        {{-- <a href="{{route('client.settings.post-feekback')}}" class="btn btn-success">Save</a> --}}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let createFeekback = document.getElementById('addFeedback');
+
+  createFeekback.addEventListener('click', function(){
+    event.preventDefault();
+
+    let title = document.getElementById('exampleInputTitle').value;
+    let content = document.getElementById('exampleInputContent').value;
+
+    $.ajax({
+      type: 'POST',
+      url: "{{route('client.settings.post-feekback')}}",
+      data: {
+        title: title,
+        content: content
+      },
+      success: function(data){
+        console.log(data);
+        window.alert('Thêm thành công!');
+      }
+      
+    });
+    
+  });
+
+</script>

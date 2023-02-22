@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\PositionController;
 use App\Http\Controllers\Admin\RequestDetailController;
 use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\FeedbackController;
 use App\Models\Timesheet;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Session;
@@ -153,6 +154,11 @@ Route::middleware('auth')->group(function(){
                 Route::get('/update-denied/{id}',[RequestDetailController::class,'updateDenied'])->name('denied');
 
             });
+            //Feedback
+            Route::prefix('feedback')->name('feedbacks.')->group(function(){
+                Route::get('/',[FeedbackController::class,'index'])->name('index');
+
+            });
 
         });
 
@@ -186,6 +192,8 @@ Route::middleware('auth')->group(function(){
 
             Route::get('/setting-change-password', [Client\SettingController::class, 'changePassword'])->name('client.settings.change-password');
             Route::post('/setting-update-passoword', [Client\SettingController::class, 'updatePassword'])->name('client.settings.update-password');
+            
+            Route::post('/setting-feekback', [Client\SettingController::class, 'createFeedback'])->name('client.settings.post-feekback');
             
         });
     });

@@ -39,8 +39,8 @@ class TimesheetController extends Controller
         $request->validate([
             'start_date' => 'required',
         ]);
-        Timesheet::truncate();
-        HistoryInout::truncate();
+        // Timesheet::truncate();
+        // HistoryInout::truncate();
 
 
         $millisecond = strtotime('1-'.$request->start_date.'');

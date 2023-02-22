@@ -23,15 +23,6 @@ $key =1;
                 @endif
               </h3>
               <h6 class="font-weight-normal mb-0">Welcome Digtran members to DGT-Timesheet! <span class="text-primary">Wishing everyone a productive day!</span></h6>
-
-              {{-- Thông báo --}}
-              <div class="flash-message">
-                @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-                  @if(Session::has('alert-' . $msg))
-                    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-                  @endif
-                @endforeach
-              </div>
               
             </div>
             <div class="col-12 col-xl-4">
@@ -114,8 +105,17 @@ $key =1;
       <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
+              {{-- Thông báo --}}
+              <div class="flash-message">
+                @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                  @if(Session::has('alert-' . $msg))
+                    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+                  @endif
+                @endforeach
+              </div>
                 <div class="card-body row">
                     <p class="col-md-2 card-title mb-0">Request List</p>
+                    
                     {{-- Lọc  --}}
                     <form action="{{route('client.requests.index')}}" id="form_filter" method="get" class="col-md-8">
                       <div class="row">

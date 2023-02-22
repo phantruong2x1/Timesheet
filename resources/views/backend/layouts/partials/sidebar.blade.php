@@ -70,7 +70,13 @@
           <span class="menu-title">{{__('sunshine.Staff')}}</span>
         </a>
       </li>
-
+      {{-- Get Time --}}
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('feedbacks.index')}}">
+          <i class="ti-info-alt menu-icon"></i>
+          <span class="menu-title">Feedback</span>
+        </a>
+      </li>
       {{-- Get Time --}}
       <li class="nav-item">
         <a class="nav-link" href="{{route('timesheets.get-time')}}">
@@ -78,6 +84,7 @@
           <span class="menu-title">-----</span>
         </a>
       </li>
+      
 
     </ul>
   </nav>

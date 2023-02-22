@@ -89,7 +89,7 @@ $key = 1;
                                 <tr>
                                     {{-- Hiển thị dữ liệu --}}
                                     <td>{{$key++}}</td>
-                                    @if(empty($item['full_name']))
+                                    @if(empty($item->staff->full_name))
                                         <td>{{$item['staff_id']}}</td>
                                     @else
                                         <td>{{$item->staff->full_name}}</td>

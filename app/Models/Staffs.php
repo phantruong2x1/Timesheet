@@ -48,6 +48,9 @@ class Staffs extends Model
     public function timesheet(){
         return $this->hasMany(Timesheet::class);
     }
+    public function feekback(){
+        return $this->hasMany(Feekback::class);
+    }
     public function requestDetail(){
         return $this->hasMany(RequestDetail::class);
     }

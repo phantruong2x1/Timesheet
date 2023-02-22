@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Staffs;
 use App\Models\Position;
 use App\Models\Department;
+use App\Models\Feedback;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Rules\MatchOldPassword;
@@ -73,5 +74,14 @@ class SettingController extends Controller
         User::find(Auth::user()->id)->update(['password'=> Hash::make($request->new_password)]);
         Session::flash('alert-info', 'Đổi mật khẩu thành công!');
         return redirect()->route('client-dashboard');
+    }
+
+    public function createFeedback(Request $request)
+    {
+        $feedback = new Feedback;
+        $data = $request->all();
+        $data['staff_id'] = Auth::user()->staff_id;
+        $feedback->createFeedback($data);
+
     }
 }
