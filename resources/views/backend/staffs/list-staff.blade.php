@@ -77,9 +77,17 @@
               <td>{{$key+1}}</td>
               <td>{{$item->id}}</td>
               <td>{{$item->full_name}}</td>
-              <td>{{$item->position->position_name}}</td>
+              <td>
+                @if(!empty($item->position->position_name))
+                  {{$item->position->position_name}}
+                @endif
+              </td>
               <td>{{$item->gender}}</td>
-              <td>{{$item->department->department_name}}</td>
+              <td>
+                @if(!empty($item->department->department_name))
+                  {{$item->department->department_name}}
+                @endif
+              </td>
               <td>{{$item->phone_number}}</td>
               <td>{{$item->email}}</td>
               <td>{{$item->type}}</td>

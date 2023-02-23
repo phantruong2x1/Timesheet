@@ -21,7 +21,7 @@
           <div class="form-group row">
             <label class="col-sm-3 col-form-label">ID Staff</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="id" value="{{old('id') ?? $staffDetail->id }}" />
+              <input type="text" class="form-control" name="id" readonly value="{{old('id') ?? $staffDetail->id }}" />
 
               {{-- Thông báo lỗi --}}
               @error('id')

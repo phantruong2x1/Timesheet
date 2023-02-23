@@ -34,8 +34,6 @@ class AdminController extends Controller
             $filter[] = ['date','=',$dateFilter];
         }
         $this->data['timesheetList'] = Timesheet::where($filter)->orderBy('first_checkin','desc')->get();  
-
-        // dd($this->data['timesheetsList']);
         return view('backend.dashboard', $this->data);  
     }   
 }

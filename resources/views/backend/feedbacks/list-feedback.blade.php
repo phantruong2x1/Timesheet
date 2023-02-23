@@ -10,7 +10,7 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                        <p class="card-title mb-0">History</p>
+                        <p class="card-title mb-0">Feedback</p>
                         @if(!empty($listFeedback))
                         @foreach ($listFeedback as $key=>$item)
                             <div class="media border p-3 m-3 rounded shadow">

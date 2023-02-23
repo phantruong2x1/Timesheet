@@ -203,7 +203,18 @@ class RequestDetailController extends Controller
     public function destroy($id)
     {
         $requestDetail= RequestDetail::find($id);
+        
+        //Update timesheet
+        if($requestDetail->request_type == 'Update Checkout'){
+            $timesheetDetail = Timesheet::findOrFail($requestDetail->timesheet_id);
+            $timesheetDetail->last_checkout = null;
+            $timesheetDetail->working_hour = null;
+            $timesheetDetail->overtime = null;
+            $timesheetDetail->status = null;
+            $timesheetDetail->save();
+        }
         $requestDetail->delete();
+
         Session::flash('alert-info', 'Xóa thành công!');
         return redirect()->route('client.requests.index');
     }

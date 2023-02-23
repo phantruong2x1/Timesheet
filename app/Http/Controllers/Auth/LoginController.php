@@ -51,7 +51,7 @@ class LoginController extends Controller
         $role = DB::table('user_role')
                 ->where('id', $role_id)
                 ->value('role_name');
-        
+       
         //Nếu chưa có tài khoản đăng nhập->return đăng nhập
         if(!Auth::user()){
             return redirect()->route('login');
@@ -68,7 +68,7 @@ class LoginController extends Controller
         // else if($role =='host'){
         //     return redirect()->route('client-dashboard');
         // }
-        
+
     }
     public function logout()
     {

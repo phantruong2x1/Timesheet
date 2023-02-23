@@ -25,8 +25,9 @@ class Admin
         $role_name = DB::table('user_role')
         ->where('id',$role_id)
         ->value('role_name');
-
+        
         //Kiểm tra nếu role_name với 'admin'
+        
         if ($role_name == 'admin'){
 
         }else{
@@ -34,6 +35,7 @@ class Admin
             Auth::logout();
             return redirect()->route('denied');
         }
+        
         return $next($request);
     }
 }

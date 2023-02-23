@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -207,6 +208,9 @@ Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('
 Route::view('permission-denied', 'errors.permission-denied')->name('denied');
 Route::view('account-disabled', 'errors.account-disabled')->name('disabled');
 Route::view('account-not-found', 'errors.account-not-found')->name('notfound');
+
+
+
 
 
 
