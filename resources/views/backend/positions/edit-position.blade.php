@@ -1,11 +1,15 @@
-@extends('backend.layouts.master')
+@extends('backend.layouts.masterEdit')
 
 @section('title')
     {{$title}}
 @endsection
 
 @section('content')
-
+<div class="main-panel">
+<div class="content-wrapper">
+<div class="row">
+<div class="col-md-12 grid-margin stretch-card">
+<div class="card">
 <div class="card-body">
     <h4 class="card-title">Edit Position</h4>
 
@@ -40,9 +44,11 @@
         <a href="{{route('positions.index')}}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
-
-
-    
+</div>   
+</div>   
+</div>   
+</div>   
+</div>   
 @endsection
 
 

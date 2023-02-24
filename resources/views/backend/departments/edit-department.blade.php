@@ -1,4 +1,4 @@
-@extends('backend.layouts.master')
+@extends('backend.layouts.masterEdit')
 
 @section('title')
     {{$title}}

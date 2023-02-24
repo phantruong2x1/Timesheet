@@ -10,20 +10,20 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<link rel="stylesheet" href="{{asset('/assets/auth_login/css/style.css')}}">
-
+	<link rel="shortcut icon" href="{{asset('assets/images/icon-digitran-logo.png')}}" />
 	</head>
 	<body class="img js-fullheight" style="background-image: url({{asset('/assets/auth_login/images/bg.jpg')}});">
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">ĐĂNG NHẬP</h2>
+					<h2 class="heading-section">LOGIN</h2>
 				</div>
 			</div>
 			<div class="row justify-content-center">
 				<div class="col-md-6 col-lg-4">
 					<div class="login-wrap p-0">
-		      	<h3 class="mb-4 text-center">DGT - TimeSheet</h3>
+		      	<h3 class="mb-4 text-center">DGT - TIMESHEET</h3>
 
 		      	<form method="POST" action="{{ route('login') }}" class="signin-form">
 				@csrf
@@ -60,7 +60,7 @@
 	            	<button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
 	            </div>
 	            <div class="form-group d-md-flex">
-	            	<div class="w-50">
+	            	{{-- <div class="w-50">
 		            	<label class="checkbox-wrap checkbox-primary">Remember Me
 									  <input type="checkbox" checked>
 									  <span class="checkmark"></span>
@@ -69,13 +69,13 @@
 								<div class="w-50 text-md-right">
 									<a href="#" style="color: #fff">Forgot Password</a>
 								</div>
-	            </div>
-	          </form>
-	          <p class="w-100 text-center">&mdash; DGT Welcome &mdash;</p>
-	          
-		      </div>
+	            	</div> --}}
+				</form>
+				<p class="w-100 text-center">&mdash; DGT Welcome &mdash;</p>
+				
 				</div>
-			</div>
+					</div>
+				</div>
 		</div>
 	</section>
 

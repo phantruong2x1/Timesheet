@@ -15,13 +15,13 @@ $key =1;
         <div class="col-md-12 grid-margin">
           <div class="row">
             <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-              <h3 class="font-weight-bold">{{__('sunshine.welcome')}} 
+              <h4 class="font-weight-bold">{{__('sunshine.welcome')}} 
                 @if(!empty($userDetail->staff->full_name))
                   {{$userDetail->staff->full_name}}
                 @else
                   {{$userDetail->user_name}}
                 @endif
-              </h3>
+              </h4>
               <h6 class="font-weight-normal mb-0">Welcome Digtran members to DGT-Timesheet! <span class="text-primary">Wishing everyone a productive day!</span></h6>
               
             </div>
@@ -39,7 +39,7 @@ $key =1;
             <div class="card-people mt-auto">
               <img src="/assets/images/dashboard/people.svg" alt="people">
               <div class="weather-info">
-                <p class="fs-30 mb-2 ">{{$dt}}</p>  
+                <p class="fs-30 mt-2 ">{{$dt}}</p>  
                 <p>(Today)</p>
               </div>
               
@@ -78,9 +78,9 @@ $key =1;
                 <div class="card-body">
                   <p class="mb-4">Option</p>
                     {{-- <a href="{{route('option-forget')}}" class="btn btn-warning mb-2">Forget</a> --}}
-                    <a href="{{route('option-please-be-late',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light mb-2">Please Be Late</a>
-                    <a href="{{route('option-please-come-back-soon',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light mb-2">Please Come Back Soon</a>
-                    <a href="{{route('option-take-a-break',['date'=>date('Y-m-d')])}}" class="btn btn-danger mb-2">Take a Break</a>
+                    <a href="{{route('option-please-be-late',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light btn-sm mb-2">Please Be Late</a>
+                    <a href="{{route('option-please-come-back-soon',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light btn-sm mb-2">Please Come Back Soon</a>
+                    <a href="{{route('option-take-a-break',['date'=>date('Y-m-d')])}}" class="btn btn-danger btn-sm mb-2">Take a Break</a>
                 </div>
               </div>
             </div>

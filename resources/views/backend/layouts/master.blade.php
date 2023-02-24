@@ -19,8 +19,18 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="{{asset('assets/css/vertical-layout-light/style.css')}}">
     <!-- endinject -->
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" />
+    <link rel="shortcut icon" href="{{asset('assets/images/icon-digitran-logo.png')}}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    
+    <style>
+        .badge {
+          font-size: 11px;
+        }
+        .table td {
+          padding: 7px;
+          font-size: 0.8rem;
+        }
+    </style>
 </head>
 <body>
     <div class="container-scroller">

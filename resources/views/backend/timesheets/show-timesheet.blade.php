@@ -72,30 +72,30 @@ $currentMonth = strtotime(date('Y-m-15'));
                                 <tr style = "background-color: {{$item['colorWeekday']}}">
                                     {{-- Hiển thị dữ liệu --}}
                                     <td>{{$key}}</td>
-                                    <td><b style="color: #000044	">{{$item['date']}}</b> <span style="color: #AAAAAA"> ({{$item['weekday']}})</span></td>
+                                    <td><b style="color: #000044	">{{$item['date']}}</b> <span style="color: #8b8a8a"> ({{$item['weekday']}})</span></td>
                                     {{-- first_checkin data --}}
                                     @if(!empty($item['first_checkin']))
                                         <td>{{date('H:i:s',$item['first_checkin']/1000)}}</td>
                                     @else
-                                        <td style="color: gainsboro">No data!</td>
+                                        <td style="color: rgb(165, 165, 165)">No data!</td>
                                     @endif
                                     {{-- last_checkout data --}}
                                     @if(!empty($item['last_checkout']))
                                         <td>{{date('H:i:s',$item['last_checkout']/1000)}}</td>
                                     @else
-                                        <td style="color: gainsboro">No data!</td>
+                                        <td style="color: rgb(165, 165, 165)">No data!</td>
                                     @endif
 
                                     {{-- Working_hour data --}}
                                     @if(empty($item['working_hour']))
-                                        <td style="color: gainsboro">0 h</td>
+                                        <td style="color: rgb(165, 165, 165)">0 h</td>
                                     @elseif( $item['working_hour'] > 0  )
                                         <td>{{number_format($item['working_hour']/3600000, 1)}} h</td>  
                                     @endif
 
                                     {{-- overtime data --}}
                                     @if(empty($item['overtime']))
-                                        <td style="color: gainsboro">0 h</td>
+                                        <td style="color: rgb(165, 165, 165)">0 h</td>
                                     @elseif($item['overtime'] > 0 && !empty(['overtime']))
                                         <td>{{number_format($item['overtime']/3600000, 1)}} h</td>
                                     @endif

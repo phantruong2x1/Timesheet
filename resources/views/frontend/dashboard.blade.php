@@ -7,6 +7,7 @@ $currentMonth = strtotime(date('Y-m-15'));
 @endphp
 
 @section('content')
+
 <div class="main-panel">
     <div class="content-wrapper">
     {{-- User List Timesheet  --}}

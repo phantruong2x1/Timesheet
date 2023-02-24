@@ -3,7 +3,11 @@
 @section('title', 'Staff Information')
 
 @section('content')
-
+<div class="main-panel">
+<div class="content-wrapper">
+<div class="row">
+<div class="col-md-12 grid-margin stretch-card">
+<div class="card">
 <div class="card-body">
     {{-- Thông báo lỗi tổng quát--}}
     @if ($errors->any())
@@ -294,6 +298,11 @@
             <a href="{{route('client-dashboard')}}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 @endsection
 

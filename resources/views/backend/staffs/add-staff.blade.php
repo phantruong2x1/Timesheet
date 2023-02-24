@@ -249,7 +249,7 @@
         </div>
       </div>
       
-      <div class="row">
+      <div class="row ml-2">
         <button type="submit" class="btn btn-primary" style="margin-right: 10px">Submit</button>
         <a href="{{route('staff.index')}}" class="btn btn-secondary">Cancel</a>
       </div>

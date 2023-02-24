@@ -17,7 +17,7 @@ class HistoryController extends Controller
     public function index()
     {    
         $this->data['title'] = 'History';
-        $this->data['historyList'] = HistoryInout::orderBy('time', 'desc')->paginate(15);
+        $this->data['historyList'] = HistoryInout::orderBy('time', 'desc')->paginate(20);
         
         return view('backend.historis.list-history', $this->data);
     }

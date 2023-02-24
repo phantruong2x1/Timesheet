@@ -94,7 +94,7 @@ class TimesheetController extends Controller
                 if($list->list[$i]->recordType == 8){
 
                     //Lấy bản ghi mới nhất theo staff_id
-                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->orderBy('date', 'DESC')->first();
+                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->orderBy('id', 'DESC')->first();
                     $staffDetail = Staffs::find($list->list[$i]->username);
                     //Nếu Staff_id = null thì tạo mới + Tạo mới bản ghi theo ngày
                     if((empty($timesheetDetail)) || $timesheetDetail->date != date('d-m-Y',($list->list[$i]->lockDate)/1000)){

@@ -1,4 +1,4 @@
-@extends('backend.layouts.master')
+@extends('backend.layouts.masterEdit')
 
 @section('title')
   {{$title}}
@@ -12,7 +12,7 @@
     <div class="alert alert-danger">Dữ liệu nhập không hợp lệ!</div>
     @endif
 
-    <h4 class="card-title">Add Staff</h4>
+    <h4 class="card-title">Edit Staff</h4>
 
     <form class="form-sample" action="{{route('staff.post-edit')}}" method="POST">
     @csrf

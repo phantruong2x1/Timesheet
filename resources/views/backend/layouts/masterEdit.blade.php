@@ -4,7 +4,6 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@yield('title') - DGT TimeSheet</title>
     <!-- plugins:css -->
@@ -22,31 +21,22 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{{asset('assets/images/icon-digitran-logo.png')}}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <style>
-        .badge {
-          font-size: 11px;
-        }
-        .table td {
-          padding: 7px;
-          font-size: 0.8rem;
-        }
-    </style>
 </head>
 <body>
     <div class="container-scroller">
 
         <!-- partial:partials/_navbar.html -->
-        @include('frontend.layouts.partials.navbar')
+        @include('backend.layouts.partials.navbar')
         <!-- partial -->
 
         <div class="container-fluid page-body-wrapper">
 
             <!-- partial:partials/_settings-panel.html -->
-            {{-- @include('frontend.layouts.partials.settings-panel') --}}
+            {{-- @include('backend.layouts.partials.settings-panel') --}}
             <!-- partial -->
 
             <!-- partial:partials/_sidebar.html -->
-            @include('frontend.layouts.partials.sidebar')
+            {{-- @include('backend.layouts.partials.sidebar') --}}
             <!-- partial -->
 
             
@@ -58,7 +48,7 @@
         <!-- page-body-wrapper ends -->
 
         <!-- partial:partials/_footer.html -->
-        @include('frontend.layouts.partials.footer')
+        @include('backend.layouts.partials.footer')
         <!-- partial -->
 
     </div>
@@ -85,23 +75,7 @@
     <script src="{{asset('assets/js/dashboard.js')}}"></script>
     <script src="{{asset('assets/js/Chart.roundedBarCharts.js')}}"></script>
     <!-- End custom js for this page-->
-    <script>
-        $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-    </script>
 </body>
 
 </html>
-{{-- <script>
-$(document).ready(function(){
-    $('a.nav-link').click(function(){
-        var url = this.href;
-        $('.container-fluid').load(url);
-        return false;
-    })
-})
-</script> --}}
 

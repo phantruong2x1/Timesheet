@@ -38,9 +38,9 @@
     
             {{-- password --}}
             <div class="row">
-                <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Current Password:</label>
+                <label for="exampleInputEmail1" class="col-sm-2 col-form-label">Current Password:</label>
                 <div class="col-form-label col-sm-10">
-                <input type="password" class="form-control" id="exampleInputEmail2" 
+                <input type="password" class="form-control " id="exampleInputEmail1" 
                 name="current_password" >
     
                     {{-- Thông báo lỗi --}}
@@ -53,7 +53,7 @@
             <div class="row">
                 <label for="exampleInputEmail2" class="col-sm-2 col-form-label">New Password:</label>
                 <div class="col-form-label col-sm-10">
-                <input type="password" class="form-control" id="exampleInputEmail2" 
+                <input type="password" class="form-control " id="exampleInputEmail2" 
                 name="new_password" value="{{old('new_password')}}">
     
                     {{-- Thông báo lỗi --}}
@@ -64,9 +64,9 @@
                 </div>
             </div>
             <div class="row">
-                <label for="exampleInputEmail2" class="col-sm-2 col-form-label">New Confirm Password:</label>
+                <label for="exampleInputEmail3" class="col-sm-2 col-form-label">New Password:</label>
                 <div class="col-form-label col-sm-10">
-                <input type="password" class="form-control" id="exampleInputEmail2" 
+                <input type="password" class="form-control " id="exampleInputEmail3" 
                 name="new_confirm_password" value="{{old('new_confirm_password')}}">
     
                     {{-- Thông báo lỗi --}}
