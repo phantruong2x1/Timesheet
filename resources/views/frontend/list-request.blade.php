@@ -166,7 +166,7 @@ $key =1;
                                     @elseif($item['request_type'] == 'Take A Break')
                                       <b style="color: red">{{$item['request_type']}}</b>  
                                     @else 
-                                      <b style="color: gold">{{$item['request_type']}}</b> 
+                                      <b style="color: #FFC100">{{$item['request_type']}}</b> 
                                     @endif
                                   </td>
                                   <td>

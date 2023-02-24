@@ -137,7 +137,8 @@ $currentMonth = strtotime(date('Y-m-15'));
                                               <a onclick="return confirm('Are you sure you want to delete?')" class="dropdown-item" href="{{route('timesheets.destroy',['id' => $item['id']])}}">Delete</a>
                                             </div>
                                           </div>    
-                                   
+                                    @else
+                                        <button class="btn" style="pointer-events: none;"></button>
                                         {{-- <td><a class="btn badge badge-warning" href="{{route('option-make-order',['id' => $item['id'], 'date' => $item['date']])}}">. . .</a></td> --}}
                                     @endif 
                                     </td>

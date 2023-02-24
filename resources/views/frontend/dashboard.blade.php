@@ -39,7 +39,7 @@ $currentMonth = strtotime(date('Y-m-15'));
                                 </select>
                             </div>
                                 <i class="p-2" style="background-color: #FFFF66; height: 10px;margin-left: 30%;border: 1px solid black"></i> <p class="pl-2"> Today</p>
-                                <i class="p-2" style="background-color: #CCFFCC; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> Thứ 7</p>
+                                <i class="p-2" style="background-color: #CCFFCC; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> T7</p>
                                 <i class="p-2" style="background-color: #FFCCFF; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> CN</p>
                         </div>
                     </form>
@@ -66,30 +66,30 @@ $currentMonth = strtotime(date('Y-m-15'));
                                 <tr style = "background-color: {{$item['colorWeekday']}}">
                                     {{-- Hiển thị dữ liệu --}}
                                     <td>{{$key}}</td>
-                                    <td><b style="color: #000044	">{{$item['date']}}</b> <span style="color: #AAAAAA"> ({{$item['weekday']}})</span></td>
+                                    <td><b style="color: #000044	">{{$item['date']}}</b> <span style="color: #7e7e7e"> ({{$item['weekday']}})</span></td>
                                     {{-- first_checkin data --}}
                                     @if(!empty($item['first_checkin']))
                                         <td>{{date('H:i:s',$item['first_checkin']/1000)}}</td>
                                     @else
-                                        <td style="color: gainsboro">No data!</td>
+                                        <td style="color: rgb(165, 165, 165)">No data!</td>
                                     @endif
                                     {{-- last_checkout data --}}
                                     @if(!empty($item['last_checkout']))
                                         <td>{{date('H:i:s',$item['last_checkout']/1000)}}</td>
                                     @else
-                                        <td style="color: gainsboro">No data!</td>
+                                        <td style="color:rgb(165, 165, 165)">No data!</td>
                                     @endif
 
                                     {{-- Working_hour data --}}
                                     @if(empty($item['working_hour']))
-                                        <td style="color: gainsboro">0 h</td>
+                                        <td style="color: rgb(165, 165, 165)">0 h</td>
                                     @elseif( $item['working_hour'] > 0  )
                                         <td>{{number_format($item['working_hour']/3600000, 1)}} h</td>  
                                     @endif
 
                                     {{-- overtime data --}}
                                     @if(empty($item['overtime']))
-                                        <td style="color: gainsboro">0 h</td>
+                                        <td style="color:rgb(165, 165, 165)">0 h</td>
                                     @elseif($item['overtime'] > 0 && !empty(['overtime']))
                                         <td>{{number_format($item['overtime']/3600000, 1)}} h</td>
                                     @endif
