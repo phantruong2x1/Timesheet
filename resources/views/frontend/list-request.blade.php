@@ -40,7 +40,7 @@ $key =1;
               <img src="/assets/images/dashboard/people.svg" alt="people">
               <div class="weather-info">
                 <p class="fs-30 mt-2 ">{{$dt}}</p>  
-                <p>(Today)</p>
+                <p>({{__('sunshine.Today')}})</p>
               </div>
               
             </div>
@@ -52,7 +52,7 @@ $key =1;
             <div class="col-md-6 mb-4 stretch-card transparent">
               <div class="card card-tale">
                 <div class="card-body">
-                  <p class="mb-4">Check In</p>
+                  <p class="mb-4">{{__('sunshine.Check In')}}</p>
                     <p class="fs-30 mb-2">{{date('H:i:s',$userTimesheet->first_checkin/1000)}}</p>
                   <p>Sớm nhất</p>
                 </div>
@@ -61,11 +61,11 @@ $key =1;
             <div class="col-md-6 mb-4 stretch-card transparent">
               <div class="card card-dark-blue">
                 <div class="card-body">
-                  <p class="mb-4">Check Out</p>
+                  <p class="mb-4">{{__('sunshine.Check Out')}}</p>
                   @if(!empty($userTimesheet->last_checkout))
                     <p class="fs-30 mb-2">{{date('H:i:s',$userTimesheet->last_checkout/1000)}}</p>
                   @else
-                    <p class="fs-30 mb-2">No data!</p>
+                    <p class="fs-30 mb-2">{{__('sunshine.No data')}}!</p>
                   @endif
                   <p>Muộn nhất</p>
                 </div>
@@ -76,18 +76,18 @@ $key =1;
             <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
               <div class="card card-light-blue">
                 <div class="card-body">
-                  <p class="mb-4">Option</p>
+                  <p class="mb-4">{{__('sunshine.Option')}}</p>
                     {{-- <a href="{{route('option-forget')}}" class="btn btn-warning mb-2">Forget</a> --}}
-                    <a href="{{route('option-please-be-late',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light btn-sm mb-2">Please Be Late</a>
-                    <a href="{{route('option-please-come-back-soon',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light btn-sm mb-2">Please Come Back Soon</a>
-                    <a href="{{route('option-take-a-break',['date'=>date('Y-m-d')])}}" class="btn btn-danger btn-sm mb-2">Take a Break</a>
+                    <a href="{{route('option-please-be-late',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light btn-sm mb-2">{{__('sunshine.Please Be Late')}}</a>
+                    <a href="{{route('option-please-come-back-soon',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light btn-sm mb-2">{{__('sunshine.Please Come Back Soon')}}</a>
+                    <a href="{{route('option-take-a-break',['date'=>date('Y-m-d')])}}" class="btn btn-danger btn-sm mb-2">{{__('sunshine.Take a Break')}}</a>
                 </div>
               </div>
             </div>
             <div class="col-md-6 stretch-card transparent">
               <div class="card card-light-danger">
                 <div class="card-body">
-                  <p class="mb-4">Work Time</p>
+                  <p class="mb-4">{{__('sunshine.Work Time')}}</p>
                   <p class="fs-30 mb-2">
                   @if(!empty($userTimesheet->working_hour))
                     <p class="fs-30 mb-2">{{number_format($userTimesheet->working_hour/3600000,1)}} (h)</p>
@@ -114,7 +114,7 @@ $key =1;
                 @endforeach
               </div>
                 <div class="card-body row">
-                    <p class="col-md-2 card-title mb-0">Request List</p>
+                    <p class="col-md-2 card-title mb-0">{{__('sunshine.Request List')}}</p>
                     
                     {{-- Lọc  --}}
                     <form action="{{route('client.requests.index')}}" id="form_filter" method="get" class="col-md-8">
@@ -132,11 +132,11 @@ $key =1;
                           {{-- Lọc theo request type --}}
                           <div class="col-3">
                             <select name="request_type" class="form-control request_filter">
-                                <option value="0">All Request</option>
-                                <option value="Please Be Late" {{request()->request_type=='Please Be Late' ? 'selected':false}}>Please Be Late</option>
-                                <option value="Please Come Back Soon" {{request()->request_type=='Please Come Back Soon' ? 'selected':false}}>Please Come Back Soon</option>
-                                <option value="Take A Break" {{request()->request_type=='Take A Break' ? 'selected':false}}>Take A Break</option>
-                                <option value="Update Checkout" {{request()->request_type=='Update Checkout' ? 'selected':false}}>Update Checkout</option>
+                                <option value="0">{{__('sunshine.All Request')}}</option>
+                                <option value="Please Be Late" {{request()->request_type=='Please Be Late' ? 'selected':false}}>{{__('sunshine.Please Be Late')}}</option>
+                                <option value="Please Come Back Soon" {{request()->request_type=='Please Come Back Soon' ? 'selected':false}}>{{__('sunshine.Please Come Back Soon')}}</option>
+                                <option value="Take A Break" {{request()->request_type=='Take A Break' ? 'selected':false}}>{{__('sunshine.Take A Break')}}</option>
+                                <option value="Update Checkout" {{request()->request_type=='Update Checkout' ? 'selected':false}}>{{__('sunshine.Update Checkout')}}</option>
                             </select>
                           </div>
                       </div>
@@ -146,13 +146,13 @@ $key =1;
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Request Type</th>
-                                    <th>Timesheet Date</th>
-                                    <th>Time</th>
-                                    <th>Reason</th> 
-                                    <th>Time Respond</th>
-                                    <th>Status</th>      
-                                    <th>Created At</th>
+                                    <th>{{__('sunshine.Request Type')}}</th>
+                                    <th>{{__('sunshine.Timesheet Date')}}</th>
+                                    <th>{{__('sunshine.Time')}}</th>
+                                    <th>{{__('sunshine.Reason')}}</th> 
+                                    <th>{{__('sunshine.Time Respond')}}</th>
+                                    <th>{{__('sunshine.Status')}}</th>      
+                                    <th>{{__('sunshine.Created At')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -199,25 +199,25 @@ $key =1;
                                   </td>
                                   <td>
                                     @if($item['status'] == '0')
-                                      <label class="badge badge-danger">Denied</label>
+                                      <label class="badge badge-danger">{{__('sunshine.Denied')}}</label>
                                     @elseif($item['status'] == '1')
-                                      <label class="badge badge-success">Accept</label>
+                                      <label class="badge badge-success">{{__('sunshine.Accept')}}</label>
                                     @else
-                                      <label class="badge badge-warning">Pending</label>
+                                      <label class="badge badge-warning">{{__('sunshine.Pending')}}</label>
                                     @endif
                                   </td>
                                   <td>{{$item['created_at']}}</td>
                                   <td>
                                     @if($item['status'] == null)
                                       <a onclick="return confirm('Are you sure you want to delete request?')" 
-                                      href="{{route('client.requests.destroy',['id' => $item['id']])}}" class="btn btn-danger btn-sm">Delete</a>
+                                      href="{{route('client.requests.destroy',['id' => $item['id']])}}" class="btn btn-danger btn-sm">{{__('sunshine.Delete')}}</a>
                                     @endif
                                     </td>
                                   </tr>
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="8">There is no data!</td>
+                                    <td colspan="8">{{__('sunshine.There is no data')}}!</td>
                                 </tr>
                               @endif
                             </tbody>

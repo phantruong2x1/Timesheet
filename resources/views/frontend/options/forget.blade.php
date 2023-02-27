@@ -8,7 +8,7 @@
 <div class="col-md-12 grid-margin stretch-card">
 <div class="card">
 <div class="card-body">
-    <h4 class="card-title">Forget</h4>
+    <h4 class="card-title">{{__('sunshine.Update Checkout')}}</h4>
 
     {{-- Thông báo lỗi tổng quát--}}
     @if ($errors->any())
@@ -21,15 +21,15 @@
         <div class="form-group row">
             
             <div class="col-sm-9">
-                <p>Enter your data!</p>
-                <p>Date: <b>{{$timesheetDetail->date}}</b></p>
-                <p>First Checkin: <input type="time" name="first_checkin" readonly value="{{date('H:i:s',$timesheetDetail->first_checkin/1000)}}" ></p>
+                <p>{{__('sunshine.Enter your data!')}}</p>
+                <p>{{__('sunshine.Date')}}: <b>{{$timesheetDetail->date}}</b></p>
+                <p>{{__('sunshine.First Checkin')}}: <input type="time" name="first_checkin" readonly value="{{date('H:i:s',$timesheetDetail->first_checkin/1000)}}" ></p>
             </div>
         </div>
 
         {{-- last checkout --}}
         <div class="form-group row">
-            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Last Checkout</label>
+            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">{{__('sunshine.Last Checkout')}}</label>
             <div class="col-sm-9">
             <input type="time" class="form-control" id="exampleInputEmail2"
             name="last_checkout" value="{{old('last_checkout')}}">
@@ -44,14 +44,14 @@
 
         {{-- reason --}}
         <div class="form-group row">
-            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Reason</label>
+            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">{{__('sunshine.Reason')}}</label>
             <div class="col-sm-9">
                 <textarea name="reason" class="form-control" id="exampleTextarea1" rows="4"></textarea>             
             </div>
         </div>
         
-        <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">Submit</button>
-        <a href="{{route('client-dashboard')}}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">{{__('sunshine.Submit')}}</button>
+        <a href="{{route('client-dashboard')}}" class="btn btn-secondary">{{__('sunshine.Cancel')}}</a>
     </form>
 </div>   
 </div>   

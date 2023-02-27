@@ -24,7 +24,7 @@ $currentMonth = strtotime(date('Y-m-15'));
                 </div>
                 
                 <div class="card-body row">
-                    <p class="col-md-2 card-title mb-0">Time Sheet</p>
+                    <p class="col-md-2 card-title mb-0">{{__('sunshine.Time Sheet')}}</p>
                     {{-- Lọc  --}}
                     <form action="{{route('client-dashboard')}}" id="form_filter" method="get" class="col-md-8">
                         <div class="row">
@@ -39,7 +39,7 @@ $currentMonth = strtotime(date('Y-m-15'));
                                     @endfor
                                 </select>
                             </div>
-                                <i class="p-2" style="background-color: #FFFF66; height: 10px;margin-left: 30%;border: 1px solid black"></i> <p class="pl-2"> Today</p>
+                                <i class="p-2" style="background-color: #FFFF66; height: 10px;margin-left: 30%;border: 1px solid black"></i> <p class="pl-2"> {{__('sunshine.Today')}}</p>
                                 <i class="p-2" style="background-color: #CCFFCC; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> T7</p>
                                 <i class="p-2" style="background-color: #FFCCFF; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> CN</p>
                         </div>
@@ -50,12 +50,12 @@ $currentMonth = strtotime(date('Y-m-15'));
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Date</th>
-                                    <th>First Check-In</th>
-                                    <th>Last Check-Out</th>
-                                    <th>Working hour</th>
-                                    <th>Overtiming</th>
-                                    <th>Status</th>
+                                    <th>{{__('sunshine.Date')}}</th>
+                                    <th>{{__('sunshine.First Check-In')}}</th>
+                                    <th>{{__('sunshine.Last Check-Out')}}</th>
+                                    <th>{{__('sunshine.Working Hour')}}</th>
+                                    <th>{{__('sunshine.Overtiming')}}</th>
+                                    <th>{{__('sunshine.Status')}}</th>
                                     {{-- <th>Leave Status</th> --}}
                                     
                                 </tr>
@@ -133,11 +133,11 @@ $currentMonth = strtotime(date('Y-m-15'));
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton1">
-                                                <h6 class="dropdown-header">Option</h6>
-                                                <a class="dropdown-item" href="{{route('option-forget',['id' => $item['id']])}}">Update Checkout</a>
-                                                <a class="dropdown-item" href="{{route('option-please-be-late',['date' => $item['date']])}}">Please Be Late</a>
-                                                <a class="dropdown-item" href="{{route('option-please-come-back-soon',['date' => $item['date']])}}">Please Come Back Soon</a>
-                                                <a class="dropdown-item" href="{{route('option-take-a-break',['date' => $item['date']])}}">Take a Break</a>                                           
+                                                <h6 class="dropdown-header">{{__('sunshine.Option')}}</h6>
+                                                <a class="dropdown-item" href="{{route('option-forget',['id' => $item['id']])}}">{{__('sunshine.Update Checkout')}}</a>
+                                                <a class="dropdown-item" href="{{route('option-please-be-late',['date' => $item['date']])}}">{{__('sunshine.Please Be Late')}}</a>
+                                                <a class="dropdown-item" href="{{route('option-please-come-back-soon',['date' => $item['date']])}}">{{__('sunshine.Please Come Back Soon')}}</a>
+                                                <a class="dropdown-item" href="{{route('option-take-a-break',['date' => $item['date']])}}">{{__('sunshine.Take a Break')}}</a>                                           
                                             </div>
                                           </div>   
                                     @else 
@@ -146,10 +146,10 @@ $currentMonth = strtotime(date('Y-m-15'));
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton1">
-                                                <h6 class="dropdown-header">Option</h6>
-                                                <a class="dropdown-item" href="{{route('option-please-be-late',['date' => $item['date']])}}">Please Be Late</a>
-                                                <a class="dropdown-item" href="{{route('option-please-come-back-soon',['date' => $item['date']])}}">Please Come Back Soon</a>
-                                                <a class="dropdown-item" href="{{route('option-take-a-break',['date' => $item['date']])}}">Take a Break</a>                                           
+                                                <h6 class="dropdown-header">{{__('sunshine.Option')}}</h6>
+                                                <a class="dropdown-item" href="{{route('option-please-be-late',['date' => $item['date']])}}">{{__('sunshine.Please Be Late')}}</a>
+                                                <a class="dropdown-item" href="{{route('option-please-come-back-soon',['date' => $item['date']])}}">{{__('sunshine.Please Come Back Soon')}}</a>
+                                                <a class="dropdown-item" href="{{route('option-take-a-break',['date' => $item['date']])}}">{{__('sunshine.Take a Break')}}</a>                                           
                                             </div>
                                         </div>  
                                     @endif 
@@ -158,7 +158,7 @@ $currentMonth = strtotime(date('Y-m-15'));
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="9">There is no data!</td>
+                                    <td colspan="9">{{__('sunshine.There is no data')}}!</td>
                                 </tr>
                               @endif
                             </tbody>

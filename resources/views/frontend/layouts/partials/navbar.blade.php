@@ -12,24 +12,33 @@
         </li>
       </ul>
       <ul class="navbar-nav navbar-nav-right">
-        
+        <li class="nav-item dropdown">
+          <button class="btn nav-link " type="button" data-toggle="dropdown" id="profileDropdown1" >
+            <i class="ti-world"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown1">
+            <a href="{{route('app.setLocale', ['locale' => 'vi']) }}" class="dropdown-item" >Tiếng việt</a>
+            <a href="{{route('app.setLocale', ['locale' => 'en']) }}" class="dropdown-item">English</a>
+            <a href="{{route('app.setLocale', ['locale' => 'jp']) }}" class="dropdown-item">日本</a>
+          </div>
+        </li>
         <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
             <img src="{{asset('assets/images/faces/digitran-team1.jpg')}}" alt="profile"/>
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-            <h6 class="dropdown-header">Settings</h6>
+            <h6 class="dropdown-header">{{__('sunshine.Settings')}}</h6>
             <a href="{{route('client.settings.getStaff')}}" class="dropdown-item" >
               <i class="ti-user text-primary"></i>
-              Staff Information
+              {{__('sunshine.Staff Information')}}
             </a>
             <a href="{{route('client.settings.change-password')}}" class="dropdown-item" >
               <i class="ti-key text-primary"></i>
-              Change Password 
+              {{__('sunshine.Change Password')}} 
             </a>
             <button data-toggle="modal" data-target="#createFeekback" id="btnFeedback" class="dropdown-item">
               <i class="ti-info-alt text-primary"></i>
-              Feedback
+              {{__('sunshine.Feedback')}}
             </button>
             {{-- <a href="#"  id="btnFeedback" class="dropdown-item" >
               <i class="ti-info-alt text-primary"></i>
@@ -38,7 +47,7 @@
             <div class="dropdown-divider"></div>
             <a href="{{ route('logout') }}" class="dropdown-item">
               <i class="ti-power-off text-primary"></i>
-              Logout
+              {{__('sunshine.Logout')}}
             </a>
           </div>
         </li>
@@ -53,14 +62,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Feedback</h4>
+        <h4 class="modal-title">{{__('sunshine.Feedback')}}</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
         <form action="" method="post">
           @csrf
           <div class="form-group">
-            <label for="exampleInputTitle" ><b>Title</b></label>
+            <label for="exampleInputTitle" ><b>{{__('sunshine.Title')}}</b></label>
             <input type="text" class="form-control"  id="exampleInputTitle" 
             name="title"  value="{{old('title')}}" placeholder="Bạn muốn góp ý về vấn đề gì?">
             {{-- Thông báo lỗi --}}
@@ -70,7 +79,7 @@
           </div>
   
           <div class="form-group">
-            <label for="exampleInputContent" ><b>Content</b></label>
+            <label for="exampleInputContent" ><b>{{__('sunshine.Content')}}</b></label>
             <textarea name="content" class="form-control" id="exampleInputContent"
             placeholder="Nội dung góp ý là gì?" rows="5" value="{{old('content')}}"></textarea>
             {{-- Thông báo lỗi --}}

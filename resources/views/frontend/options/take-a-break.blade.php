@@ -8,7 +8,7 @@
 <div class="col-md-12 grid-margin stretch-card">
 <div class="card">
 <div class="card-body">
-    <h4 class="card-title">Take A Break</h4>
+    <h4 class="card-title">{{__('sunshine.Take A Break')}}</h4>
 
     {{-- Thông báo lỗi tổng quát--}}
     @if ($errors->any())
@@ -21,13 +21,13 @@
         <div class="form-group row">
             
             <div class="col-sm-9">
-                <p>You want to take a break</p>
+                <p>{{__('sunshine.You want to take a break')}}</p>
             </div>
         </div>
 
         {{-- time --}}
         <div class="form-group row">
-            <label for="exampleInputl" class="col-sm-3 col-form-label">Time take a break</label>
+            <label for="exampleInputl" class="col-sm-3 col-form-label">{{__('sunshine.Time take a break')}}</label>
             <div class="col-sm-9">
                 <input type="date" name="from" value="{{date('Y-m-d',$date/1000)}}">    
                 {{-- Thông báo lỗi --}}
@@ -39,15 +39,15 @@
 
         {{-- reason --}}
         <div class="form-group row">
-            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Reason</label>
+            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">{{__('sunshine.Reason')}}</label>
             <div class="col-sm-9">
                 <textarea name="reason" class="form-control" id="exampleTextarea1" rows="4"></textarea>             
 
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">Submit</button>
-        <a href="{{route('client-dashboard')}}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">{{__('sunshine.Submit')}}</button>
+        <a href="{{route('client-dashboard')}}" class="btn btn-secondary">{{__('sunshine.Cancel')}}</a>
     </form>
 </div>   
 </div>   

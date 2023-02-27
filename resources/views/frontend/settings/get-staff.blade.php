@@ -14,7 +14,7 @@
     <div class="alert alert-danger">Dữ liệu nhập không hợp lệ!</div>
     @endif
 
-    <h4 class="card-title">Update Staff</h4>
+    <h4 class="card-title">{{__('sunshine.Staff Information')}}</h4>
 
     <form class="form-sample" action="{{route('client.settings.updateStaff')}}" method="POST">
     @csrf
@@ -23,7 +23,7 @@
         {{-- Nhập id staff --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">ID Staff</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.ID Staff')}}</label>
             <div class="col-sm-9">
               <input type="text" class="form-control" name="id" readonly value="{{old('id') ?? $staffDetail->id }}" />
 
@@ -39,7 +39,7 @@
         {{-- Nhập tên --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Full Name</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Full Name')}}</label>
             <div class="col-sm-9">
               <input type="text" class="form-control" name="full_name" value="{{old('full_name')?? $staffDetail->full_name}}"/>
             </div>
@@ -52,7 +52,7 @@
         {{-- Nhập giới tính --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Gender</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Gender')}}</label>
             <div class="col-sm-4">
               <div class="form-check">
                 <label class="form-check-label"  >
@@ -63,7 +63,7 @@
                     @endif
 
                   value="Nam">
-                  Male
+                  {{__('sunshine.Male')}}
                 </label>
               </div>
             </div>
@@ -77,7 +77,7 @@
                     @endif
                   
                   value="Nữ">
-                  Female
+                  {{__('sunshine.Female')}}
                 </label>
               </div>
             </div>
@@ -87,7 +87,7 @@
         {{-- Nhập ngày sinh --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Date of Birth</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Date of Birth')}}</label>
             <div class="col-sm-9">
               <input type="date" class="form-control" name="birthday" value="{{old('birthday')?? $staffDetail->birthday}}"/>
             </div>
@@ -100,7 +100,7 @@
         {{-- Nhập địa chỉ (quê quán) --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Address </label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Address')}} </label>
             <div class="col-sm-9">
               <input type="text" class="form-control" name="address" value="{{old('address')?? $staffDetail->address}}"/>
             </div>
@@ -110,7 +110,7 @@
         {{-- Nhập email --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Email</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Email')}}</label>
             <div class="col-sm-9">
               <input type="email" class="form-control" name="email" value="{{old('email')?? $staffDetail->email}}"/>
 
@@ -128,7 +128,7 @@
         {{-- Nhập số điện thoại --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Phone Number</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Phone Number')}}</label>
             <div class="col-sm-9">
               <input type="text" class="form-control" name="phone_number" value="{{old('phone_number')?? $staffDetail->phone_number}}" />
             </div>
@@ -138,7 +138,7 @@
         {{-- Nhập tax code --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Tax Code</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Tax Code')}}</label>
             <div class="col-sm-9">
               <input type="text" class="form-control" name="tax_code" value="{{old('tax_code')?? $staffDetail->tax_code}}"/>
             </div>
@@ -150,7 +150,7 @@
         {{-- Nhập email company --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Email company</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Email company')}}</label>
             <div class="col-sm-9">
               <input type="text" class="form-control" value="company@gmail.com" name="email_company" value="{{old('email_company')?? $staffDetail->email_company}}"/>
             </div>
@@ -160,7 +160,7 @@
         {{-- Nhập loại nhân viên --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Type</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Type')}}</label>
             <div class="col-sm-9">
               <select class="form-control" name="type">
                 <option
@@ -188,7 +188,7 @@
         {{-- Nhập thời gian bắt đầu hợp đồng --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Begin Time</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Begin Time')}}</label>
             <div class="col-sm-9">
               <input type="date" class="form-control" name="begin_time" value="{{old('begin_time')?? $staffDetail->begin_time}}" />
             </div>
@@ -198,7 +198,7 @@
         {{-- Nhập thời gian kết thúc hợp đồng --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">End Time</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.End Time')}}</label>
             <div class="col-sm-9">
               <input type="date" class="form-control" name="end_time" value="{{old('end_time')?? $staffDetail->end_time}}"/>
             </div>
@@ -211,7 +211,7 @@
         {{-- Nhập thời gian chính thức làm --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Official Time</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Official Time')}}</label>
             <div class="col-sm-9">
               <input type="date" class="form-control" name="official_time" value="{{old('official_time')?? $staffDetail->official_time}}" />
             </div>
@@ -221,7 +221,7 @@
         {{-- Nhập phòng ban --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Department</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Department')}}</label>
             <div class="col-sm-9">
                 <select class="form-control" name="department_id">
 
@@ -246,7 +246,7 @@
         {{-- Nhập chức vụ, vị trí --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Position</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Position')}}</label>
             <div class="col-sm-9">
               <select class="form-control" name="position_id">
 
@@ -269,7 +269,7 @@
         {{-- Nhập ca làm việc  --}}
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Shift</label>
+            <label class="col-sm-3 col-form-label">{{__('sunshine.Shift')}}</label>
             <div class="col-sm-9">
               <select class="form-control" name="shift" >
                 <option 
@@ -294,8 +294,8 @@
         </div>
         
         <div class="row">
-            <button type="submit" class="btn btn-primary" style="margin-right: 10px">Submit</button>
-            <a href="{{route('client-dashboard')}}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary" style="margin-right: 10px">{{__('sunshine.Submit')}}</button>
+            <a href="{{route('client-dashboard')}}" class="btn btn-secondary">{{__('sunshine.Cancel')}}</a>
         </div>
     </form>
 </div>

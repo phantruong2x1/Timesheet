@@ -9,7 +9,7 @@
     <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Change Password</h4>
+        <h4 class="card-title">{{__('sunshine.Change Password')}}</h4>
     
         {{-- Thông báo lỗi tổng quát--}}
         @if ($errors->any())
@@ -20,25 +20,25 @@
         @csrf     
             {{-- staff name --}}
             <div class="row">
-                <label class="col-sm-2 col-form-label">Full Name:</label>
+                <label class="col-sm-2 col-form-label">{{__('sunshine.Full Name')}}:</label>
                 <label class="col-sm-10 col-form-label"><b>{{$userDetail->staff->full_name}}</b></label>
             </div>
     
             {{-- role_id --}}
             <div class="row">
-                <label class="col-sm-2 col-form-label">Role Name:</label>
+                <label class="col-sm-2 col-form-label">{{__('sunshine.Role Name')}}:</label>
                 <label class="col-sm-10 col-form-label"><b>{{$userDetail->user_role->role_name}}</b></label>
             </div>
     
             {{-- user_name --}}
             <div class="row">
-                <label class="col-sm-2 col-form-label">User Name:</label>
+                <label class="col-sm-2 col-form-label">{{__('sunshine.User Name')}}:</label>
                 <label class="col-sm-10 col-form-label"><b>{{$userDetail->user_name}}</b></label>
             </div>
     
             {{-- password --}}
             <div class="row">
-                <label for="exampleInputEmail1" class="col-sm-2 col-form-label">Current Password:</label>
+                <label for="exampleInputEmail1" class="col-sm-2 col-form-label">{{__('sunshine.Current Password')}}:</label>
                 <div class="col-form-label col-sm-10">
                 <input type="password" class="form-control " id="exampleInputEmail1" 
                 name="current_password" >
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="row">
-                <label for="exampleInputEmail2" class="col-sm-2 col-form-label">New Password:</label>
+                <label for="exampleInputEmail2" class="col-sm-2 col-form-label">{{__('sunshine.New Password')}}:</label>
                 <div class="col-form-label col-sm-10">
                 <input type="password" class="form-control " id="exampleInputEmail2" 
                 name="new_password" value="{{old('new_password')}}">
@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="row">
-                <label for="exampleInputEmail3" class="col-sm-2 col-form-label">New Password:</label>
+                <label for="exampleInputEmail3" class="col-sm-2 col-form-label">{{__('sunshine.New Password')}}:</label>
                 <div class="col-form-label col-sm-10">
                 <input type="password" class="form-control " id="exampleInputEmail3" 
                 name="new_confirm_password" value="{{old('new_confirm_password')}}">
@@ -77,8 +77,8 @@
                 </div>
             </div>
     
-            <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">Submit</button>
-            <a href="{{route('client-dashboard')}}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">{{__('sunshine.Submit')}}</button>
+            <a href="{{route('client-dashboard')}}" class="btn btn-secondary">{{__('sunshine.Cancel')}}</a>
         </form>
     </div>   
     </div>   
