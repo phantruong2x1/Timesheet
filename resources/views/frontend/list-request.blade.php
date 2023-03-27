@@ -10,28 +10,6 @@ $key =1;
 @section('content')
 <div class="main-panel">
     <div class="content-wrapper">
-      {{-- Welcome --}}
-      <div class="row">
-        <div class="col-md-12 grid-margin">
-          <div class="row">
-            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-              <h4 class="font-weight-bold">{{__('sunshine.welcome')}} 
-                @if(!empty($userDetail->staff->full_name))
-                  {{$userDetail->staff->full_name}}
-                @else
-                  {{$userDetail->user_name}}
-                @endif
-              </h4>
-              <h6 class="font-weight-normal mb-0">Welcome Digtran members to DGT-Timesheet! <span class="text-primary">Wishing everyone a productive day!</span></h6>
-              
-            </div>
-            <div class="col-12 col-xl-4">
-              <div class="justify-content-end d-flex">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       {{-- UserTimesheet --}}
       <div class="row">
         <div class="col-md-6 grid-margin stretch-card">
@@ -53,8 +31,8 @@ $key =1;
               <div class="card card-tale">
                 <div class="card-body">
                   <p class="mb-4">{{__('sunshine.Check In')}}</p>
-                    <p class="fs-30 mb-2">{{date('H:i:s',$userTimesheet->first_checkin/1000)}}</p>
-                  <p>Sớm nhất</p>
+                    <p class="fs-30 mb-2">{{($userTimesheet) ? date('H:i:s',$userTimesheet->first_checkin/1000) : __('sunshine.No data')}}</p>
+                  <p>{{__('sunshine.The earliest arrival time.')}}</p>
                 </div>
               </div>
             </div>
@@ -65,9 +43,9 @@ $key =1;
                   @if(!empty($userTimesheet->last_checkout))
                     <p class="fs-30 mb-2">{{date('H:i:s',$userTimesheet->last_checkout/1000)}}</p>
                   @else
-                    <p class="fs-30 mb-2">{{__('sunshine.No data')}}!</p>
+                    <p class="fs-30 mb-2">{{__('sunshine.No data')}}</p>
                   @endif
-                  <p>Muộn nhất</p>
+                  <p>{{__('sunshine.latest return time.')}}</p>
                 </div>
               </div>
             </div>

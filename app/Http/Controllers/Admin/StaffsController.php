@@ -140,5 +140,4 @@ class StaffsController extends Controller
         return redirect()->route('staff.index');
     }
 
-
 }

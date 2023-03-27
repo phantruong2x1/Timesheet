@@ -19,9 +19,6 @@ class Position extends Model
         return $this->hasMany(Staffs::class);
     }
 
-    protected $fillable = [
-        'position_name',
-        'position_desc'
-    ];
+    protected $fillable = ['position_name','position_desc'];
 
 }

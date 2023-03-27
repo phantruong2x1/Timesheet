@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\RequestDetailController;
 use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FeedbackController;
+use App\Http\Controllers\Admin\PayrollCostController;
 use App\Models\Timesheet;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Session;
@@ -161,12 +162,32 @@ Route::middleware('auth')->group(function(){
 
             });
 
+            //Payroll Cost
+            Route::prefix('payroll-cost')->name('payroll-costs.')->group(function(){
+                Route::get('/',[PayrollCostController::class,'index'])->name('index');
+
+                Route::get('/show',[PayrollCostController::class,'show'])->name('show');
+
+                Route::get('/create',[PayrollCostController::class,'create'])->name('create');
+
+                Route::post('/store',[PayrollCostController::class,'store'])->name('store');
+
+                Route::get('/edit/{id}',[PayrollCostController::class,'edit'])->name('edit');
+
+                Route::post('/update',[PayrollCostController::class,'update'])->name('update');
+                
+                Route::get('/destroy/{id}',[PayrollCostController::class,'destroy'])->name('destroy');
+            });
+
         });
 
         Route::middleware('client')->prefix('client')->group(function(){
 
             //Dashboard client
             Route::get('/dashboard',[Client\ClientController::class, 'index'])->name('client-dashboard');
+
+            //statistical
+            Route::get('/statistical',[Client\StatisticalController::class, 'index'])->name('client.statisticals');
 
             //option
             Route::get('/forget/{id}', [Client\RequestDetailController::class, 'forget'])->name('option-forget');
@@ -195,6 +216,9 @@ Route::middleware('auth')->group(function(){
             Route::post('/setting-update-passoword', [Client\SettingController::class, 'updatePassword'])->name('client.settings.update-password');
             
             Route::post('/setting-feekback', [Client\SettingController::class, 'createFeedback'])->name('client.settings.post-feekback');
+
+            //other
+            Route::get('/get-statistical-detail/{time}',[Client\StatisticalController::class, 'getStatisticalDetail'])->name('client.get-statistical-detail');
             
         });
     });
@@ -208,6 +232,12 @@ Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('
 Route::view('permission-denied', 'errors.permission-denied')->name('denied');
 Route::view('account-disabled', 'errors.account-disabled')->name('disabled');
 Route::view('account-not-found', 'errors.account-not-found')->name('notfound');
+
+//current time
+Route::get('/current-time', function () {
+    return response()->json(['time' => Carbon\Carbon::now()]);
+});
+
 
 
 

@@ -186,34 +186,26 @@ class TimesheetController extends Controller
         $this->data['staffsList'] = Staffs::all(); 
         $filter = [];
         //lọc dữ liệu
+        //staff_id cần lọc
         if(!empty($request->staff_id))
             $filter[] = ['staff_id','=',$request->staff_id];
         else
             $filter[] = ['staff_id','=', Auth::user()->staff_id];
-
-        if(empty($request->date_filter)){
-            $monthFilter = date('m');
-            $yearFilter = date('Y');
-        }
-        else{
-            $millisecond = strtotime('1-'.$request->date_filter.'');
-            $monthFilter = date('m',$millisecond);
-            $yearFilter = date('Y',$millisecond);
-        }
-        $dayOfMonth = cal_days_in_month(CAL_GREGORIAN, $monthFilter, $yearFilter);
+        //month and year cần lọc
+        $monthAndYear = $this->getMonthAndYear($request->date_filter);
+        
+        $dayOfMonth = cal_days_in_month(CAL_GREGORIAN, $monthAndYear['month'], $monthAndYear['year']);
         $listTimesheet = Timesheet::where($filter)->orderBy('date','desc')->get();
 
         for($i=1; $i<=$dayOfMonth; $i++){
-            $dateFilter = date('d-m-Y',mktime(0, 0, 0, $monthFilter, $i, $yearFilter));
-            $millisecondWeekday = strtotime($dateFilter);
-            $weekday = getdate($millisecondWeekday);
-            $colorWeekday = $clientCon->getColorWeekday($weekday);
-            if($dateFilter == date('d-m-Y'))
-                $colorWeekday = '#FFFF66';
+
+            $dateFilter = date('d-m-Y',mktime(0, 0, 0, $monthAndYear['month'], $i, $monthAndYear['year']));
+            $weekday = $clientCon->getWeekday($dateFilter);
+            $colorWeekday = $clientCon->getColorWeekday($dateFilter);
                 
             $this->data['userListTimesheet'][$i] = [
                 'date' => $dateFilter, 
-                'weekday' => $clientCon->getWeekday($weekday['weekday']),
+                'weekday' => $weekday,
                 'colorWeekday' => $colorWeekday
             ]; 
             foreach($listTimesheet as $timesheetDetail){
@@ -222,7 +214,7 @@ class TimesheetController extends Controller
                     $this->data['userListTimesheet'][$i] = [
                         'id' => $timesheetDetail->id,
                         'date' => $dateFilter, 
-                        'weekday' => $clientCon->getWeekday($weekday['weekday']),
+                        'weekday' => $weekday,
                         'colorWeekday' => $colorWeekday,
                         'first_checkin' => $timesheetDetail->first_checkin,
                         'last_checkout' => $timesheetDetail->last_checkout,
@@ -351,5 +343,21 @@ class TimesheetController extends Controller
             $status = 'On Time';
         } 
         return $status;
+    }
+
+    //Lấy tháng và năm từ request
+    public function getMonthAndYear($date_filter)
+    {
+        $monthAndYear = array();
+        if(empty($date_filter)){
+            $monthAndYear['month'] = date('m');
+            $monthAndYear['year'] = date('Y');
+        }
+        else{
+            $millisecond = strtotime('1-'.$date_filter.'');
+            $monthAndYear['month'] = date('m',$millisecond);
+            $monthAndYear['year'] = date('Y',$millisecond);
+        }
+        return $monthAndYear;
     }
 }

@@ -24,6 +24,8 @@ class Kernel extends ConsoleKernel
         //                                  ->timezone('Asia/Ho_Chi_Minh')
         //                                  ->between('08:00','21:00');
         $schedule->command('GetCurl:get')->everyFifteenMinutes()->timezone('Asia/Ho_Chi_Minh');
+        $schedule->command('UpLoadStatistical:update')->timezone('Asia/Ho_Chi_Minh')->dailyAt('18:00:00');
+        // $schedule->command('UpLoadStatistical:update')->everyMinute();
     }
 
     /**

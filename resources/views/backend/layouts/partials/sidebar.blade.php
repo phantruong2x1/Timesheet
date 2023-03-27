@@ -31,6 +31,14 @@
         </a>
       </li>
 
+      {{-- Payroll Cost --}}
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('payroll-costs.index')}}">
+          <i class="ti-money menu-icon"></i>
+          <span class="menu-title">Payroll Cost</span>
+        </a>
+      </li>
+
       {{-- History --}}
       <li class="nav-item">
         <a class="nav-link" href="{{route('historis.index')}}">

@@ -103,28 +103,10 @@ $currentMonth = strtotime(date('Y-m-15'));
                                     <td>
                                         @if(empty($item['id']))
                                             <label for=""></label>
-                                        @elseif(empty($item['status']) )
-                                            <label class="badge badge-success">Pending</label>
-                                        @elseif(($item['status']) == 'On Time')
-                                            <label class="badge badge-success">{{$item['status']}}</label>
                                         @else
-                                            <label class="badge badge-warning">{{$item['status']}}</label>
+                                            <label class="status badge">{{ (empty($item['status'])) ? 'Pending' : $item['status']}}</label>
                                         @endif
                                     </td>
-                                    {{-- check Leave Status --}}
-                                    {{-- <td>
-                                    @if(empty($status) || empty($item['id']))
-                                        <label></label>
-                                    @elseif($status == 'On Time' || $status == 'Pending')
-                                        <label class="badge badge-success">OK</label>
-                                    @else 
-                                        @if($item['leave_status']=='1')
-                                            <label class="badge badge-success">Yes</label>
-                                        @else
-                                            <label class="badge badge-warning">No</label>
-                                        @endif
-                                    @endif
-                                    </td>  --}}
                                     <td>
                                     @if(!empty($item['id']))
                                         <div class="btn-group">
@@ -168,6 +150,16 @@ $currentMonth = strtotime(date('Y-m-15'));
             $('#form_filter').submit();
         })
     })
+
+    //color status
+    const listStatus = document.querySelectorAll('.status')
+    for(let i=0; i<listStatus.length; i++){
+        let textStatus = listStatus[i].innerText
+        if(textStatus == 'Late checkin' || textStatus =='Early checkout' || textStatus == 'Late checkin/Early checkout')
+            listStatus[i].classList.add('badge-warning')
+        else 
+            listStatus[i].classList.add('badge-success')
+    }
 </script> 
 
 @endsection

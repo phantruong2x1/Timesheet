@@ -16,20 +16,7 @@ class Staffs extends Model
     //public $incrementing = flase;
     protected $keyType = 'string';
 
-    protected $fillable = [
-            'position_id',
-            'department_id',
-            'full_name',
-            'birthday',
-            'gender',
-            'email',
-            'shift',
-            'type',
-            'user_id',
-            'id',
-            'phone_number',
-            'address'
-    ];
+    protected $fillable = ['position_id', 'department_id', 'full_name', 'birthday', 'gender', 'email', 'shift', 'type', 'user_id', 'id', 'phone_number', 'address','coefficients_salary'];
     protected $hidden = [
         'tax_code',
         'email_company'
@@ -53,6 +40,9 @@ class Staffs extends Model
     }
     public function requestDetail(){
         return $this->hasMany(RequestDetail::class);
+    }
+    public function statistical(){
+        return $this->hasMany(Statisticals::class);
     }
 
     // Lấy tất cả nhân viên 

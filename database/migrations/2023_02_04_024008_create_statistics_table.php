@@ -21,7 +21,8 @@ return new class extends Migration
             $table->bigInteger('overtime_hour')->nullable();
             $table->integer('last_checkin')->nullable();
             $table->integer('early_checkout')->nullable();
-            $table->integer('day_off')->nullable();  
+            $table->integer('day_off')->nullable(); 
+            $table->double('salary')->nullable();   
             $table->timestamps();
         });
     }

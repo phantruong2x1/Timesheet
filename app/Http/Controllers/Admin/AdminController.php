@@ -8,6 +8,8 @@ use App\Models\Timesheet;
 use App\Models\Staffs;
 use App\Models\HistoryInout;
 use Illuminate\Support\Facades\DB;
+use App\Models\PayrollCost;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -34,6 +36,7 @@ class AdminController extends Controller
             $filter[] = ['date','=',$dateFilter];
         }
         $this->data['timesheetList'] = Timesheet::where($filter)->orderBy('first_checkin','desc')->get();  
+  
         return view('backend.dashboard', $this->data);  
     }   
 }

@@ -28832,9 +28832,10 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-brand-wrapper .brand-logo-mini img {
-  width: calc(70px - 30px);
+  /* width: calc(70px - 30px); */
   max-width: 100%;
   margin: auto;
+  height: 24px;
 }
 
 .navbar .navbar-menu-wrapper {

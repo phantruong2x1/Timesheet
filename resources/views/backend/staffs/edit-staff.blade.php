@@ -289,10 +289,30 @@
             </div>
           </div>
         </div>
-
       </div>
-      
+
       <div class="row">
+        {{-- Nhập hệ số lương --}}
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Coefficients Salary</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-primary text-white">$</span>
+                </div>
+                <input type="text" class="form-control" name="coefficients_salary" value="{{old('coefficients_salary') ?? $staffDetail->coefficients_salary}}" aria-label="Amount (to the nearest dollar)"/>
+                <div class="input-group-append">
+                  <span class="input-group-text">vnđ</span>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row ml-4">
         <button type="submit" class="btn btn-primary" style="margin-right: 10px">Submit</button>
         <a href="{{route('staff.index')}}" class="btn btn-secondary">Cancel</a>
       </div>

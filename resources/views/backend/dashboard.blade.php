@@ -78,7 +78,6 @@ $key = 1;
                                     <th>Working hour</th>
                                     <th>Overtiming</th>
                                     <th>Status</th>
-                                    {{-- <th>Leave Status</th> --}}
                                     <th>Option</th>
                                 </tr>
                             </thead>
@@ -120,26 +119,8 @@ $key = 1;
                                     @endif
                                     {{-- status  --}}
                                     <td>
-                                    @if(empty($item['status']))
-                                        <label class="badge badge-success">Pending</label>
-                                    @elseif(($item['status']) == 'On Time')
-                                        <label class="badge badge-success">{{$item['status']}}</label>
-                                    @else
-                                        <label class="badge badge-warning">{{$item['status']}}</label>
-                                    @endif
+                                        <label class="status badge">{{ (empty($item['status'])) ? 'Pending' : $item['status']}}</label>
                                     </td>
-                                    {{-- check Leave Status --}}
-                                    {{-- <td>
-                                    @if($status == 'On Time' || $status == 'Pending')
-                                        <label class="badge badge-success">OK</label>
-                                    @else 
-                                        @if($item['leave_status']=='1')
-                                            <label class="badge badge-success">Yes</label>
-                                        @else
-                                            <label class="badge badge-warning">No</label>
-                                        @endif
-                                    @endif
-                                    </td>  --}}
                                     {{-- Nút option --}}
                                     <td>
                                         <a href="{{route('timesheets.edit',['id' => $item['id']])}}" class="btn btn-warning btn-sm"><i class="ti-pencil-alt"></i></a>
@@ -175,6 +156,16 @@ $key = 1;
             $('#form_filter').submit();
         })
     })
+
+    //color status
+    const listStatus = document.querySelectorAll('.status')
+    for(let i=0; i<listStatus.length; i++){
+        let textStatus = listStatus[i].innerText
+        if(textStatus == 'Late checkin' || textStatus =='Early checkout' || textStatus == 'Late checkin/Early checkout')
+            listStatus[i].classList.add('badge-warning')
+        else 
+            listStatus[i].classList.add('badge-success')
+    }
 </script> 
 
 @endsection

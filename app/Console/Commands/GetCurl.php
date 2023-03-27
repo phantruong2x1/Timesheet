@@ -91,10 +91,10 @@ class GetCurl extends Command
                 if($list->list[$i]->recordType == 8){
 
                     //Lấy bản ghi mới nhất theo staff_id
-                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->orderBy('id', 'DESC')->first();
+                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->where('date',date('d-m-Y',($list->list[$i]->lockDate)/1000))->first();
                     $staffDetail = Staffs::find($list->list[$i]->username);
                     //Nếu Staff_id = null thì tạo mới + tạo bản ghi mới theo ngày
-                    if((empty($timesheetDetail)) || ($timesheetDetail->date != date('d-m-Y',($list->list[$i]->lockDate)/1000))){
+                    if($timesheetDetail->isEmpty()){
                         $timeSheets = new Timesheet();
                         $timeSheets->record_id      = $list->list[$i]->recordId;
                         $timeSheets->date           = date('d-m-Y',$list->list[$i]->lockDate/1000);
@@ -117,10 +117,14 @@ class GetCurl extends Command
                         $timesheetDetail->last_checkout  = $list->list[$i]->lockDate;
                         $timesheetDetail->working_hour   = $timesheet->getWorkingHour($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
                         $timesheetDetail->overtime = $timesheet->getOverTime($timesheetDetail->working_hour);
-                        if(empty($staffDetail->shift) || $staffDetail->shift == 'Ca 1')
+                        //Kiểm tra status có giấy phép hay không
+                        if(strpos($timesheetDetail->status, 'Authorization'))
+                            continue;
+                        else if(empty($staffDetail->shift) || $staffDetail->shift == 'Ca 1')
                             $timesheetDetail->status = $timesheet->getStatusShift1($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
                         else if($staffDetail->shift == 'Ca 2')
                             $timesheetDetail->status = $timesheet->getStatusShift2($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+                            
                         $timesheetDetail->save();
                     }
                 }

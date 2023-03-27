@@ -21,12 +21,10 @@ class RequestDetailController extends Controller
     public function index(Request $request)
     {
         $this->data['userDetail'] = Auth::user();
-        $this->data['userTimesheet'] =  Timesheet::where('staff_id',Auth::user()->staff_id)
-        ->orderBy('date', 'DESC')
+        $this->data['userTimesheet'] = Timesheet::where('staff_id',Auth::user()->staff_id)
+        ->where('date',date('d-m-Y'))
         ->first();
         $this->data['dt'] = date('d-m-Y');
-        // $this->data['userListRequest'] = RequestDetail::where('staff_id',Auth::user()->staff_id)
-        //                                 ->orderBy('updated_at','desc')->paginate(10);
         //lọc dữ liệu 
         $filter[] = ['staff_id','=', Auth::user()->staff_id];
         if(!empty($request->request_type)){

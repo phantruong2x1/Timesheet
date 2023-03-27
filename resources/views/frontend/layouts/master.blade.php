@@ -22,13 +22,13 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{{asset('assets/images/icon-digitran-logo.png')}}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    
     <style>
         .badge {
           font-size: 11px;
         }
         .table td {
-          padding: 7px;
-          font-size: 0.8rem;
+          padding: 6px;
         }
     </style>
 </head>
@@ -84,6 +84,9 @@
     <!-- Custom js for this page-->
     <script src="{{asset('assets/js/dashboard.js')}}"></script>
     <script src="{{asset('assets/js/Chart.roundedBarCharts.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
     <!-- End custom js for this page-->
     <script>
         $.ajaxSetup({

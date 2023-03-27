@@ -7,12 +7,44 @@ $currentMonth = strtotime(date('Y-m-15'));
 @endphp
 
 @section('content')
+<style>
+    .table td img, .jsgrid .jsgrid-table td img {
+    width: 50px;
+    height: 50px;
+    border-radius: 0%;
+}
+</style>
 
 <div class="main-panel">
     <div class="content-wrapper">
+    {{-- Welcome --}}
+    <div class="row">
+        <div class="col-md-12 grid-margin">
+        <div class="row">
+            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+            <h3 class="font-weight-bold">{{__('sunshine.welcome')}} 
+                @if(!empty($userDetail->staff->full_name))
+                {{$userDetail->staff->full_name}}
+                @else
+                {{$userDetail->user_name}}
+                @endif
+            </h3>
+            <h6 class="font-weight-normal mb-0">{{__('sunshine.Welcome Digtran members to DGT-Timesheet!')}} <span class="text-primary">{{__('sunshine.Wishing everyone a productive day!')}}</span></h6>
+            
+            </div>
+            <div class="col-12 col-xl-4">
+            <div class="justify-content-end d-flex">
+                <button style="box-shadow: " class="btn btn-light bg-white">
+                    <div id="clock" ></div>
+                </button>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
     {{-- User List Timesheet  --}}
     <div class="row">
-        <div class="col-md-12 grid-margin stretch-card">
+        <div class="col-md-8 grid-margin stretch-card">
             <div class="card">
                 {{-- Thông báo --}}
                 <div class="flash-message">
@@ -24,29 +56,18 @@ $currentMonth = strtotime(date('Y-m-15'));
                 </div>
                 
                 <div class="card-body row">
-                    <p class="col-md-2 card-title mb-0">{{__('sunshine.Time Sheet')}}</p>
+                    <p class="col-md-3 card-title mb-0">{{__('sunshine.Time Sheet')}}</p>
                     {{-- Lọc  --}}
-                    <form action="{{route('client-dashboard')}}" id="form_filter" method="get" class="col-md-8">
-                        <div class="row">
-                            {{-- Lọc theo tháng --}}
-                            <div class="col-3">
-                                <select class="form-control date_filter" name="date_filter">    
-                                    @for($i = 0; $i < 9; $i++)
-                                    <option
-                                        {{request()->date_filter==date('m-Y',strtotime('-'.$i.' month', $currentMonth)) ? 'selected':false}} >
-                                        {{date('m-Y',strtotime('-'.$i.' month', $currentMonth))}} 
-                                    </option>
-                                    @endfor
-                                </select>
-                            </div>
-                                <i class="p-2" style="background-color: #FFFF66; height: 10px;margin-left: 30%;border: 1px solid black"></i> <p class="pl-2"> {{__('sunshine.Today')}}</p>
-                                <i class="p-2" style="background-color: #CCFFCC; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> T7</p>
-                                <i class="p-2" style="background-color: #FFCCFF; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> CN</p>
+                    <form action="{{route('client-dashboard')}}" id="form_filter" method="get" class="col-md-9">
+                        <div class="row d-flex justify-content-end">
+                            <i class="p-2" style="background-color: #e9e951; height: 10px;margin-left: 30%;border: 1px solid black"></i> <p class="pl-2"> {{__('sunshine.Today')}}</p>
+                            <i class="p-2" style="background-color: #beecbe; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2"> {{__('sunshine.Saturday')}}</p>
+                            <i class="p-2" style="background-color: #f5cbcb; height: 10px;margin-left: 40px;border: 1px solid black"></i> <p class="pl-2 mr-3"> {{__('sunshine.Sunday')}}</p>
                         </div>
                     </form>
                     
                     <div class="table-responsive pt-3">
-                        <table class="table " id="table1" >
+                        <table class="table table-hover" id="table1" >
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -66,70 +87,47 @@ $currentMonth = strtotime(date('Y-m-15'));
                 
                                 <tr style = "background-color: {{$item['colorWeekday']}}">
                                     {{-- Hiển thị dữ liệu --}}
-                                    <td>{{$key}}</td>
-                                    <td><b style="color: #000044	">{{$item['date']}}</b> <span style="color: #7e7e7e"> ({{$item['weekday']}})</span></td>
-                                    {{-- first_checkin data --}}
-                                    @if(!empty($item['first_checkin']))
-                                        <td>{{date('H:i:s',$item['first_checkin']/1000)}}</td>
-                                    @else
-                                        <td style="color: rgb(165, 165, 165)">No data!</td>
-                                    @endif
-                                    {{-- last_checkout data --}}
-                                    @if(!empty($item['last_checkout']))
-                                        <td>{{date('H:i:s',$item['last_checkout']/1000)}}</td>
-                                    @else
-                                        <td style="color:rgb(165, 165, 165)">No data!</td>
-                                    @endif
-
-                                    {{-- Working_hour data --}}
-                                    @if(empty($item['working_hour']))
-                                        <td style="color: rgb(165, 165, 165)">0 h</td>
-                                    @elseif( $item['working_hour'] > 0  )
-                                        <td>{{number_format($item['working_hour']/3600000, 1)}} h</td>  
-                                    @endif
-
-                                    {{-- overtime data --}}
-                                    @if(empty($item['overtime']))
-                                        <td style="color:rgb(165, 165, 165)">0 h</td>
-                                    @elseif($item['overtime'] > 0 && !empty(['overtime']))
-                                        <td>{{number_format($item['overtime']/3600000, 1)}} h</td>
-                                    @endif
-
                                     <td>
-                                        @if(empty($item['id']))
-                                            <label for=""></label>
-                                        @elseif(empty($item['status']) )
-                                            <label class="badge badge-success">Pending</label>
-                                        @elseif(($item['status']) == 'On Time')
-                                            <label class="badge badge-success">{{$item['status']}}</label>
-                                        @else
-                                            <label class="badge badge-warning">{{$item['status']}}</label>
+                                        <div style="position: relative; text-align: center">
+                                            <img src="/assets/images/dashboard/lich-png.png" alt="image" style="text-align: center">
+                                            <div style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                                              <b class="style-color">{{$item['weekday']}}</b>
+                                            </div>
+                                          </div>
+                                    </td>
+                                    <td>{{$item['date']}}</td>
+                                    <td>
+                                        @if(!empty($item['first_checkin']))
+                                            {{date('H:i:s',$item['first_checkin']/1000)}}
                                         @endif
                                     </td>
-                                    {{-- check Leave Status --}}
-                                    {{-- <td>
-                                    @if(empty($status) || empty($item['id']))
-                                        <label></label>
-                                    @elseif($status == 'On Time' || $status == 'Pending')
-                                        <label class="badge badge-success">OK</label>
-                                    @else 
-                                        @if($item['leave_status']=='1')
-                                            <label class="badge badge-success">Yes</label>
-                                        @else
-                                            <label class="badge badge-warning">No</label>
+                                    <td>
+                                        @if(!empty($item['last_checkout']))
+                                            {{date('H:i:s',$item['last_checkout']/1000)}}
                                         @endif
-                                    @endif
-                                    </td>  --}}
-                                    {{-- @if(!empty($item['id']))
-                                        <td><a class="btn badge badge-warning" href="{{route('option-make-order',['id' => $item['id'], 'date' => $item['date']])}}">. . .</a></td>
-                                    @else
-                                        <td><a class="btn badge badge-warning" href="{{route('option-make-order',['id' => -1, 'date' => $item['date']])}}">. . .</a></td>
-                                    
-                                    @endif --}}
+                                    </td>
+                                    <td>
+                                        @if(!empty($item['working_hour']))
+                                        {{number_format($item['working_hour']/3600000, 1)}} h
+                                        @endif
+                                    </td>
+                                    <td class="style-number">
+                                        @if(!empty($item['overtime']))
+                                        {{number_format($item['overtime']/3600000, 1)}} h
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(empty($item['id']))
+                                            <label></label>
+                                        @else
+                                            <label class="status badge">{{ (empty($item['status'])) ? 'Pending' : $item['status']}}</label>
+                                        @endif
+                                    </td>
+                             
                                     <td>
                                     @if(!empty($item['id']))
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-warning dropdown-toggle dropdown-toggle-split" id="dropdownMenuSplitButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuSplitButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton1">
@@ -142,7 +140,7 @@ $currentMonth = strtotime(date('Y-m-15'));
                                           </div>   
                                     @else 
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-warning dropdown-toggle dropdown-toggle-split" id="dropdownMenuSplitButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuSplitButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton1">
@@ -167,6 +165,49 @@ $currentMonth = strtotime(date('Y-m-15'));
                 </div>
             </div>
         </div>
+        <div class="col-md-4 grid-margin">
+            <div class="col-md-12 mb-4 stretch-card transparent">
+                <div class="card card-tale">
+                    <div class="card-body">
+                        <p class="mb-4">{{__('sunshine.Total Days')}}</p>
+                        <p class="fs-30 mb-2">
+                            {{($statisticalDeatil)?$statisticalDeatil->working_date: 'No data!'}}
+                        </p>
+                        <p>{{__('sunshine.Number of days worked this month.')}}</p>
+                        <p>{{($statisticalDeatil)?number_format($statisticalDeatil->working_date*100/$countDaysWork):0}}% ({{$countDaysWork}} {{__('sunshine.days')}})</p>
+                        <td class="w-100 px-0">
+                            <div class="progress progress-md mx-6">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{($statisticalDeatil)?number_format($statisticalDeatil->working_date*100/$countDaysWork):0}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </td>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12  mb-4 stretch-card transparent">
+                <div class="card card-light-blue">
+                  <div class="card-body">
+                    <p class="mb-4">{{__('sunshine.Total Hours Worked')}}</p>
+                    <p class="fs-30 mb-2">
+                        {{($statisticalDeatil)?number_format($statisticalDeatil->working_hour/3600000,1):0}} h
+                    </p>
+                    <p>{{__('sunshine.Number of working hours this month.')}}</p>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 stretch-card transparent">
+                <div class="card card-dark-blue">
+                  <div class="card-body">
+                    <p class="mb-4">{{__('sunshine.Total Salary')}}</p>
+                    <p class="fs-30 mb-2">
+                        {{($statisticalDeatil)?number_format($statisticalDeatil->salary,0,',',' '): 0}} vnđ
+                    </p>
+                    <p>{{__('sunshine.Estimated salary from the beginning of the month to the present.')}}</p>
+                  </div>
+                </div>
+            </div>
+        </div>
     </div>
     </div>
 </div>
@@ -178,21 +219,35 @@ $currentMonth = strtotime(date('Y-m-15'));
         })
     })
 
-// $(document).ready(function(){
+    //current time
+    function updateClock() {
+        $.get('/current-time', function (data) {
+            var time = moment(data.time);
+            $('#clock').text(time.format('HH:mm:ss DD-MM-YYYY'));
+        });
+    }
 
-//     $(".date_filter").change(function(){
-//         var date_filter = $('.date_filter').val();
-//         $.ajax({
-//             url: "/client/dashboard/",
-//             method: "GET",
-//             data: {date_filter: date_filter},
-//             success: function(result){
-//                 $("#table1").html(result);
-//             },
-//         });
-//     });
-// });
+    $(function () {
+        updateClock();
+        setInterval(updateClock, 1000);
+    });
 
+    //set color: red cho 'CN'
+    var elements = document.querySelectorAll('.style-color');
+    for (var i = 0; i < elements.length; i++) {
+        if(elements[i].innerText == 'CN' || elements[i].innerText=='T7')
+        elements[i].style.color = "red";
+    }
+
+    //color status
+    const listStatus = document.querySelectorAll('.status')
+    for(let i=0; i<listStatus.length; i++){
+        let textStatus = listStatus[i].innerText
+        if(textStatus == 'Late checkin' || textStatus =='Early checkout' || textStatus == 'Late checkin/Early checkout')
+            listStatus[i].classList.add('badge-warning')
+        else 
+            listStatus[i].classList.add('badge-success')
+    }
 
 </script> 
 
