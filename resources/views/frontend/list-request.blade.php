@@ -56,9 +56,10 @@ $key =1;
                 <div class="card-body">
                   <p class="mb-4">{{__('sunshine.Option')}}</p>
                     {{-- <a href="{{route('option-forget')}}" class="btn btn-warning mb-2">Forget</a> --}}
-                    <a href="{{route('option-please-be-late',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light btn-sm mb-2">{{__('sunshine.Please Be Late')}}</a>
-                    <a href="{{route('option-please-come-back-soon',['date'=>date('Y-m-d H:i:s')])}}" class="btn btn-light btn-sm mb-2">{{__('sunshine.Please Come Back Soon')}}</a>
-                    <a href="{{route('option-take-a-break',['date'=>date('Y-m-d')])}}" class="btn btn-danger btn-sm mb-2">{{__('sunshine.Take a Break')}}</a>
+                    <a style="cursor: pointer" class="show-popup-be-late be-late-button btn btn-light btn-sm mb-2" data-date = "{{date('d-m-Y')}}">{{__('sunshine.Please Be Late')}}</a>
+                    <a style="cursor: pointer" class="show-popup-come-back-soon come-back-soon-button btn btn-light btn-sm mb-2" data-date = "{{date('d-m-Y')}}">{{__('sunshine.Please Come Back Soon')}}</a>
+                    <a style="cursor: pointer" class="show-popup-take-a-break take-a-break-button btn btn-danger btn-sm mb-2" data-date = "{{date('d-m-Y')}}">{{__('sunshine.Take a Break')}}</a>
+                                           
                 </div>
               </div>
             </div>
@@ -207,6 +208,10 @@ $key =1;
       </div>
     </div>
 </div>
+
+@include('frontend.options.please-be-late')
+@include('frontend.options.please-come-back-soon')
+@include('frontend.options.take-a-break')
 
 <script>
   $(function() {

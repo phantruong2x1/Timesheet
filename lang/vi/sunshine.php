@@ -117,4 +117,5 @@ return [
     'The application has the function to track the work schedule of everyone in the' => 'Ứng dụng có chức năng theo dõi lịch làm việc của tất cả mọi người trong',
     'Digitran company' => 'Công ty Digitran',
     'Everyone who goes to work, remember to fully time attendance to avoid disadvantage.' => 'Tất cả mọi người đi làm đều nhớ thực hiện chấm công đầy đủ để tránh bị thiệt hại.',
+    'Coefficients Salary' => 'Hệ số lương',
 ];

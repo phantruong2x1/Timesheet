@@ -191,12 +191,12 @@ Route::middleware('auth')->group(function(){
 
             //option
             Route::get('/forget/{id}', [Client\RequestDetailController::class, 'forget'])->name('option-forget');
-            Route::post('/postForget/{id}', [Client\RequestDetailController::class, 'postForget'])->name('option-post-forget');
+            Route::post('/postForget', [Client\RequestDetailController::class, 'postForget'])->name('option-post-forget');
 
             Route::get('/please-be-late/{date}', [Client\RequestDetailController::class, 'beLate'])->name('option-please-be-late');
             Route::post('/please-be-late', [Client\RequestDetailController::class, 'postBeLate'])->name('option-post-please-be-late');
 
-            Route::get('/plese-come-back-soon/{date}', [Client\RequestDetailController::class, 'comeBackSoon'])->name('option-please-come-back-soon');
+            Route::get('/please-come-back-soon/{date}', [Client\RequestDetailController::class, 'comeBackSoon'])->name('option-please-come-back-soon');
             Route::post('/please-come-back-soon', [Client\RequestDetailController::class, 'postComeBackSoon'])->name('option-post-please-come-back-soon');
 
             Route::get('/take-a-break/{date}', [Client\RequestDetailController::class, 'takeABreak'])->name('option-take-a-break');

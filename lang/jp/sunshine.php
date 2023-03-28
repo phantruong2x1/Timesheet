@@ -116,5 +116,6 @@ return [
     'The earliest arrival time.' => '最も早い到着時間。',
     'The application has the function to track the work schedule of everyone in the' => 'アプリケーションには、全員の勤務スケジュールを追跡する機能があります。',
     'Digitran company' => 'デジトラン社',
-    'Everyone who goes to work, remember to fully time attendance to avoid disadvantage.' => '出勤するすべての人は、不利益を回避するために完全に出勤時間を記録することを忘れないでください。'
+    'Everyone who goes to work, remember to fully time attendance to avoid disadvantage.' => '出勤するすべての人は、不利益を回避するために完全に出勤時間を記録することを忘れないでください。',
+    'Coefficients Salary' => '係数給与',
 ];

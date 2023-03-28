@@ -117,4 +117,5 @@ return [
     'The application has the function to track the work schedule of everyone in the' => 'The application has the function to track the work schedule of everyone in the',
     'Digitran company' => 'Digitran company',
     'Everyone who goes to work, remember to fully time attendance to avoid disadvantage.' => 'Everyone who goes to work, remember to fully time attendance to avoid disadvantage.',
+    'Coefficients Salary' => 'Coefficients Salary',
 ];

@@ -57,15 +57,22 @@ class RequestDetailController extends Controller
         return view('frontend.list-request',$this->data);
     }
     //option forget
-    public function forget($id)
+    public function forget(Request $request, $id)
     {
         $this->data['title'] = 'Forget';
-        $this->data['timesheetDetail'] = Timesheet::find($id);
-        
-        return view('frontend.options.forget',$this->data);
+        $request->session()->put('id',$id);
+        $timesheetDetail = Timesheet::find($id);
+        $timesheetData = [
+            'id' => $timesheetDetail->id,
+            'date' => date('Y-m-d', strtotime($timesheetDetail->date)),
+            'first_checkin' => date('H:i:s', $timesheetDetail->first_checkin/1000),
+
+        ];
+        return response()->json($timesheetData);
     }
-    public function postForget(Request $request, $id)
+    public function postForget(Request $request)
     {
+        $id = session('id');
         //validate data
         $request->validate([
             'last_checkout' => 'required',
@@ -106,8 +113,8 @@ class RequestDetailController extends Controller
     //option please be late
     public function beLate($date)
     {
-        $this->data['date'] = strtotime($date)*1000;
-        return view('frontend.options.please-be-late',$this->data);
+        $dateBeLate = date('Y-m-d H:i:s',strtotime($date));
+        return response()->json($dateBeLate);
     }
     public function postBeLate(Request $request)
     {
@@ -133,8 +140,8 @@ class RequestDetailController extends Controller
     //option please come back soon
     public function comeBackSoon($date)
     {
-        $this->data['date'] = strtotime($date)*1000;
-        return view('frontend.options.please-come-back-soon',$this->data);
+        $dateComeBackSoon = date('Y-m-d H:i:s',strtotime($date));
+        return response()->json($dateComeBackSoon);
     }
     public function postComeBackSoon(Request $request)
     {
@@ -159,8 +166,8 @@ class RequestDetailController extends Controller
     //option take a break
     public function takeABreak($date)
     {
-        $this->data['date'] = strtotime($date)*1000;
-        return view('frontend.options.take-a-break',$this->data);
+        $dateTakeABreak = date('Y-m-d',strtotime($date));
+        return response()->json($dateTakeABreak);
     }
     public function postTakeABreak(Request $request)
     {

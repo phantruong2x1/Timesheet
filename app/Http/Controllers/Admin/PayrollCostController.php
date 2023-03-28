@@ -49,7 +49,7 @@ class PayrollCostController extends Controller
         $status = $payrollCostDetail->save();
 
         if($status){
-            Session::flash('alert-info', 'Thêm thành công ^^~!!!');
+            Session::flash('alert-info', 'Sửa thành công!');
         }
         else {
             Session::flash('alert-danger', 'Đã có lỗi xảy ra!');

@@ -61,7 +61,7 @@ class StatisticalController extends Controller
             }
         }
         // dd($this->data['payroll']);
-        return view('frontend.statistical',$this->data);
+        return view('frontend.statisticals.statistical',$this->data);
     }
     
     public function getStatisticalDetail($time)
