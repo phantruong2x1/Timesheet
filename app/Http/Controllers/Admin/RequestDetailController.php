@@ -45,6 +45,7 @@ class RequestDetailController extends Controller
             if($dateFilter == date('m-Y',strtotime($item->timesheet_date))){
                 $this->data['listRequestHistory'][$key] = [
                     'id' => $item->id,
+                    'avatar' => $item->staff->avatar,
                     'full_name' => $item->staff->full_name,
                     'request_type' => $item->request_type,
                     'timesheet_date' => $item->timesheet_date,

@@ -1,3 +1,6 @@
+@php 
+  $staffDetail = DB::table('staff')->where('id', Auth::user()->staff_id)->first();
+@endphp
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
       <a class="navbar-brand brand-logo mr-5" href="{{route('client-dashboard')}}"><img src="https://digitran.asia/wp-content/themes/digitran_wp/assets/images/image-digitran-logo.png" class="ml-4" alt="logo"/></a>
@@ -25,7 +28,7 @@
         </li>
         <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-            <img src="{{asset('assets/images/faces/digitran-team1.jpg')}}" alt="profile"/>
+            <img src="{{ ($staffDetail->avatar) ? asset('assets/avatars/' . $staffDetail->avatar) : asset('assets/images/avatar-default.png')}}" alt="{{ $staffDetail->full_name }}'s avatar">
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
             <h6 class="dropdown-header">{{__('sunshine.Settings')}}</h6>
@@ -118,7 +121,6 @@
         console.log(data);
         window.alert('Thêm thành công!');
       }
-      
     });
     
   });

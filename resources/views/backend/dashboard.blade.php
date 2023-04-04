@@ -87,7 +87,9 @@ $key = 1;
                                 
                                 <tr>
                                     {{-- Hiển thị dữ liệu --}}
-                                    <td>{{$key++}}</td>
+                                    <td class="py-1">
+                                        <img src="{{ empty($item->staff->avatar) ? asset('assets/images/avatar-default.png') : asset('assets/avatars/' . $item->staff->avatar)}}" alt="avatar">
+                                    </td>
                                     @if(empty($item->staff->full_name))
                                         <td>{{$item['staff_id']}}</td>
                                     @else

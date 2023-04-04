@@ -18,8 +18,28 @@
 
     <h4 class="card-title">Add Staff</h4>
 
-    <form class="form-sample" method="POST">
+    <form class="form-sample" method="POST" enctype="multipart/form-data">
     @csrf
+    {{-- avatar --}}
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Avatar</label>
+            <div class="col-sm-9 d-flex justify-content-center">
+              <img style="height: 100px; min-width: 100px; border-radius: 3px; border: 1px solid black" id="image-preview" 
+              src="{{asset('assets/images/avatar-default.png')}}" style="display:none;">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group row">
+              <div class="col-sm-12">
+                <input class="form-control" type="file" id="avatar" name="avatar" onchange="previewImage(event)">
+              </div>
+          </div>
+        </div>
+      </div>
       <div class="row">
 
         {{-- Nhập id staff --}}
@@ -272,7 +292,7 @@
       
       <div class="row ml-2">
         <button type="submit" class="btn btn-primary" style="margin-right: 10px">Submit</button>
-        <a href="{{route('staff.index')}}" class="btn btn-secondary">Cancel</a>
+        <a id="cancelButton" class="btn btn-secondary">Cancel</a>
       </div>
     </form>
   </div>
@@ -281,5 +301,16 @@
 </div>
 </div>
 </div>
+<script>
+  function previewImage(event) {
+      var reader = new FileReader();
+      reader.onload = function() {
+          var output = document.getElementById('image-preview');
+          output.src = reader.result;
+          output.style.display = 'block';
+      }
+      reader.readAsDataURL(event.target.files[0]);
+  }
+</script>
 @endsection
 

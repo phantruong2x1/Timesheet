@@ -16,10 +16,29 @@
 
     <h4 class="card-title">{{__('sunshine.Staff Information')}}</h4>
 
-    <form class="form-sample" action="{{route('client.settings.updateStaff')}}" method="POST">
+    <form class="form-sample" action="{{route('client.settings.updateStaff')}}" method="POST" enctype="multipart/form-data">
     @csrf
+      {{-- avatar --}}
       <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Avatar</label>
+            <div class="col-sm-9 d-flex justify-content-center">
+              <img style="height: 100px; min-width: 100px; border-radius: 3px; border: 1px solid black" id="image-preview" 
+              src="{{ ($staffDetail->avatar) ? asset('assets/avatars/' . $staffDetail->avatar) : asset('assets/images/avatar-default.png')}}" style="display:none;">
+            </div>
+          </div>
+        </div>
 
+        <div class="col-md-6">
+          <div class="form-group row">
+              <div class="col-sm-12">
+                <input class="form-control" type="file" id="avatar" name="avatar" onchange="previewImage(event)" value="">
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         {{-- Nhập id staff --}}
         <div class="col-md-6">
           <div class="form-group row">
@@ -314,7 +333,7 @@
         
       <div class="row">
           <button type="submit" class="btn btn-primary" style="margin-right: 10px">{{__('sunshine.Submit')}}</button>
-          <a href="{{route('client-dashboard')}}" class="btn btn-secondary">{{__('sunshine.Cancel')}}</a>
+          <a id="cancelButton" class="btn btn-secondary">{{__('sunshine.Cancel')}}</a>
       </div>
     </form>
 </div>
@@ -323,5 +342,16 @@
 </div>
 </div>
 </div>
+<script>
+  function previewImage(event) {
+      var reader = new FileReader();
+      reader.onload = function() {
+          var output = document.getElementById('image-preview');
+          output.src = reader.result;
+          output.style.display = 'block';
+      }
+      reader.readAsDataURL(event.target.files[0]);
+  }
+</script>
 @endsection
 

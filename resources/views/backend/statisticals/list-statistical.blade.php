@@ -30,7 +30,7 @@ $currentMonth = strtotime(date('Y-m-15'));
 <div class="card">
 
 <div class="card-body">
-    <h4 class="card-title">Staff Table</h4>
+    <h4 class="card-title">Statisticals Table</h4>
     {{-- Lọc  --}}
       <div class="row">
         {{-- Lọc theo tháng --}}
@@ -87,9 +87,10 @@ $currentMonth = strtotime(date('Y-m-15'));
 
             @foreach ($listStatistical as $key=>$item)
             <tr>
-
               {{-- Hiển thị dữ liệu --}}
-              <td>{{$key+1}}</td>
+              <td class="py-1">
+                <img src="{{ empty($item->staff->avatar) ? asset('assets/images/avatar-default.png') : asset('assets/avatars/' . $item->staff->avatar)}}" alt="avatar">
+              </td>
               <td>{{$item['staff_id']}}</td>
               <td>{{($item['full_name']) ? $item['full_name'] : $item->staff->full_name}}</td>
               <td>{{$item['working_date']}}</td>

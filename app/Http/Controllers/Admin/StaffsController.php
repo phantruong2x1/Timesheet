@@ -70,8 +70,13 @@ class StaffsController extends Controller
         ]);
 
         $data = $request->all();
+        if ($request->hasFile('avatar')) {
+            $imageName = time().'.'.$request->avatar->extension();
+            $request->avatar->move(public_path('assets/avatars'), $imageName);
+            $data['avatar'] = $imageName;
+        }
+        
         $status = Staffs::create($data);
-
         return redirect()->route('staff.index');
     }
 
@@ -125,8 +130,16 @@ class StaffsController extends Controller
 
         $data = $request->all();
         $staffs= Staffs::findOrFail($id);
+        if ($request->hasFile('avatar')) {
+            $imageName = time().'.'.$request->avatar->extension();
+            $request->avatar->move(public_path('assets/avatars'), $imageName);
+            $data['avatar'] = $imageName;
+        }
+        else{
+            $data['avatar'] = $staffs->avatar;
+        }
+        // dd($data);
         $status = $staffs->fill($data)->save();
-
         return redirect()->route('staff.index');
         
     }

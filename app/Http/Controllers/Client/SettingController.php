@@ -43,6 +43,14 @@ class SettingController extends Controller
         $data = $request->all();
         //Update
         $staffs = Staffs::find(Auth::user()->staff_id);
+        if ($request->hasFile('avatar')) {
+            $imageName = time().'.'.$request->avatar->extension();
+            $request->avatar->move(public_path('assets/avatars'), $imageName);
+            $data['avatar'] = $imageName;
+        }else{
+            $data['avatar'] = $staffs->avatar;
+        }
+
         $status = $staffs->fill($data)->save();
         if($status){
             Session::flash('alert-info', 'Cập nhập thành công!');

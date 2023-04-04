@@ -74,7 +74,9 @@
             <tr>
 
               {{-- Hiển thị dữ liệu --}}
-              <td>{{$key+1}}</td>
+              <td class="py-1">
+                <img src="{{ empty($item->avatar) ? asset('assets/images/avatar-default.png') : asset('assets/avatars/' . $item->avatar)}}" alt="avatar">
+              </td>
               <td>{{$item->id}}</td>
               <td>{{$item->full_name}}</td>
               <td>

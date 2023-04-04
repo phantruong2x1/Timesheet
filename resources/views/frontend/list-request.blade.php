@@ -56,8 +56,8 @@ $key =1;
                 <div class="card-body">
                   <p class="mb-4">{{__('sunshine.Option')}}</p>
                     {{-- <a href="{{route('option-forget')}}" class="btn btn-warning mb-2">Forget</a> --}}
-                    <a style="cursor: pointer" class="show-popup-be-late be-late-button btn btn-light btn-sm mb-2" data-date = "{{date('d-m-Y')}}">{{__('sunshine.Please Be Late')}}</a>
-                    <a style="cursor: pointer" class="show-popup-come-back-soon come-back-soon-button btn btn-light btn-sm mb-2" data-date = "{{date('d-m-Y')}}">{{__('sunshine.Please Come Back Soon')}}</a>
+                    <a style="cursor: pointer" class="show-popup-be-late be-late-button btn btn-light btn-sm mb-2" data-date = "{{date('d-m-Y')}}">Request for permission to arrive late</a>
+                    <a style="cursor: pointer" class="show-popup-come-back-soon come-back-soon-button btn btn-light btn-sm mb-2" data-date = "{{date('d-m-Y')}}">Request for permission to leave early</a>
                     <a style="cursor: pointer" class="show-popup-take-a-break take-a-break-button btn btn-danger btn-sm mb-2" data-date = "{{date('d-m-Y')}}">{{__('sunshine.Take a Break')}}</a>
                                            
                 </div>

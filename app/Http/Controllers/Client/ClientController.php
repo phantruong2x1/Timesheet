@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\Timesheet;
 use App\Models\RequestDetail;
 use App\Models\Statisticals;
+use App\Models\Staffs;
 
 class ClientController extends Controller
 {
@@ -20,63 +21,17 @@ class ClientController extends Controller
 
     public function index(Request $request)
     {
-        //Lấy toàn bộ dữ liệu timesheet của Auth::user
-        // if(empty($request->date_filter)){
-        //     $monthFilter = date('m');
-        //     $yearFilter = date('Y');
-        // }
-        // else{
-        //     $millisecond = strtotime('1-'.$request->date_filter.'');
-        //     $monthFilter = date('m',$millisecond);
-        //     $yearFilter = date('Y',$millisecond);
-        // }
-
-        // $dayOfMonth = cal_days_in_month(CAL_GREGORIAN, $monthFilter, $yearFilter);
-        // $listTimesheet = Timesheet::where('staff_id',Auth::user()->staff_id)->orderBy('date','desc')->get();
-
-        // for($i=1; $i<=$dayOfMonth; $i++){
-        //     $dateFilter = date('d-m-Y',mktime(0, 0, 0, $monthFilter, $i, $yearFilter));
-        //     $millisecondWeekday = strtotime($dateFilter);
-        //     $weekday = getdate($millisecondWeekday);
-        //     $weekdayV = $this->getWeekday($weekday['weekday']);
-        //     $colorWeekday = $this->getColorWeekday($weekday);
-
-        //     if($dateFilter == date('d-m-Y'))
-        //         $colorWeekday = '#FFFF66';
-                
-        //     $this->data['userListTimesheet'][$i] = [
-        //         'date' => $dateFilter, 
-        //         'weekday' => $weekdayV,
-        //         'colorWeekday' => $colorWeekday
-        //     ]; 
-        //     foreach($listTimesheet as $timesheetDetail){
-        //         if($dateFilter == $timesheetDetail->date){
-                   
-        //             $this->data['userListTimesheet'][$i] = [
-        //                 'id' => $timesheetDetail->id,
-        //                 'date' => $dateFilter, 
-        //                 'weekday' => $weekdayV,
-        //                 'colorWeekday' => $colorWeekday,
-        //                 'first_checkin' => $timesheetDetail->first_checkin,
-        //                 'last_checkout' => $timesheetDetail->last_checkout,
-        //                 'working_hour' => $timesheetDetail->working_hour,
-        //                 'overtime' => $timesheetDetail->overtime,
-        //                 'leave_status' => $timesheetDetail->leave_status,
-        //                 'status' => $timesheetDetail->status
-        //             ];            
-        //             break;
-        //         }
-        //     }
-        // }
+        //Lấy số ngày làm trong tháng (-T7, CN)
         $this->data['countDaysWork'] = $this->countWeekdaysInMonth(date('m'), date('Y'));
+        //Lấy số thiệu thống kê của tháng hiện tại
         $this->data['statisticalDeatil'] = Statisticals::where('staff_id', Auth::user()->staff_id)->where('time',date('m-Y'))->first();
+        //Thông tin tài khoản
         $this->data['userDetail'] = Auth::user();
-        $this->data['userTimesheet'] =  Timesheet::where('staff_id',Auth::user()->staff_id)
-        ->orderBy('date', 'DESC')
-        ->first();
-        $this->data['dt'] = date('d-m-Y');
+        //Thông tin bảng chấm công của tài khoản
+        $this->data['userTimesheet'] =  Timesheet::where('staff_id',Auth::user()->staff_id)->orderBy('date', 'DESC')->first();
 
         $userListTimesheet[] = [];
+        //Lấy các ngày của tuần hiện tại
         $dateFilter = $this->getWeekdayNow(time());
 
         $listTimesheet = Timesheet::where('staff_id',Auth::user()->staff_id)->orderBy('id','desc')->get();
@@ -184,6 +139,11 @@ class ClientController extends Controller
         }
         return $countWeekdays;
     }
-    
+    public function getStaffInfo()
+    {
+        $staffDetail = Staffs::findOrFail(Auth::user()->staff_id);
+        dd($staffDetail);
+        return view('frontend.layouts.partials.navbar')->with('staffDetail1',$staffDetail);
+    }
 }
 

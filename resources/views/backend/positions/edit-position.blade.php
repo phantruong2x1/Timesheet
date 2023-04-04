@@ -41,7 +41,7 @@
 
       
         <button type="submit" class="btn btn-primary mr-2" style="margin-right: 10px">Submit</button>
-        <a href="{{route('positions.index')}}" class="btn btn-secondary">Cancel</a>
+        <a id="cancelButton" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 </div>   

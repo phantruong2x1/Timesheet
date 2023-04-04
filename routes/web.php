@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\PayrollCostController;
+use App\Models\Staffs;
 use App\Models\Timesheet;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Session;
@@ -219,7 +220,7 @@ Route::middleware('auth')->group(function(){
 
             //other
             Route::get('/get-statistical-detail/{time}',[Client\StatisticalController::class, 'getStatisticalDetail'])->name('client.get-statistical-detail');
-            
+
         });
     });
 });
@@ -237,6 +238,7 @@ Route::view('account-not-found', 'errors.account-not-found')->name('notfound');
 Route::get('/current-time', function () {
     return response()->json(['time' => Carbon\Carbon::now()]);
 });
+
 
 
 

@@ -155,7 +155,7 @@ $currentMonth = strtotime(date('Y-m-15'));
                             {{($statisticalDeatil)?$statisticalDeatil->working_date: 0}} {{__('sunshine.days')}}
                         </p>
                         <p>{{__('sunshine.Number of days worked this month.')}}</p>
-                        <p>{{($statisticalDeatil)?number_format($statisticalDeatil->working_date*100/$countDaysWork):0}}% ({{$countDaysWork}} {{__('sunshine.days')}})</p>
+                        <p>{{($statisticalDeatil)?number_format($statisticalDeatil->working_date*100/$countDaysWork,2):0}}% ({{$countDaysWork}} {{__('sunshine.days')}})</p>
                         <td class="w-100 px-0">
                             <div class="progress progress-md mx-6">
                                 <div class="progress-bar bg-warning" role="progressbar" style="width:{{($statisticalDeatil)?number_format($statisticalDeatil->working_date*100/$countDaysWork):0}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
@@ -170,7 +170,7 @@ $currentMonth = strtotime(date('Y-m-15'));
                     <div class="card-body">
                         <p class="mb-4">{{__('sunshine.Total Hours Worked')}}</p>
                         <p class="fs-30 mb-2">
-                            {{($statisticalDeatil)?number_format($statisticalDeatil->working_hour/3600000,1):0}} {{__('sunshine.hour')}}
+                            {{($statisticalDeatil)?number_format($statisticalDeatil->working_hour/3600000,2):0}} {{__('sunshine.hour')}}
                         </p>
                         <p>{{__('sunshine.Number of working hours this month.')}}</p>
                     </div>
@@ -198,6 +198,7 @@ $currentMonth = strtotime(date('Y-m-15'));
 @include('frontend.options.please-come-back-soon')
 @include('frontend.options.take-a-break')
 @include('frontend.options.forget')
+
 <script>
     //color status
     const listStatus = document.querySelectorAll('.status')

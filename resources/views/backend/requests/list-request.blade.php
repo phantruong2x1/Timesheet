@@ -50,7 +50,9 @@ $key =1;
             @if(!empty($listRequestPeding) )
             @foreach ($listRequestPeding as $key=>$item)
                 <tr>
-                <td>{{$key + 1}}</td>
+                <td class="py-1">
+                    <img src="{{ empty($item->staff->avatar) ? asset('assets/images/avatar-default.png') : asset('assets/avatars/' . $item->staff->avatar)}}" alt="avatar">
+                </td>
                 <td>{{$item->staff->full_name}}</td>
                 <td>
                 @if($item->request_type == 'Update Checkout')
@@ -168,7 +170,9 @@ $key =1;
                 @if(!empty($listRequestHistory))
                 @foreach ($listRequestHistory as $item)
                     <tr >
-                    <td>{{$key++}}</td>
+                    <td class="py-1">
+                        <img src="{{ empty($item['avatar']) ? asset('assets/images/avatar-default.png') : asset('assets/avatars/' . $item['avatar'])}}" alt="avatar">
+                    </td>
                     <td>{{$item['full_name']}}</td>
                     <td>
                     @if($item['request_type'] == 'Update Checkout')
