@@ -91,7 +91,11 @@ class GetCurl extends Command
                 if($list->list[$i]->recordType == 8){
 
                     //Lấy bản ghi mới nhất theo staff_id
-                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)->where('date',date('d-m-Y',($list->list[$i]->lockDate)/1000))->first();
+                    $timesheetDetail = Timesheet::where('staff_id',$list->list[$i]->username)
+                    ->where('date',date('d-m-Y',($list->list[$i]->lockDate)/1000))
+                    ->orderBy('id', 'DESC')
+                    ->first();
+
                     $staffDetail = Staffs::find($list->list[$i]->username);
                     //Nếu Staff_id = null thì tạo mới + tạo bản ghi mới theo ngày
                     if($timesheetDetail->isEmpty()){

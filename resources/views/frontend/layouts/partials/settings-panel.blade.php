@@ -108,7 +108,7 @@
         <div class="d-flex align-items-center justify-content-between border-bottom">
           <p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">Friends</p>
           <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 font-weight-normal">See All</small>
-        </div>
+        </div>t
         <ul class="chat-list">
           <li class="list active">
             <div class="profile"><img src="images/faces/face1.jpg" alt="image"><span class="online"></span></div>

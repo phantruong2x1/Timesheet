@@ -52,12 +52,10 @@ class SettingController extends Controller
         }
 
         $status = $staffs->fill($data)->save();
-        if($status){
-            Session::flash('alert-info', 'Cập nhập thành công!');
-        }
-        else{
-            Session::flash('alert-danger', 'Đã có lỗi xảy ra!');
-        }
+        if($status)
+            Session::flash('toast-success', 'Cập nhập thành công!');
+        else
+            Session::flash('toast-error', 'Đã có lỗi xảy ra! Xin vui lòng kiểm tra lại.');
         
         return redirect()->route('client-dashboard');
     }
@@ -79,8 +77,12 @@ class SettingController extends Controller
             'password.required'=>'Password không được bỏ trống!',
         ]);
 
-        User::find(Auth::user()->id)->update(['password'=> Hash::make($request->new_password)]);
-        Session::flash('alert-info', 'Đổi mật khẩu thành công!');
+        $status = User::find(Auth::user()->id)->update(['password'=> Hash::make($request->new_password)]);
+        if($status)
+            Session::flash('toast-success', 'Đổi mật khẩu thành công!');
+        else
+            Session::flash('toast-error', 'Đã có lỗi xảy ra! Xin vui lòng kiểm tra lại.');
+        
         return redirect()->route('client-dashboard');
     }
 
@@ -89,6 +91,7 @@ class SettingController extends Controller
         $feedback = new Feedback;
         $data = $request->all();
         $data['staff_id'] = Auth::user()->staff_id;
+
         $feedback->createFeedback($data);
 
     }

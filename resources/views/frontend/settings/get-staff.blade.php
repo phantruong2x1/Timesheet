@@ -333,7 +333,7 @@
         
       <div class="row">
           <button type="submit" class="btn btn-primary" style="margin-right: 10px">{{__('sunshine.Submit')}}</button>
-          <a id="cancelButton" class="btn btn-secondary">{{__('sunshine.Cancel')}}</a>
+          <a href="{{route('client-dashboard')}}" class="btn btn-secondary">{{__('sunshine.Cancel')}}</a>
       </div>
     </form>
 </div>

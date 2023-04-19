@@ -1,3 +1,13 @@
+<style>
+  .notification-number{
+    background-color: red;
+    color: white;
+  }
+
+</style>
+@php 
+  $notificationNumber = DB::table('request_detail')->where('status', null)->count();
+@endphp
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
 
@@ -8,6 +18,7 @@
           <span class="menu-title">Dashboard</span>
         </a>
       </li>
+
       {{-- Timesheet Detail --}}
       <li class="nav-item">
         <a class="nav-link" href="{{route('timesheets.show')}}">
@@ -15,11 +26,13 @@
           <span class="menu-title">Timesheet Detail</span>
         </a>
       </li>
+
       {{-- Request --}}
       <li class="nav-item">
         <a class="nav-link" href="{{route('requests.index')}}">
           <i class="ti-comment-alt menu-icon"></i>
           <span class="menu-title">Request</span>
+          <span class="badge notification-number">{{$notificationNumber}}</span>
         </a>
       </li>
 
@@ -78,13 +91,15 @@
           <span class="menu-title">{{__('sunshine.Staff')}}</span>
         </a>
       </li>
-      {{-- Get Time --}}
+
+      {{-- Feek back --}}
       <li class="nav-item">
         <a class="nav-link" href="{{route('feedbacks.index')}}">
           <i class="ti-info-alt menu-icon"></i>
           <span class="menu-title">Feedback</span>
         </a>
       </li>
+
       {{-- Get Time --}}
       <li class="nav-item">
         <a class="nav-link" href="{{route('timesheets.get-time')}}">
@@ -92,7 +107,10 @@
           <span class="menu-title">-----</span>
         </a>
       </li>
-      
-
     </ul>
   </nav>
+  <script>
+    const notificationNumber = document.querySelector('.notification-number');
+    if(notificationNumber.innerHTML == '0')
+      notificationNumber.style.display = 'none';
+  </script>

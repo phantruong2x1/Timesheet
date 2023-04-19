@@ -118,8 +118,9 @@
         content: content
       },
       success: function(data){
-        console.log(data);
-        window.alert('Thêm thành công!');
+        showToast('success', 'Gửi góp ý thành công!');
+        document.getElementById('exampleInputTitle').value = '';
+        document.getElementById('exampleInputContent').value = '';
       }
     });
     

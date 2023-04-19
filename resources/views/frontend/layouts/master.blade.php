@@ -22,7 +22,9 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{{asset('assets/images/icon-digitran-logo.png')}}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    
+    <script src="https://kit.fontawesome.com/b71be33871.js" crossorigin="anonymous"></script>
+    <script src="{{asset('assets/js/customer.js')}}"></script>
+
     <style>
         .badge {
           font-size: 11px;
@@ -60,9 +62,13 @@
         <!-- partial:partials/_footer.html -->
         @include('frontend.layouts.partials.footer')
         <!-- partial -->
-
+        
     </div>
     <!-- container-scroller -->
+     
+    <!-- Toast Message UI -->
+    <div id="toast-customer"></div>
+    <!-- End Toast Message UI -->
 
     <!-- plugins:js -->
     <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
@@ -80,7 +86,6 @@
     <script src="{{asset('assets/js/template.js')}}"></script>
     <script src="{{asset('assets/js/settings.js')}}"></script>
     <script src="{{asset('assets/js/todolist.js')}}"></script>
-    <script src="{{asset('assets/js/customer.js')}}"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
     <script src="{{asset('assets/js/dashboard.js')}}"></script>
@@ -90,22 +95,23 @@
 
     <!-- End custom js for this page-->
     <script>
-        $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
+        // showToast('Success', 'success', '1234dsbdbf')
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     </script>
+
+    @foreach (['error', 'warning', 'success', 'info'] as $msg)
+    @if(Session::has('toast-' . $msg))
+    <script>
+        showToast('{{$msg}}', '{{ Session('toast-' . $msg)}}');
+    </script>
+    @endif
+    @endforeach
+        
+    
 </body>
 
 </html>
-{{-- <script>
-$(document).ready(function(){
-    $('a.nav-link').click(function(){
-        var url = this.href;
-        $('.container-fluid').load(url);
-        return false;
-    })
-})
-</script> --}}
-

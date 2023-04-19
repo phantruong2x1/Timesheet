@@ -14,7 +14,6 @@ $currentMonth = strtotime(date('Y-m-15'));
     border-radius: 0%;
     }
 </style>
-
 <div class="main-panel">
     <div class="content-wrapper">
     {{-- Welcome --}}
@@ -46,15 +45,6 @@ $currentMonth = strtotime(date('Y-m-15'));
     <div class="row">
         <div class="col-md-8 grid-margin stretch-card">
             <div class="card">
-                {{-- Thông báo --}}
-                <div class="flash-message">
-                    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-                    @if(Session::has('alert-' . $msg))
-                        <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-                    @endif
-                    @endforeach
-                </div>
-                
                 <div class="card-body row">
                     <p class="col-md-3 card-title mb-0">{{__('sunshine.Time Sheet')}}</p>
                     {{-- Lọc  --}}
@@ -215,6 +205,7 @@ $currentMonth = strtotime(date('Y-m-15'));
 @include('frontend.options.please-come-back-soon')
 @include('frontend.options.take-a-break')
 @include('frontend.options.forget')
+
 <script>
     $(function() {
         $('.date_filter').change(function() {
@@ -251,7 +242,7 @@ $currentMonth = strtotime(date('Y-m-15'));
         else 
             listStatus[i].classList.add('badge-success')
     }
-
+    
 </script> 
 
 @endsection

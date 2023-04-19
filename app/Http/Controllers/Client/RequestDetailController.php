@@ -100,14 +100,17 @@ class RequestDetailController extends Controller
         $requestDetail->timesheet_date = $timesheetDetail->date;
         $requestDetail->time = date('H:i:s',$timesheetDetail->last_checkout/1000);
         $requestDetail->reason = $request->reason;
-        $requestDetail->save();
+        $status = $requestDetail->save();
         
         $timesheetDetail->save();
 
         // Hiển thị câu thông báo 1 lần (Flash session)
-        Session::flash('alert-info', 'Insert data successfully!');
+        if($status)
+            Session::flash('toast-success', 'Cập nhập giờ tan làm thành công!');
+        else
+            Session::flash('toast-error', 'Đã có lỗi xảy ra! Xin vui lòng kiểm tra lại.');
 
-        return redirect()->route('client.requests.index');
+        return redirect()->back();
     }
 
     //option please be late
@@ -129,12 +132,15 @@ class RequestDetailController extends Controller
         $requestDetail->timesheet_date = date('d-m-Y',strtotime($request->from));
         $requestDetail->time = date('H:i:s',strtotime($request->from));
         $requestDetail->reason = $request->reason;
-        $requestDetail->save();
+        $status = $requestDetail->save();
  
         // Hiển thị câu thông báo 1 lần (Flash session)
-        Session::flash('alert-info', 'Insert data successfully!');
+        if($status)
+            Session::flash('toast-success', 'Gửi yêu cầu xin đi muộn thành công!');
+        else
+            Session::flash('toast-error', 'Đã có lỗi xảy ra! Xin vui lòng kiểm tra lại.');
 
-        return redirect()->route('client.requests.index');
+        return redirect()->back();
     }
 
     //option please come back soon
@@ -156,12 +162,15 @@ class RequestDetailController extends Controller
         $requestDetail->timesheet_date = date('d-m-Y',strtotime($request->to));
         $requestDetail->time = date('H:i:s',strtotime($request->to));
         $requestDetail->reason = $request->reason;
-        $requestDetail->save();
+        $status = $requestDetail->save();
  
         // Hiển thị câu thông báo 1 lần (Flash session)
-        Session::flash('alert-info', 'Insert data successfully!');
+        if($status)
+            Session::flash('toast-success', 'Gửi yêu cầu xin về sớm thành công!');
+        else
+            Session::flash('toast-error', 'Đã có lỗi xảy ra! Xin vui lòng kiểm tra lại.');
 
-        return redirect()->route('client.requests.index');
+        return redirect()->back();
     }
     //option take a break
     public function takeABreak($date)
@@ -182,12 +191,15 @@ class RequestDetailController extends Controller
         $requestDetail->timesheet_date = date('d-m-Y',strtotime($request->from));
         $requestDetail->time = date('H:i:s',strtotime($request->from));
         $requestDetail->reason = $request->reason;
-        $requestDetail->save();
+        $status = $requestDetail->save();
  
         // Hiển thị câu thông báo 1 lần (Flash session)
-        Session::flash('alert-info', 'Insert data successfully!');
+        if($status)
+            Session::flash('toast-success', 'Gửi yêu cầu nghỉ phép thành công!');
+        else
+            Session::flash('toast-error', 'Đã có lỗi xảy ra! Xin vui lòng kiểm tra lại.');
 
-        return redirect()->route('client.requests.index');
+        return redirect()->back();
     }
     //make orders
     public function makeOrder($id,$date)
@@ -218,9 +230,14 @@ class RequestDetailController extends Controller
             $timesheetDetail->status = null;
             $timesheetDetail->save();
         }
-        $requestDetail->delete();
+        $status = $requestDetail->delete();
 
-        Session::flash('alert-info', 'Xóa thành công!');
-        return redirect()->route('client.requests.index');
+        // Hiển thị câu thông báo 1 lần (Flash session)
+        if($status)
+            Session::flash('toast-info', 'Xóa yêu cầu thành công!');
+        else
+            Session::flash('toast-error', 'Đã có lỗi xảy ra! Xin vui lòng kiểm tra lại.');
+     
+        return redirect()->back();
     }
 }

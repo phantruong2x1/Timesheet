@@ -101,22 +101,19 @@
                 // Hiển thị dữ liệu trên popup
                 $('#dateForget').val(response.date)
                 $('#first_checkin').val(response.first_checkin)
-                console.log(response);
             }
         });
         });
     
     $("#forget-form").on("submit", function (e) {
-        e.preventDefault();
-
+        
         // Xác thực dữ liệu
         let inputData = $("#last_checkout").val();
         if (inputData.trim() === "") {
+            e.preventDefault();
             $("#validationMessage").text("Dữ liệu không được bỏ trống.");
             return;
-        } else {
-            $("#validationMessage").text("");
-        }
+        } 
     });
     });
 </script>

@@ -84,14 +84,6 @@ $key =1;
       <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
-              {{-- Thông báo --}}
-              <div class="flash-message">
-                @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-                  @if(Session::has('alert-' . $msg))
-                    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-                  @endif
-                @endforeach
-              </div>
                 <div class="card-body row">
                     <p class="col-md-2 card-title mb-0">{{__('sunshine.Request List')}}</p>
                     
@@ -137,8 +129,8 @@ $key =1;
                             <tbody>
                                 @if(!empty($userListRequest))
                                 @foreach ($userListRequest as $item)
-                                  <tr>
-                                    <td>{{$key++}}</td>
+                                <tr>
+                                  <td>{{$key++}}</td>
                                   <td>
                                     @if($item['request_type'] == 'Update Checkout')
                                       <b style="color: green">{{$item['request_type']}}</b>                             
@@ -189,10 +181,10 @@ $key =1;
                                   <td>
                                     @if($item['status'] == null)
                                       <a onclick="return confirm('Are you sure you want to delete request?')" 
-                                      href="{{route('client.requests.destroy',['id' => $item['id']])}}" class="btn btn-danger btn-sm">{{__('sunshine.Delete')}}</a>
+                                      href="{{route('client.requests.destroy',['id' => $item['id']])}}" class="btn btn-danger btn-sm"><i class="ti-trash"></i></a>
                                     @endif
-                                    </td>
-                                  </tr>
+                                  </td>
+                                </tr>
                                 @endforeach
                                 @else
                                 <tr>
