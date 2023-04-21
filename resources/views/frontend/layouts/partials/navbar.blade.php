@@ -1,5 +1,15 @@
 @php 
   $staffDetail = DB::table('staff')->where('id', Auth::user()->staff_id)->first();
+ 
+  //Lấy bản ghi mới nhất theo staff_id
+  $timesheetDetail = DB::table('timesheets')->where('staff_id',Auth::user()->staff_id)->where('date',date('d-m-Y'))->first();
+  if(!$timesheetDetail){
+    $colorBtnCheck = 'btn-success';
+    $textBtnCheck = 'Check In';
+  }else {
+    $colorBtnCheck = 'btn-danger';
+    $textBtnCheck = 'Check Out';
+  }
 @endphp
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
@@ -15,6 +25,9 @@
 
         </li>
       </ul>
+
+      <a href="{{route('client.check-in-out')}}" class="btn {{$colorBtnCheck}}"><i class="ti-calendar"> {{$textBtnCheck}}</i></a>
+
       <ul class="navbar-nav navbar-nav-right">
         <li class="nav-item dropdown">
           <button class="btn nav-link " type="button" data-toggle="dropdown" id="profileDropdown1" >

@@ -9,10 +9,11 @@ $currentMonth = strtotime(date('Y-m-15'));
 @section('content')
 <style>
     .table td img, .jsgrid .jsgrid-table td img {
-    width: 50px;
-    height: 50px;
-    border-radius: 0%;
+        width: 50px;
+        height: 50px;
+        border-radius: 0%;
     }
+
 </style>
 <div class="main-panel">
     <div class="content-wrapper">
@@ -87,14 +88,18 @@ $currentMonth = strtotime(date('Y-m-15'));
                                     </td>
                                     <td>{{$item['date']}}</td>
                                     <td>
-                                        @if(!empty($item['first_checkin']))
-                                            {{date('H:i:s',$item['first_checkin']/1000)}}
-                                        @endif
+                                        <label style="font-size: 14px" id="" class="badge textCheckIn">
+                                            @if(!empty($item['first_checkin']))
+                                                {{date('H:i:s',$item['first_checkin']/1000)}}
+                                            @endif
+                                        </label>
                                     </td>
                                     <td>
-                                        @if(!empty($item['last_checkout']))
-                                            {{date('H:i:s',$item['last_checkout']/1000)}}
-                                        @endif
+                                        <label style="font-size: 14px" id="" class="badge textCheckOut">
+                                            @if(!empty($item['last_checkout']))
+                                                {{date('H:i:s',$item['last_checkout']/1000)}}
+                                            @endif
+                                        </label>
                                     </td>
                                     <td>
                                         @if(!empty($item['working_hour']))
@@ -227,7 +232,7 @@ $currentMonth = strtotime(date('Y-m-15'));
     });
 
     //set color: red cho 'CN'
-    var elements = document.querySelectorAll('.style-color');
+    const elements = document.querySelectorAll('.style-color');
     for (var i = 0; i < elements.length; i++) {
         if(elements[i].innerText == 'CN' || elements[i].innerText=='T7')
         elements[i].style.color = "red";
@@ -242,6 +247,20 @@ $currentMonth = strtotime(date('Y-m-15'));
         else 
             listStatus[i].classList.add('badge-success')
     }
+
+    const dataCheckIn = document.querySelectorAll('.textCheckIn');
+    const dataCheckOut = document.querySelectorAll('.textCheckOut');
+
+    for(let i=0; i<dataCheckIn.length; i++){
+        if(dataCheckIn[i].innerText != ''){
+            dataCheckIn[i].classList.add('badge-success')
+        }
+
+        if(dataCheckOut[i].innerText != ''){
+            dataCheckOut[i].classList.add('badge-danger')
+        }
+    }
+    
     
 </script> 
 

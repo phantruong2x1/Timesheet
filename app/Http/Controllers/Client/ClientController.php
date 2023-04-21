@@ -10,6 +10,8 @@ use App\Models\Timesheet;
 use App\Models\RequestDetail;
 use App\Models\Statisticals;
 use App\Models\Staffs;
+use App\Http\Controllers\Admin\TimesheetController;
+use Illuminate\Support\Facades\Session;
 
 class ClientController extends Controller
 {
@@ -21,13 +23,13 @@ class ClientController extends Controller
 
     public function index(Request $request)
     {
-        //Lấy số ngày làm trong tháng (-T7, CN)
+        // Lấy số ngày làm trong tháng (-T7, CN)
         $this->data['countDaysWork'] = $this->countWeekdaysInMonth(date('m'), date('Y'));
-        //Lấy số thiệu thống kê của tháng hiện tại
+        // Lấy số thiệu thống kê của tháng hiện tại
         $this->data['statisticalDeatil'] = Statisticals::where('staff_id', Auth::user()->staff_id)->where('time',date('m-Y'))->first();
-        //Thông tin tài khoản
+        // Thông tin tài khoản
         $this->data['userDetail'] = Auth::user();
-        //Thông tin bảng chấm công của tài khoản
+        // Thông tin bảng chấm công của tài khoản
         $this->data['userTimesheet'] =  Timesheet::where('staff_id',Auth::user()->staff_id)->orderBy('date', 'DESC')->first();
 
         $userListTimesheet[] = [];
@@ -144,6 +146,69 @@ class ClientController extends Controller
         $staffDetail = Staffs::findOrFail(Auth::user()->staff_id);
         dd($staffDetail);
         return view('frontend.layouts.partials.navbar')->with('staffDetail1',$staffDetail);
+    }
+
+     // check in and out
+     public function checkInAndOut(){
+        $date = time()*1000;
+        $status = $this->createAndUpdateTimesheet(Auth::user()->staff_id, $date, null);
+
+        // Hiển thị câu thông báo 1 lần (Flash session)
+        if($status == 'Check-In')
+            Session::flash('toast-success', 'Cập Nhập Thời Gian Đến Thành Công!');
+        else if($status == 'Check-Out')
+            Session::flash('toast-success', 'Cập Nhập Thời Gian Về Thành Công!');
+        else
+            Session::flash('toast-error', 'Đã có lỗi xảy ra! Xin vui lòng kiểm tra lại.');
+
+        return redirect()->back();
+    }
+
+    // Tạo và cập nhập thời gian biểu.
+    public function createAndUpdateTimesheet($staff_id, $date, $recordId){
+        $timesheetCon = new TimesheetController();
+
+        //Lấy bản ghi mới nhất theo staff_id
+        $timesheetDetail = Timesheet::where('staff_id',$staff_id)->where('date',date('d-m-Y'))->first();
+        $staffDetail = Staffs::find($staff_id);
+        //Nếu Staff_id = null thì tạo mới + tạo bản ghi mới theo ngày
+        if(!$timesheetDetail){
+            $timeSheets = new Timesheet();
+            $timeSheets->record_id      =   $recordId;
+            $timeSheets->date           =   date('d-m-Y',$date/1000);
+            $timeSheets->first_checkin  =   $date;
+            $timeSheets->staff_id       =   $staff_id;
+            if(empty($staffDetail) || $staffDetail->shift == 'Ca 1')
+            {
+                if(date("H:i:s",$date/1000) > '08:30:00')
+                    $timeSheets->status   = 'Late checkin';
+            }
+            else if($staffDetail->shift == 'Ca 2')
+            {
+                if(date("H:i:s",$date/1000) > '08:00:00')
+                    $timeSheets->status   = 'Late checkin';
+            } 
+            $timeSheets->save();
+            return 'Check-In';
+        }
+        //Update data for 2nd checkin
+        else{ 
+            $timesheetDetail->last_checkout  = $date;
+            $timesheetDetail->working_hour   = $timesheetCon->getWorkingHour($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+            $timesheetDetail->overtime = $timesheetCon->getOverTime($timesheetDetail->working_hour);
+            //Kiểm tra status có giấy phép hay không
+            if(!strpos($timesheetDetail->status, 'Authorization')){
+                if(empty($staffDetail->shift) || $staffDetail->shift == 'Ca 1')
+                    $timesheetDetail->status = $timesheetCon->getStatusShift1($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+                else if($staffDetail->shift == 'Ca 2')
+                    $timesheetDetail->status = $timesheetCon->getStatusShift2($timesheetDetail->first_checkin, $timesheetDetail->last_checkout);
+            
+            }
+           
+            $timesheetDetail->save();
+            return 'Check-Out';
+        }
+        
     }
 }
 

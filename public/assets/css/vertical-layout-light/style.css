@@ -11287,8 +11287,8 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-success {
   color: #fff;
-  background-color: #57B657;
-  border-color: #57B657;
+  background-color: #57b657c2;
+  border-color: #57b657c2;
 }
 
 .btn-success:hover {
@@ -11398,8 +11398,8 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-danger {
   color: #fff;
-  background-color: #FF4747;
-  border-color: #FF4747;
+  background-color: #ff4747a3;
+  border-color: #ff4747a3;
 }
 
 .btn-danger:hover {

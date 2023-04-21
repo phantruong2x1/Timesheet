@@ -218,6 +218,9 @@ Route::middleware('auth')->group(function(){
             
             Route::post('/setting-feekback', [Client\SettingController::class, 'createFeedback'])->name('client.settings.post-feekback');
 
+             // check on and out
+             Route::get('/check-in-out', [Client\ClientController::class, 'checkInAndOut'])->name('client.check-in-out');
+
             //other
             Route::get('/get-statistical-detail/{time}',[Client\StatisticalController::class, 'getStatisticalDetail'])->name('client.get-statistical-detail');
 
